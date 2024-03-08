@@ -1,0 +1,89 @@
+package com.example.olimplicacion;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
+
+import com.example.olimplicacion.databinding.ActivityMainBinding;
+import com.example.olimplicacion.databinding.ActivityMenuPrincipalBinding;
+import com.example.olimplicacion.fragmentos.ActividadesFragment;
+import com.example.olimplicacion.fragmentos.CalendarioFragment;
+import com.example.olimplicacion.fragmentos.EjercicioFragment;
+import com.example.olimplicacion.fragmentos.EstadisticasFragment;
+import com.example.olimplicacion.fragmentos.PerfilFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+public class MenuPrincipal extends AppCompatActivity {
+    //ATRIBUTOS
+    ActivityMenuPrincipalBinding binding;//creo un binding para obtener los objetos del xml
+
+    //METODOS
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = ActivityMenuPrincipalBinding.inflate(getLayoutInflater());//carga la vista xml al cargar la aplicación
+        setContentView(binding.getRoot());
+
+        //declaracion de variables
+        setSupportActionBar(binding.toolbar);
+
+        //codigo
+        reemplazarFragmento(new EjercicioFragment());
+
+        //listeners
+        binding.bottomnav.setOnItemSelectedListener(item ->{
+            if(item.getItemId()==R.id.ejercicio){
+                reemplazarFragmento(new EjercicioFragment());
+            }
+            if(item.getItemId()==R.id.estadisticas){
+                reemplazarFragmento(new EstadisticasFragment());
+            }
+            if(item.getItemId()==R.id.actividades){
+                reemplazarFragmento(new ActividadesFragment());
+            }
+            if(item.getItemId()==R.id.calendario){
+                reemplazarFragmento(new CalendarioFragment());
+            }
+            return true;
+        });
+
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.perfil){
+            reemplazarFragmento(new PerfilFragment());
+            Toast.makeText(this, "Estas en la opción Perfil", Toast.LENGTH_LONG).show();
+        }
+        if(id == R.id.configuracion){
+            Toast.makeText(this, "Estas en la opción Configuracion", Toast.LENGTH_LONG).show();
+        }
+        return true;
+    }
+
+    private void reemplazarFragmento(Fragment fragmento){
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentContainerView, fragmento);
+        fragmentTransaction.commit();
+    }
+}

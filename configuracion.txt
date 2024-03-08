@@ -1,0 +1,24 @@
+CHART
+build.gradle.kts(Module:app)
+-android {
+    namespace = "com.example.charts"
+    compileSdk = 34
+-buildFeatures{
+        viewBinding = true
+    }
+-dependencies {
+	implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+
+
+settings.gradle.kts
+-repositories {
+        google()
+        mavenCentral()
+        jcenter()
+        gradlePluginPortal()
+-repositories {
+        maven(url = "https://jitpack.io")
+        google()
+        mavenCentral()
+        jcenter()
+

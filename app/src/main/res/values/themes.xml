@@ -1,0 +1,16 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.Olimplicacion" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <!-- Colores primarios de la marca -->
+        <item name="colorPrimary">@color/grey</item>
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+    </style>
+
+    <style name="Theme.Olimplicacion" parent="Base.Theme.Olimplicacion" />
+
+<!-- Establece el estilo de las esquinas-->
+    <style name="roundedImageViewRounded">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
+</resources>

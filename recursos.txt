@@ -1,0 +1,17 @@
+Custom ListView in Android Studio using Java: https://www.youtube.com/watch?v=TRfDbqmhSDQ
+Android View Binding in Activities and Fragments: https://www.youtube.com/watch?v=HC-ylQC2_QY
+Pre-Populate ROOM Database with Already Loaded Data | Android Studio Tutorial: https://www.youtube.com/watch?v=pe28WeQ0VCc
+Using SQLite: https://www.youtube.com/watch?v=uBw9QSWSIww
+Creación y lectura de archivos de texto en la memoria interna: https://www.youtube.com/watch?v=KvM65JoaeFE
+Android Charts | Line Chart | MP Android Chart | Android Studio 2023: https://www.youtube.com/watch?v=KIW4Vp8mjLo
+Bottomsheet dialog : https://www.youtube.com/watch?v=rQF1qFWu8MU
+Iconos para splashScreen: https://www.youtube.com/watch?v=Oy0oXwv3kSc&t=1s
+How to Change App Icon in Android Studio Giraffe 2023: https://www.youtube.com/watch?v=5-6ykGWzzo8
+Bottom Sheet Dialog Fragment :https://www.youtube.com/watch?v=BGuFe93uuWk: 
+
+ 
+Retrofit (buscar)
+Introducing Navigation component :https://www.youtube.com/watch?v=Y0Cs2MQxyIs
+Cómo crear graficos de navegacion: https://developer.android.com/guide/navigation/navigation-getting-started?hl=es-419#kts
+Adding Data Points in REAL-TIME to a Graph :https://www.youtube.com/watch?v=XwAmzQtGnTE&t=100s
+https://dribbble.com/search/android

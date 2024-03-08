@@ -1,0 +1,8 @@
+Version1.5 - Se pueden añadir ejercicios a la lista del fragmento Ejercicio seleccionandolas desde la actividad Detalles.
+
+Version1.6 - Solo se puede añadir uno de cada ejercicio a la lista. Se puede visualizar cada ejercicio guardado en una actividad con
+los detalles y el peso y repeticiones seleccionados. No se puede modificar o eliminar la selección.
+
+Version1.7 - Se pueden modificar los datos del ejercicio.
+
+Version1.8 - Cambio de apariencia en botones y fondo. Samsun MJ-j330G no soporta degradado como Background. Añadir al finalizar el proyecto?
