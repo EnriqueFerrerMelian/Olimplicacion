@@ -7,6 +7,8 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -15,38 +17,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+
+import com.example.olimplicacion.R;
 import com.example.olimplicacion.clases.Ejercicio;
 import com.example.olimplicacion.clases.EjercicioAdapter;
-import com.example.olimplicacion.databinding.FragmentEjercicioBinding;
+import com.example.olimplicacion.databinding.FragmentCreacionRutinaBinding;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
- * este fragmento debería cargar desde la base de datos la lista de ejercicios seleccionada
- * desde el fragmento RutinaFragment
+ * Desde aquí se manejará la creación de rutinas
  */
-public class EjercicioFragment extends Fragment {
+public class CreacionRutinaFragment extends Fragment {
+
     //recyclerView
     private RecyclerView recyclerView;//lista del xml
     private EjercicioAdapter ejercicioAdapter;//adaptador
     static ArrayList<Ejercicio> dataArrayList = new ArrayList<>();
     //recyclerView fin
-    static FragmentEjercicioBinding binding;
-    static ArrayList<String> pesoLista = new ArrayList<>();
-    static ArrayList<String> vecesLista = new ArrayList<>();
+    static FragmentCreacionRutinaBinding binding;
 
+    static Context context;//para usar toast en métodos státicos
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        binding = FragmentEjercicioBinding.inflate(inflater, container, false);
+        binding = FragmentCreacionRutinaBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
-
-    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //declaracion de variables
         dataArrayList = new ArrayList<>();
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -60,7 +59,7 @@ public class EjercicioFragment extends Fragment {
         binding.anadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                reemplazarFragmento(new ListaEjerciciosFragment());
             }
         });
     }
@@ -68,14 +67,10 @@ public class EjercicioFragment extends Fragment {
     /**
      * añade un ejercicio a la lista
      * @param ejercicio
-     * @param peso
-     * @param veces
      */
-    public static void addToList(Ejercicio ejercicio, String peso, String veces){
+    public static void addToList(Ejercicio ejercicio){
         dataArrayList.add(ejercicio);
-        pesoLista.add(peso);
-        vecesLista.add(veces);
-
+        Toast.makeText(context, "Ejercicio añadido.", Toast.LENGTH_LONG);
         //se añade a la base de datos
         //dbm.getEjerciciosDAO().addEjrecicio(ejercicio);
     }
@@ -92,5 +87,12 @@ public class EjercicioFragment extends Fragment {
             }
         }
         return false;
+    }
+
+    public void reemplazarFragmento(Fragment fragmento){
+        FragmentManager fragmentManager = getParentFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentContainerView, fragmento).addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }

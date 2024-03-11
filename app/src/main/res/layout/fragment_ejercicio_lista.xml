@@ -22,7 +22,7 @@
             android:divider="@android:color/transparent"
             android:dividerHeight="10.sp"
             android:scrollbars="vertical"
-            tools:listitem="@layout/list_item01"/>
+            tools:listitem="@layout/item_ejercicio"/>
     </ScrollView>
 
 </LinearLayout>

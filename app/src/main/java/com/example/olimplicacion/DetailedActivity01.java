@@ -64,7 +64,7 @@ public class DetailedActivity01 extends AppCompatActivity {
         binding.addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if(nombre>0){
+                /*if(nombre>0){
                     String peso = binding.numberPeso.getValue() + "." +binding.numberPesoDecimal.getValue() + " Kg";
                     System.out.println("Peso: "+ peso);
 
@@ -81,7 +81,7 @@ public class DetailedActivity01 extends AppCompatActivity {
                     }else{
                         Toast.makeText(DetailedActivity01.this, "Ya estába en la lista de ejercicios.",Toast.LENGTH_LONG).show();
                     }
-                }
+                }*/
             }
         });
 

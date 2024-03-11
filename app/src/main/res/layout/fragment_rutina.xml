@@ -5,14 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragmentos.EjercicioFragment">
-
+    tools:context=".fragmentos.RutinaFragment">
 
     <TextView
         android:id="@+id/anadir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/a_adir_ejercicio"
+        android:text="+ añadir rutina"
         android:textColor="@color/darkgrey"
         android:textStyle="bold"
         android:textSize="18dp"
@@ -27,8 +26,8 @@
         android:id="@+id/recyclerView"
         android:layout_width="match_parent"
         android:layout_height="647dp"
-        android:divider="@android:color/transparent"
         android:layout_margin="8dp"
+        android:divider="@android:color/transparent"
         android:dividerHeight="5.sp"
         android:scrollbars="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -37,7 +36,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.5"
-        tools:listitem="@layout/item_ejercicio" />
-
+        tools:listitem="@layout/item_rutina" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

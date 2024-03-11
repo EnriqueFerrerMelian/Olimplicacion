@@ -1,3 +1,4 @@
+/*
 package com.example.olimplicacion.adaptadores;
 
 import android.content.Context;
@@ -47,3 +48,4 @@ public class ListAdapter extends ArrayAdapter<Ejercicio>{
         return view;
     }
 }
+*/

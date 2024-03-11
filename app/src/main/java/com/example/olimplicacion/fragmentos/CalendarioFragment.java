@@ -10,6 +10,10 @@ import android.view.ViewGroup;
 
 import com.example.olimplicacion.R;
 
+/**
+ * Mostrará un calendario con la imagen de la rutina que toca ese día
+ * debajo por defecto una breve descripción de la rutina más cercana
+ */
 public class CalendarioFragment extends Fragment {
 
 

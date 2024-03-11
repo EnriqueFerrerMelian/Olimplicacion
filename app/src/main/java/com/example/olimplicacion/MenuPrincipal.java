@@ -23,6 +23,7 @@ import com.example.olimplicacion.fragmentos.CalendarioFragment;
 import com.example.olimplicacion.fragmentos.EjercicioFragment;
 import com.example.olimplicacion.fragmentos.EstadisticasFragment;
 import com.example.olimplicacion.fragmentos.PerfilFragment;
+import com.example.olimplicacion.fragmentos.RutinaFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MenuPrincipal extends AppCompatActivity {
@@ -40,7 +41,7 @@ public class MenuPrincipal extends AppCompatActivity {
         setSupportActionBar(binding.toolbar);
 
         //codigo
-        reemplazarFragmento(new EjercicioFragment());
+        reemplazarFragmento(new RutinaFragment());
 
         //listeners
         binding.bottomnav.setOnItemSelectedListener(item ->{
@@ -80,7 +81,7 @@ public class MenuPrincipal extends AppCompatActivity {
         return true;
     }
 
-    private void reemplazarFragmento(Fragment fragmento){
+    public void reemplazarFragmento(Fragment fragmento){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainerView, fragmento);
