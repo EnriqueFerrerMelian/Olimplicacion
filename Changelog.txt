@@ -1,0 +1,14 @@
+Versión 1.0.1 (2024-03-12)
+  ● Mejoras:
+	○ Implementación de 'DetalleActividad01Fragment' para visualizar los detalles de cada ejercicio.
+	○ Implementado método onClick para lanzar el fragmento 'DetalleActividad01Fragment' desde el recyclerView.
+  ● Corrección de errores:
+	○ Corregido error que mezcla fragmentos al cambiar de sección desde el menú principal.
+
+Versión 1.0.0 (2024-03-11)
+  ● Mejoras:
+	○ Substitución de ListView a RecyclerView
+  ● Funcionalidades:
+	○ LogIn, menubar inferior y superior implementados.
+	○ Añadidos fragmentos para la gestión de rutinas.
+	○ Layout básico y navegación entre fragmentos para la gestión de rutinas implementado.

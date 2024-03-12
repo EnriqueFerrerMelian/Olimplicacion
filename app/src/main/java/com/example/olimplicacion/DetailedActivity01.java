@@ -56,8 +56,7 @@ public class DetailedActivity01 extends AppCompatActivity {
         binding.button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(DetailedActivity01.this, ListaEjerciciosActivity.class);
-                startActivity(intent);
+                
             }
         });
 

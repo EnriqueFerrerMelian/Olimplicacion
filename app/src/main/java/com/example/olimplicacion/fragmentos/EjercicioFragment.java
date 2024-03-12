@@ -26,7 +26,7 @@ import java.util.List;
  * este fragmento debería cargar desde la base de datos la lista de ejercicios seleccionada
  * desde el fragmento RutinaFragment
  */
-public class EjercicioFragment extends Fragment {
+public class EjercicioFragment extends Fragment  implements EjercicioAdapter.ViewHolder.ItemClickListener{
     //recyclerView
     private RecyclerView recyclerView;//lista del xml
     private EjercicioAdapter ejercicioAdapter;//adaptador
@@ -50,7 +50,7 @@ public class EjercicioFragment extends Fragment {
         dataArrayList = new ArrayList<>();
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        ejercicioAdapter = new EjercicioAdapter(dataArrayList);
+        ejercicioAdapter = new EjercicioAdapter(dataArrayList, this);
         recyclerView.setAdapter(ejercicioAdapter);
         dataArrayList.add(new Ejercicio((int)12, "Ejercicio prueba", "Musculos prueba", "Descripcion" , null));
 
@@ -92,5 +92,10 @@ public class EjercicioFragment extends Fragment {
             }
         }
         return false;
+    }
+
+    @Override
+    public void onItemClick(Ejercicio ejercicio) {
+
     }
 }

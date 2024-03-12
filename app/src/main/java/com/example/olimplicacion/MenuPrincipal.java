@@ -28,7 +28,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MenuPrincipal extends AppCompatActivity {
     //ATRIBUTOS
-    ActivityMenuPrincipalBinding binding;//creo un binding para obtener los objetos del xml
+    private static ActivityMenuPrincipalBinding binding;//creo un binding para obtener los objetos del xml
+    private static Fragment fragmentoDesechable = null;
 
     //METODOS
     @Override
@@ -46,7 +47,7 @@ public class MenuPrincipal extends AppCompatActivity {
         //listeners
         binding.bottomnav.setOnItemSelectedListener(item ->{
             if(item.getItemId()==R.id.ejercicio){
-                reemplazarFragmento(new EjercicioFragment());
+                reemplazarFragmento(new RutinaFragment());
             }
             if(item.getItemId()==R.id.estadisticas){
                 reemplazarFragmento(new EstadisticasFragment());
@@ -84,7 +85,12 @@ public class MenuPrincipal extends AppCompatActivity {
     public void reemplazarFragmento(Fragment fragmento){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        if(fragmentoDesechable!=null){
+            fragmentTransaction.remove(fragmentoDesechable);
+            System.out.println(fragmentoDesechable + "eliminado");
+        }
         fragmentTransaction.replace(R.id.fragmentContainerView, fragmento);
+        fragmentoDesechable = fragmento;
         fragmentTransaction.commit();
     }
 }

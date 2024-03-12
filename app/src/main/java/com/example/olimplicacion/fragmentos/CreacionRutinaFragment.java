@@ -28,7 +28,7 @@ import java.util.ArrayList;
 /**
  * Desde aquí se manejará la creación de rutinas
  */
-public class CreacionRutinaFragment extends Fragment {
+public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapter.ViewHolder.ItemClickListener{
 
     //recyclerView
     private RecyclerView recyclerView;//lista del xml
@@ -49,7 +49,7 @@ public class CreacionRutinaFragment extends Fragment {
         dataArrayList = new ArrayList<>();
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        ejercicioAdapter = new EjercicioAdapter(dataArrayList);
+        ejercicioAdapter = new EjercicioAdapter(dataArrayList, this);
         recyclerView.setAdapter(ejercicioAdapter);
         dataArrayList.add(new Ejercicio((int)12, "Ejercicio prueba", "Musculos prueba", "Descripcion" , null));
 
@@ -60,6 +60,12 @@ public class CreacionRutinaFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 reemplazarFragmento(new ListaEjerciciosFragment());
+            }
+        });
+        binding.aceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getParentFragmentManager().popBackStack();
             }
         });
     }
@@ -94,5 +100,10 @@ public class CreacionRutinaFragment extends Fragment {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainerView, fragmento).addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void onItemClick(Ejercicio ejercicio) {
+
     }
 }

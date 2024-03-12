@@ -29,3 +29,9 @@ Retrofit (buscar)
 -Adding Data Points in REAL-TIME to a Graph :https://www.youtube.com/watch?v=XwAmzQtGnTE&t=100s
 
 -https://dribbble.com/search/android
+
+-Android | Androidx RecyclerView with Fragment | How to open Fragment on RecyclerView onclick in Java: https://www.youtube.com/watch?v=b_e0Syee38Q
+
+-Android:
+*Administrador de fragmentos: https://developer.android.com/guide/fragments/fragmentmanager?hl=es-419
+*Cómo crear listas dinámicas con RecyclerView: https://developer.android.com/develop/ui/views/layout/recyclerview?hl=es-419#java

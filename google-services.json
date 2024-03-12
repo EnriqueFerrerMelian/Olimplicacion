@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "738970365215",
+    "project_id": "instadam-4febd",
+    "storage_bucket": "instadam-4febd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:738970365215:android:aba8789bce3d6aba3f942a",
+        "android_client_info": {
+          "package_name": "com.example.olimplicacion"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCTzPxb09l6sYeaSS6RYIIx_WdvTM86OUA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -18,6 +18,7 @@ import com.example.olimplicacion.MenuPrincipal;
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.clases.Ejercicio;
 import com.example.olimplicacion.clases.EjercicioAdapter;
+import com.example.olimplicacion.clases.Rutina;
 import com.example.olimplicacion.databinding.FragmentEjercicioBinding;
 import com.example.olimplicacion.databinding.FragmentRutinaBinding;
 
@@ -28,7 +29,7 @@ import java.util.ArrayList;
  * CONTENDRÁ UN RECYCLERVIEW DE RECYCLERVIEWS DE EJERCICIOS
  */
 
-public class RutinaFragment extends Fragment {
+public class RutinaFragment extends Fragment  implements EjercicioAdapter.ViewHolder.ItemClickListener{
     MenuPrincipal menuPrincipal;
     //recyclerView
     private RecyclerView recyclerView;//lista del xml
@@ -50,7 +51,7 @@ public class RutinaFragment extends Fragment {
         dataArrayList = new ArrayList<>();
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        ejercicioAdapter = new EjercicioAdapter(dataArrayList);
+        ejercicioAdapter = new EjercicioAdapter(dataArrayList, this);
         recyclerView.setAdapter(ejercicioAdapter);
         dataArrayList.add(new Ejercicio((int)12, "Rutina prueba", "Musculos prueba", "Descripcion" , null));
         binding.anadir.setOnClickListener(new View.OnClickListener() {
@@ -67,4 +68,12 @@ public class RutinaFragment extends Fragment {
         fragmentTransaction.commit();
     }
 
+    public static void añadirEjercicio(Ejercicio ejercicio){
+        dataArrayList.add(ejercicio);
+    }
+
+    @Override
+    public void onItemClick(Ejercicio ejercicio) {
+
+    }
 }
