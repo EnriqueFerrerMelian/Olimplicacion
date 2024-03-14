@@ -8,11 +8,8 @@ import android.view.View;
 import android.widget.Button;
 
 import com.example.olimplicacion.databinding.ActivityMainBinding;
-import com.google.firebase.auth.FirebaseAuth;
 
 public class MainActivity extends AppCompatActivity {
-    FirebaseAuth auth;
-
     ActivityMainBinding binding;
     Button entrar;
 

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.olimplicacion.R;
+import com.example.olimplicacion.clases.Ejercicio;
 import com.example.olimplicacion.databinding.ActivityDetailed01Binding;
 import com.example.olimplicacion.databinding.FragmentDetalleActividad01Binding;
 import com.example.olimplicacion.databinding.FragmentListaEjerciciosBinding;
@@ -31,14 +32,15 @@ public class DetalleActividad01Fragment extends Fragment {
     Bitmap imagen;
     String musculos;
     String descripcion;
+    int id;
     static FragmentDetalleActividad01Binding binding;
 
-    public static DetalleActividad01Fragment newInstance(String nombre) {
+    public static DetalleActividad01Fragment newInstance(String nombre, String musculos, String descripcion) {
         DetalleActividad01Fragment fragment = new DetalleActividad01Fragment();
         Bundle args = new Bundle();
         args.putString(NOMBRE, nombre);
-        args.putString(MUSCULOS, nombre);
-        args.putString(DESCRIPCION, nombre);
+        args.putString(MUSCULOS, musculos);
+        args.putString(DESCRIPCION, descripcion);
         fragment.setArguments(args);
         return fragment;
     }
@@ -55,10 +57,22 @@ public class DetalleActividad01Fragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentDetalleActividad01Binding.inflate(inflater, container, false);
+        //inicialización de numberPicker
+        binding.numberPeso.setMinValue(1);binding.numberPeso.setMaxValue(100);
+        binding.numberPesoDecimal.setMinValue(0);binding.numberPesoDecimal.setMaxValue(5);
+        binding.numberRepeticiones.setMinValue(1);binding.numberRepeticiones.setMaxValue(30);
+        binding.numberVeces.setMinValue(1);binding.numberVeces.setMaxValue(100);
 
         binding.detailName.setText(nombre);
         binding.detailMusculos.setText(musculos);
         binding.detailDesc.setText(descripcion);
+
+        binding.angadir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addEjercicio();
+            }
+        });
         binding.volver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -68,6 +82,9 @@ public class DetalleActividad01Fragment extends Fragment {
         return binding.getRoot();
     }
 
-
-
+    public void addEjercicio(){
+        Ejercicio ejercicio = new Ejercicio(1, "nombre1", "Musculos1", "Desc1", "Cat1", null);
+        System.out.println("Ejercicio " + ejercicio.getId() + " creado.");
+        CreacionRutinaFragment.addEjercicio(ejercicio);
+    }
 }

@@ -4,71 +4,11 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="ejercicioNombre">Nombre de ejercicio</string>
 
-    //Goblet Squat
-    <string name="goblet_squat">Goblet Squat</string>
-    <string name="goblet_squatM">Músculos trabajados: Cuádriceps, gemelos, glúteos, abdominales,
-        brazos y fuerza de agarre.</string>
-    <string name="goblet_squatC">Cómo: Ponte de pie con los pies más abiertos que la anchura de los
-        hombros y sujeta una mancuerna con ambas manos delante del pecho. Vuelve a sentarte en
-        cuclillas, luego vuelve a subir y repite.</string>
-
-    //Press Arnold
-    <string name="press_arnold">Press Arnold</string>
-    <string name="press_arnoldM">Músculos trabajados: Deltoides, tríceps y trapecios.</string>
-    <string name="press_arnoldC">Cómo: Siéntate en un banco con las mancuernas frente a ti, con las palmas de las manos hacia los hombros, como si acabaras de hacer un curl de bíceps. Empuja las mancuernas por encima de tu cabeza mientras giras los brazos hasta que las palmas de las manos queden en dirección contraria a ti. Endereza los brazos, haz una pausa y luego invierte el movimiento.</string>
-
-    //Levantamiento a dos tiempos
-    <string name="levantamiento_a_dos_tiempos">Levantamiento a dos tiempos</string>
-    <string name="levantamiento_a_dos_tiemposM">Músculos trabajados: Glúteos, gemelos, cuádriceps, bíceps.</string>
-    <string name="levantamiento_a_dos_tiemposC">Cómo: Gira las muñecas para que miren hacia delante y lleva las pesas a los hombros, saltando ligeramente al hacerlo. Endereza lentamente las piernas hasta ponerte de pie. A continuación, baja las pesas hasta el muslo antes de pasar a la posición de sentadilla y repetir.</string>
-
-    //Renegade Row
-    <string name="renegade_row">Renegade Row</string>
-    <string name="renegade_rowM">Músculos trabajados: Dorsales, romboides, delantales, abdominales, oblicuos, bíceps, tríceps, antebrazos.</string>
-    <string name="renegade_rowC">Cómo: Colócate en posición de press-up con las manos en las asas de dos mancuernas. Manteniendo el núcleo tenso, rema la mancuerna derecha hasta los abdominales y vuelve a la posición inicial. Repite con la mancuerna izquierda para completar una repetición.</string>
-
-    //Paseo del granjero
-    <string name="paseo_del_granjero">Paseo del granjero</string>
-    <string name="paseo_del_granjeroM">Músculos trabajados: Espalda superior, hombros, tríceps y bíceps, antebrazos, abdominales, glúteos, isquiotibiales, cuádriceps, aductores, abductores y gemelos.</string>
-    <string name="paseo_del_granjeroC">Cómo: Camina hacia delante dando pasos cortos y rápidos. Recorre la distancia indicada, lo más rápido posible.</string>
-
-    //apertura_con_mancuernas
-    <string name="apertura_con_mancuernas">Apertura con mancuernas</string>
-    <string name="apertura_con_mancuernasM">Músculos trabajados: Deltoides, pectorales, romboides,
-        serrato anterior, manguitos rotadores, bíceps.</string>
-    <string name="apertura_con_mancuernasC">Cómo: Túmbate en un banco plano sujetando dos mancuernas
-        a la altura de los hombros con las palmas hacia dentro. Presiona las mancuernas hacia arriba
-        hasta que tus brazos estén casi completamente extendidos. Esta es la posición inicial. Desde
-        aquí, con una ligera flexión de los brazos, arquea las pesas hacia los lados hasta que
-        sientas un estiramiento en el pecho. Aprieta los pectorales para devolver las pesas a la
-        posición inicial invirtiendo el movimiento.</string>
-
-    //Remo inclinado
-    <string name="remo_inclinado">Remo inclinado</string>
-    <string name="remo_inclinadoM">Músculos trabajados: Dorsales, hombros, antebrazos, bíceps,
-        erectores espinales, isquiotibiales, glúteos.</string>
-    <string name="remo_inclinadoC">Cómo: Mantén el tronco apretado y la espalda recta mientras
-        remas las pesas hasta el pecho. Baja y repite.</string>
-
-    //Uppercut con mancuernas
-    <string name="uppercut_con_mancuernas">Uppercut con mancuernas</string>
-    <string name="uppercut_con_mancuernasM">Músculos trabajados: Bíceps, oblicuos, abdominales, glúteos y cuádriceps.</string>
-    <string name="uppercut_con_mancuernasC">Cómo: De pie, sujeta dos mancuernas a la altura de los hombros con un agarre por debajo de la mano. Adopta una postura de lucha y da un puñetazo hacia arriba con el brazo derecho, girando sobre el pie derecho al hacerlo. Vuelve a la posición inicial y repite en el otro lado.</string>
-
-    //Peso muerto con mancuernas a dos brazos con piernas rígidas
-    <string name="peso_muerto_con_mancuernas_a_dos_brazos_con_piernas_rigidas">Peso muerto con mancuernas a dos brazos con piernas rígidas</string>
-    <string name="peso_muerto_con_mancuernas_a_dos_brazos_con_piernas_rigidasM">Músculos trabajados: Isquiotibiales, erectores, dorsales y glúteos.</string>
-    <string name="peso_muerto_con_mancuernas_a_dos_brazos_con_piernas_rigidasC">Cómo: Baja las mancuernas hasta la parte superior de los pies, hasta donde puedas llegar extendiendo la cintura, y luego vuelve lentamente a la posición inicial.</string>
-
-    //Kickbacks con mancuernas
-    <string name="kickbacks_con_mancuernas">Kickbacks con mancuernas</string>
-    <string name="kickbacks_con_mancuernasM">Músculos trabajados: Tríceps.</string>
-    <string name="kickbacks_con_mancuernasC">Cómo: Sostén una mancuerna con la mano derecha y coloca la rodilla y la mano izquierda sobre un banco. Comienza con el brazo doblado, llevando la mancuerna junto al pecho de forma que la parte superior del brazo quede paralela al suelo, y estira el brazo hacia atrás utilizando el antebrazo. Vuelve lentamente a la posición inicial y repite.</string>
-
     //Swing con un brazo
     <string name="swing_con_un_brazo">Swing con un brazo</string>
     <string name="swing_con_un_brazoM">Músculos trabajados: Glúteos e isquiotibiales, abdominales, cuádriceps, hombros.</string>
-    <string name="swing_con_un_brazoC">Cómo: Ponte en cuclillas y balancea la mancuerna con las piernas antes de impulsarte inmediatamente hacia delante, llevando el peso hacia la cabeza mientras enderezas las piernas. Repite este movimiento y luego cambia de lado.</string>
+    <string name="swing_con_un_brazoC">Cómo: Ponte en cuclillas y balancea la mancuerna con las piernas
+        antes de impulsarte inmediatamente hacia delante, llevando el peso hacia la cabeza mientras enderezas las piernas. Repite este movimiento y luego cambia de lado.</string>
 
     //Press de banca con mancuernas
     <string name="press_de_banca_con_mancuernas">Press de banca con mancuernas</string>

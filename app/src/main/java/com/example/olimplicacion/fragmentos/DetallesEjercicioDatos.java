@@ -1,3 +1,4 @@
+/*
 package com.example.olimplicacion.fragmentos;
 
 import android.content.Intent;
@@ -48,4 +49,4 @@ public class DetallesEjercicioDatos extends Fragment {
         binding.numPeso.setText(dato1);
         binding.numRepeticiones.setText(dato2);
     }
-}
+}*/

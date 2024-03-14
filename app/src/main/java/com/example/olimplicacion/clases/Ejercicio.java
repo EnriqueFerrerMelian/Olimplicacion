@@ -1,23 +1,24 @@
 package com.example.olimplicacion.clases;
 
 import android.graphics.Bitmap;
+import android.net.Uri;
 
 import java.util.LinkedList;
 
 public class Ejercicio {
     //ATRIBUTOS
-    long id;
-    String name, musculos, desc, peso, repeticiones;
-    Bitmap image;
+    int id;
+    String nombre, musculos, descripcion, categoria, img;
 
 
     //CONSTRUCTOR
-    public Ejercicio(long id, String name, String musculos, String desc, Bitmap image) {
+    public Ejercicio(int id, String nombre, String musculos, String descripcion, String categoria, String img) {
         this.id = id;
-        this.name = name;
+        this.nombre = nombre;
         this.musculos = musculos;
-        this.desc = desc;
-        this.image = image;
+        this.descripcion = descripcion;
+        this.categoria = categoria;
+        this.img = img;
     }
 
     public Ejercicio(){
@@ -27,36 +28,28 @@ public class Ejercicio {
     //GETTERS Y SETTERS
 
 
-    public String getPeso() {
-        return peso;
-    }
-
-    public void setPeso(String peso) {
-        this.peso = peso;
-    }
-
-    public String getRepeticiones() {
-        return repeticiones;
-    }
-
-    public void setRepeticiones(String repeticiones) {
-        this.repeticiones = repeticiones;
-    }
-
-    public long getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNombre() {
+        return nombre;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
     }
 
     public String getMusculos() {
@@ -67,32 +60,32 @@ public class Ejercicio {
         this.musculos = musculos;
     }
 
-    public String getDesc() {
-        return desc;
+
+    public String getCategoria() {
+        return categoria;
     }
 
-    public void setDesc(String desc) {
-        this.desc = desc;
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
-    public Bitmap getImage() {
-        return image;
+    public String getImg() {
+        return img;
     }
 
-    public void setImage(Bitmap image) {
-        this.image = image;
+    public void setImg(String img) {
+        this.img = img;
     }
 
     @Override
     public String toString() {
         return "Ejercicio{" +
                 "id=" + id +
-                ", name='" + name + '\'' +
+                ", nombre='" + nombre + '\'' +
                 ", musculos='" + musculos + '\'' +
-                ", desc='" + desc + '\'' +
-                ", peso='" + peso + '\'' +
-                ", repeticiones='" + repeticiones + '\'' +
-                ", image=" + image +
+                ", descripcion='" + descripcion + '\'' +
+                ", categoria='" + categoria + '\'' +
+                ", img='" + img + '\'' +
                 '}';
     }
 }

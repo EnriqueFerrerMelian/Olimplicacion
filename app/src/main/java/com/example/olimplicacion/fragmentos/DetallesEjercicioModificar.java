@@ -48,12 +48,12 @@ public class DetallesEjercicioModificar extends Fragment {
                 Bundle b = new Bundle();
                 b.putString("peso", peso);
                 b.putString("veces", veces);
-                DetallesEjercicioDatos nextFrag= new DetallesEjercicioDatos();
-                nextFrag.setArguments(b);
-                getActivity().getSupportFragmentManager().beginTransaction()
+                //DetallesEjercicioDatos nextFrag= new DetallesEjercicioDatos();
+               // nextFrag.setArguments(b);
+                /*getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragmentContainerView, nextFrag, "findThisFragment")
                         .addToBackStack(null)
-                        .commit();
+                        .commit();*/
             }
         });
         binding.canBtn.setOnClickListener(new View.OnClickListener() {

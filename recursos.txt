@@ -1,37 +1,31 @@
--Pasar de un fragmento a otro: https://www.youtube.com/watch?v=Kq-WtwT7pHw
-
--Custom ListView in Android Studio using Java: https://www.youtube.com/watch?v=TRfDbqmhSDQ
-
--Android View Binding in Activities and Fragments: https://www.youtube.com/watch?v=HC-ylQC2_QY
-
--Pre-Populate ROOM Database with Already Loaded Data | Android Studio Tutorial: https://www.youtube.com/watch?v=pe28WeQ0VCc
-
--Using SQLite: https://www.youtube.com/watch?v=uBw9QSWSIww
-
--Creación y lectura de archivos de texto en la memoria interna: https://www.youtube.com/watch?v=KvM65JoaeFE
-
--Android Charts | Line Chart | MP Android Chart | Android Studio 2023: https://www.youtube.com/watch?v=KIW4Vp8mjLo
-
--Bottomsheet dialog : https://www.youtube.com/watch?v=rQF1qFWu8MU
-
--Iconos para splashScreen: https://www.youtube.com/watch?v=Oy0oXwv3kSc&t=1s
-
--How to Change App Icon in Android Studio Giraffe 2023: https://www.youtube.com/watch?v=5-6ykGWzzo8
-
--Bottom Sheet Dialog Fragment :https://www.youtube.com/watch?v=BGuFe93uuWk
 
 Retrofit (buscar)
 
--Introducing Navigation component :https://www.youtube.com/watch?v=Y0Cs2MQxyIs
-
--Cómo crear graficos de navegacion: https://developer.android.com/guide/navigation/navigation-getting-started?hl=es-419#kts
-
--Adding Data Points in REAL-TIME to a Graph :https://www.youtube.com/watch?v=XwAmzQtGnTE&t=100s
-
 -https://dribbble.com/search/android
 
--Android | Androidx RecyclerView with Fragment | How to open Fragment on RecyclerView onclick in Java: https://www.youtube.com/watch?v=b_e0Syee38Q
+
 
 -Android:
 *Administrador de fragmentos: https://developer.android.com/guide/fragments/fragmentmanager?hl=es-419
 *Cómo crear listas dinámicas con RecyclerView: https://developer.android.com/develop/ui/views/layout/recyclerview?hl=es-419#java
+*Android | Androidx RecyclerView with Fragment | How to open Fragment on RecyclerView onclick in Java: https://www.youtube.com/watch?v=b_e0Syee38Q
+*Android : How to destroy Fragment?: https://www.youtube.com/watch?v=SrPzyZQrvqc
+*Android Charts | Line Chart | MP Android Chart | Android Studio 2023: https://www.youtube.com/watch?v=KIW4Vp8mjLo
+*Bottomsheet dialog : https://www.youtube.com/watch?v=rQF1qFWu8MU
+*Android View Binding in Activities and Fragments: https://www.youtube.com/watch?v=HC-ylQC2_QY
+*Pasar de un fragmento a otro: https://www.youtube.com/watch?v=Kq-WtwT7pHw
+*Iconos para splashScreen: https://www.youtube.com/watch?v=Oy0oXwv3kSc&t=1s
+*How to Change App Icon in Android Studio Giraffe 2023: https://www.youtube.com/watch?v=5-6ykGWzzo8
+*Bottom Sheet Dialog Fragment :https://www.youtube.com/watch?v=BGuFe93uuWk
+*Introducing Navigation component :https://www.youtube.com/watch?v=Y0Cs2MQxyIs
+*Cómo crear graficos de navegacion: https://developer.android.com/guide/navigation/navigation-getting-started?hl=es-419#kts
+*Adding Data Points in REAL-TIME to a Graph :https://www.youtube.com/watch?v=XwAmzQtGnTE&t=100s
+
+-SQLite:
+*Using SQLite: https://www.youtube.com/watch?v=uBw9QSWSIww
+*Pre-Populate ROOM Database with Already Loaded Data | Android Studio Tutorial: https://www.youtube.com/watch?v=pe28WeQ0VCc
+
+-Firebase:
+*Retrieve Image from Firebase in Android App: https://www.youtube.com/watch?v=DRqObCUCGl0&t=551s
+*Firebase Data to RecyclerView | How to Retrieve Firebase Data into Recyclerview | Android Studio: https://www.youtube.com/watch?v=M8sKwoVjqU0&t=880s
+*Retrieve Firebase data to RecyclerView: https://www.youtube.com/watch?v=ePKC5ZEqeNY

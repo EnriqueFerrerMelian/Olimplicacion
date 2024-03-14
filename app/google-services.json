@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "911533527631",
-    "project_id": "olimplicacion",
-    "storage_bucket": "olimplicacion.appspot.com"
+    "project_number": "25215472414",
+    "project_id": "olimplicacion-3ba86",
+    "storage_bucket": "olimplicacion-3ba86.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:911533527631:android:5b70750a7988dcfbca103a",
+        "mobilesdk_app_id": "1:25215472414:android:6aaeb781dfdc57ecca6f0f",
         "android_client_info": {
           "package_name": "com.example.olimplicacion"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBchlTBD7d7olnltIUz3Rx4Bxq1smBAz_E"
+          "current_key": "AIzaSyA4B3odfUimobigbzSCcSolfkyGlYyuSGA"
         }
       ],
       "services": {

@@ -2,39 +2,31 @@ package com.example.olimplicacion;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.cardview.widget.CardView;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.olimplicacion.databinding.ActivityMainBinding;
 import com.example.olimplicacion.databinding.ActivityMenuPrincipalBinding;
 import com.example.olimplicacion.fragmentos.ActividadesFragment;
 import com.example.olimplicacion.fragmentos.CalendarioFragment;
-import com.example.olimplicacion.fragmentos.EjercicioFragment;
 import com.example.olimplicacion.fragmentos.EstadisticasFragment;
 import com.example.olimplicacion.fragmentos.PerfilFragment;
 import com.example.olimplicacion.fragmentos.RutinaFragment;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MenuPrincipal extends AppCompatActivity {
     //ATRIBUTOS
-    private static ActivityMenuPrincipalBinding binding;//creo un binding para obtener los objetos del xml
     private static Fragment fragmentoDesechable = null;
 
     //METODOS
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ActivityMenuPrincipalBinding binding;
         binding = ActivityMenuPrincipalBinding.inflate(getLayoutInflater());//carga la vista xml al cargar la aplicación
         setContentView(binding.getRoot());
 

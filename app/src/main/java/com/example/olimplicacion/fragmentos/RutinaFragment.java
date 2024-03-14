@@ -53,7 +53,7 @@ public class RutinaFragment extends Fragment  implements EjercicioAdapter.ViewHo
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         ejercicioAdapter = new EjercicioAdapter(dataArrayList, this);
         recyclerView.setAdapter(ejercicioAdapter);
-        dataArrayList.add(new Ejercicio((int)12, "Rutina prueba", "Musculos prueba", "Descripcion" , null));
+        dataArrayList.add(new Ejercicio(1, "nombre1", "Musculos1", "Desc1", "Cat1", null));
         binding.anadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

@@ -1,3 +1,4 @@
+/*
 package com.example.olimplicacion.fragmentos;
 
 import android.content.Intent;
@@ -42,7 +43,8 @@ public class EjercicioListaFragment extends Fragment {
 
         System.out.println("09- cargando la listView");
         //rellenamos el ListView
-        /*listAdapter = new ListAdapter(getContext(), dataArrayList);
+
+listAdapter = new ListAdapter(getContext(), dataArrayList);
         binding.listView.setAdapter(listAdapter);
         binding.listView.setClickable(true);
         //al seleccionar un objeto, mandamos los datos de ese objeto al activity detalles para que los muestre.
@@ -58,7 +60,8 @@ public class EjercicioListaFragment extends Fragment {
 
                 startActivity(intent);
             }
-        });*/
+        });
+
     }
 
-}
+}*/

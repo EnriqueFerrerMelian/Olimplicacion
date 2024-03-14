@@ -3,33 +3,29 @@ package com.example.olimplicacion.clases;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.olimplicacion.R;
-import com.example.olimplicacion.fragmentos.DetalleActividad01Fragment;
-import com.google.android.material.imageview.ShapeableImageView;
+import com.example.olimplicacion.baseDeDatos.FirebaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 public class EjercicioAdapter extends RecyclerView.Adapter<EjercicioAdapter.ViewHolder>{
+    FirebaseHelper fbHelper;
     private List<Ejercicio> dataArrayList = new ArrayList<Ejercicio>();
     private ViewHolder.ItemClickListener clickListener;
 
     public EjercicioAdapter(List<Ejercicio> dataArrayList, ViewHolder.ItemClickListener clickListener) {
         this.dataArrayList = dataArrayList;
         this.clickListener = clickListener;
+
     }
 
     public void setListaFiltrada(List<Ejercicio> listaFiltrada){
@@ -59,17 +55,23 @@ public class EjercicioAdapter extends RecyclerView.Adapter<EjercicioAdapter.View
         return dataArrayList.size();
     }
     public static class ViewHolder extends RecyclerView.ViewHolder{
+
         Context context = itemView.getContext();
+        FirebaseHelper fbHelper;
         //FirebaseHelper fh;
         TextView nombre;
+        ImageView imagen;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            //fh = new FirebaseHelper("ejercicios");
+            fbHelper = new FirebaseHelper("ejercicios");
             nombre = itemView.findViewById(R.id.listName01);
+            imagen = itemView.findViewById(R.id.listImage01);
         }
 
         public void bind(Ejercicio ejercicio) {
-            nombre.setText(ejercicio.getName());
+            nombre.setText(ejercicio.getNombre());
+            //imagen.setImageBitmap(ejercicio.getImage());
+            System.out.println("Imagen: " + ejercicio.getImg());
         }
         public interface ItemClickListener{
             public void onItemClick(Ejercicio ejercicio);

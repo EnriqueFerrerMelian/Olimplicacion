@@ -8,13 +8,8 @@ import androidx.fragment.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
-import com.example.olimplicacion.clases.Ejercicio;
-import com.example.olimplicacion.databinding.ActivityDetailed01Binding;
 import com.example.olimplicacion.databinding.ActivityDetailed02Binding;
-import com.example.olimplicacion.fragmentos.DetallesEjercicioDatos;
-import com.example.olimplicacion.fragmentos.DetallesEjercicioModificar;
 import com.example.olimplicacion.fragmentos.EjercicioFragment;
 
 public class DetailedActivity02 extends AppCompatActivity {
@@ -52,8 +47,8 @@ public class DetailedActivity02 extends AppCompatActivity {
             binding.detailMusculos.setText(musculos);
             binding.detailImage.setImageResource(img);
         }
-        DetallesEjercicioDatos detallesEjercicioDatos = new DetallesEjercicioDatos();
-        reemplazarFragmento(detallesEjercicioDatos, peso, veces);
+        //DetallesEjercicioDatos detallesEjercicioDatos = new DetallesEjercicioDatos();
+        //reemplazarFragmento(detallesEjercicioDatos, peso, veces);
 
 
 

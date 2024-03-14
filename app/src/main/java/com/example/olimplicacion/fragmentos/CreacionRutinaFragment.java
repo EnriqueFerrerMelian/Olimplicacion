@@ -51,7 +51,7 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         ejercicioAdapter = new EjercicioAdapter(dataArrayList, this);
         recyclerView.setAdapter(ejercicioAdapter);
-        dataArrayList.add(new Ejercicio((int)12, "Ejercicio prueba", "Musculos prueba", "Descripcion" , null));
+        dataArrayList.add(new Ejercicio(1, "nombre1", "Musculos1", "Desc1", "Cat1", null));
 
         /**
          * abre el fragmento EjercicioListaFragment para seleccionar un ejercicio a añadir
@@ -88,7 +88,7 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
      */
     public static boolean tieneEjercicio(Ejercicio ejercicio) {
         for (int i = 0; i < dataArrayList.size(); i++) {
-            if(dataArrayList.get(i).getName()==ejercicio.getName()){
+            if(dataArrayList.get(i).getNombre()==ejercicio.getNombre()){
                 return true;
             }
         }
@@ -103,7 +103,10 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
     }
 
     @Override
-    public void onItemClick(Ejercicio ejercicio) {
+    public void onItemClick(Ejercicio ejercicio) {}
 
+    public static void addEjercicio(Ejercicio ejercicio){
+        dataArrayList.add(ejercicio);
+        System.out.println("ejercicio " + ejercicio.getId() + " añadido");
     }
 }
