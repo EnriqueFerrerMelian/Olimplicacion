@@ -1,15 +1,14 @@
-# A modificar
-¡Bienvenido a Mi Proyecto Increíble! Este es un proyecto de ejemplo creado con fines demostrativos.
+# Olimplicacion
+Proyecto de final de ciclo de Diseño de Aplicaicones Multimedia
 ## 📝 Descripción
-Mi Proyecto Increíble es una aplicación web que permite a los usuarios hacer cosas increíbles de una manera simple y
-divertida.
+Esta aplicación móbil se usará para administrar tus ejercicios.
 ## 🌟 Características
-- Funcionalidad A: Permite a los usuarios realizar la acción A de manera rápida y eficiente.
-- Funcionalidad B: Ofrece a los usuarios la capacidad de realizar la acción B con facilidad.
-- Funcionalidad C: Introduce una característica innovadora que permite a los usuarios hacer algo asombroso.
+- Funcionalidad A: Crear rutinas personalizadas.
+- Funcionalidad B: Hacer un seguimiento de tus mejoras por medio de estadísticas.
+- Funcionalidad C: Ver las actividades disponibles en tu gimnasio.
+- Funcionalidad D: Ver noticias en el Tablón de Anuncios.
 ## 🛠 Requisitos de Instalación
-- Node.js >= 12.0.0
-- npm >= 6.0.0
+- Todavía por documentar.
 ## 💻 Instalación
 1. Clona este repositorio en tu máquina local.
 2. Navega al directorio del proyecto: `cd mi-proyecto-increible`.
