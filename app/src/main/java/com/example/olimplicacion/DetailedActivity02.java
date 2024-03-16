@@ -35,9 +35,6 @@ public class DetailedActivity02 extends AppCompatActivity {
 
         //codigo
         if(intent!=null){
-            nombre = intent.getIntExtra("name", R.string.apertura_con_mancuernas);
-            musculos = intent.getIntExtra("musculos", R.string.apertura_con_mancuernasM);
-            desc = intent.getIntExtra("desc", R.string.apertura_con_mancuernasC);
             img = intent.getIntExtra("img", R.drawable.apertura_con_mancuernas);
             peso = intent.getStringExtra("peso");
             veces = intent.getStringExtra("veces");

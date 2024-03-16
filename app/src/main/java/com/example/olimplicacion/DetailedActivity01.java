@@ -35,9 +35,6 @@ public class DetailedActivity01 extends AppCompatActivity {
 
         //codigo
         if(intent!=null){
-            nombre = intent.getIntExtra("name", R.string.apertura_con_mancuernas);
-            musculos = intent.getIntExtra("musculos", R.string.apertura_con_mancuernasM);
-            desc = intent.getIntExtra("desc", R.string.apertura_con_mancuernasC);
             img = intent.getIntExtra("img", R.drawable.apertura_con_mancuernas);
 
             binding.detailName.setText(nombre);

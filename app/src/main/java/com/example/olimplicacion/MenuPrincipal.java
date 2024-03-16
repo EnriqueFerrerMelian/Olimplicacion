@@ -19,6 +19,7 @@ import com.example.olimplicacion.fragmentos.PerfilFragment;
 import com.example.olimplicacion.fragmentos.RutinaFragment;
 
 public class MenuPrincipal extends AppCompatActivity {
+
     //ATRIBUTOS
     private static Fragment fragmentoDesechable = null;
 

@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.olimplicacion.MainActivity;
 import com.example.olimplicacion.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -16,27 +17,46 @@ import com.google.android.material.imageview.ShapeableImageView;
 
 
 public class EjercicioFbAdapter extends FirebaseRecyclerAdapter<Ejercicio, EjercicioAdapter.ViewHolder> {
+    private EjercicioAdapter.ViewHolder.ItemClickListener clickListener;
     /**
      * Initialize a {@link RecyclerView.Adapter} that listens to a Firebase query. See
      * {@link FirebaseRecyclerOptions} for configuration options.
      *
      * @param options
      */
-    public EjercicioFbAdapter(@NonNull FirebaseRecyclerOptions<Ejercicio> options) {
+    public EjercicioFbAdapter(@NonNull FirebaseRecyclerOptions<Ejercicio> options,  EjercicioAdapter.ViewHolder.ItemClickListener clickListener) {
         super(options);
+        this.clickListener = clickListener;
     }
 
+    /**
+     * Extraerá la información de los objetos y las insertará en la vista si el id del ejercicio está contenido en
+     * la lista de ejercicios del usuario.
+     * @param holder
+     * @param position
+     * @param model the model object containing the data that should be used to populate the view.
+     */
     @Override
     protected void onBindViewHolder(@NonNull EjercicioAdapter.ViewHolder holder, int position, @NonNull Ejercicio model) {
-        holder.nombre.setText(model.getNombre());
-        System.out.println(model);
-        Glide.with(holder.imagen.getContext())
-                .load(model.getImg())
-                .placeholder(R.drawable.baseline_add_24)//si no hay imagen carga una por defecto
-                .circleCrop()
-                .error(R.drawable.baseline_add_24)//si ocurre algún error se verá por defecto
-                .into(holder.imagen);
-        System.out.println("Reyenando lista");
+        if(MainActivity.getUsuario().getRutinas().contains(model.getId())){
+            holder.nombre.setText(model.getNombre());
+            System.out.println(model);
+            Glide.with(holder.imagen.getContext())
+                    .load(model.getImg())
+                    .placeholder(R.drawable.baseline_add_24)//si no hay imagen carga una por defecto
+                    .circleCrop()
+                    .error(R.drawable.baseline_add_24)//si ocurre algún error se verá por defecto
+                    .into(holder.imagen);
+            System.out.println("Reyenando lista");
+        }
+
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                clickListener.onItemClick(model);
+            }
+        });
     }
 
     @NonNull
@@ -55,5 +75,8 @@ public class EjercicioFbAdapter extends FirebaseRecyclerAdapter<Ejercicio, Ejerc
             imagen = itemView.findViewById(R.id.listImage01);
             nombre = itemView.findViewById(R.id.listName01);
         }
+    }
+    public interface ItemClickListener{
+        public void onItemClick(Ejercicio ejercicio);
     }
 }
