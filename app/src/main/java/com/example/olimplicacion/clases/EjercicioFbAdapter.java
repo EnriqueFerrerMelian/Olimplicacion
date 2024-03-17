@@ -15,6 +15,9 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.imageview.ShapeableImageView;
 
+import java.util.LinkedList;
+import java.util.List;
+
 
 public class EjercicioFbAdapter extends FirebaseRecyclerAdapter<Ejercicio, EjercicioAdapter.ViewHolder> {
     private EjercicioAdapter.ViewHolder.ItemClickListener clickListener;
@@ -32,25 +35,22 @@ public class EjercicioFbAdapter extends FirebaseRecyclerAdapter<Ejercicio, Ejerc
     /**
      * Extraerá la información de los objetos y las insertará en la vista si el id del ejercicio está contenido en
      * la lista de ejercicios del usuario.
+     * Para seleccionar las que pertenecen al usuario logeado, se crea una lista de integros que contendrán los
+     * ejercicios que pertenecen a ese usuario.
+     * Luego se comparan los ejercicios descargados con los de la lista y se cargan en el recyclerView los que coincidan.
      * @param holder
      * @param position
      * @param model the model object containing the data that should be used to populate the view.
      */
     @Override
     protected void onBindViewHolder(@NonNull EjercicioAdapter.ViewHolder holder, int position, @NonNull Ejercicio model) {
-        if(MainActivity.getUsuario().getRutinas().contains(model.getId())){
-            holder.nombre.setText(model.getNombre());
-            System.out.println(model);
-            Glide.with(holder.imagen.getContext())
-                    .load(model.getImg())
-                    .placeholder(R.drawable.baseline_add_24)//si no hay imagen carga una por defecto
-                    .circleCrop()
-                    .error(R.drawable.baseline_add_24)//si ocurre algún error se verá por defecto
-                    .into(holder.imagen);
-            System.out.println("Reyenando lista");
-        }
-
-
+        holder.nombre.setText(model.getNombre());
+        Glide.with(holder.imagen.getContext())
+                .load(model.getImg())
+                .placeholder(R.drawable.baseline_add_24)//si no hay imagen carga una por defecto
+                .circleCrop()
+                .error(R.drawable.baseline_add_24)//si ocurre algún error se verá por defecto
+                .into(holder.imagen);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

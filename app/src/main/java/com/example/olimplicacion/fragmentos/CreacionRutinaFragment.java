@@ -68,6 +68,12 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
                 getParentFragmentManager().popBackStack();
             }
         });
+        binding.cancelar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                getParentFragmentManager().popBackStack();
+            }
+        });
     }
 
     /**

@@ -1,6 +1,5 @@
 package com.example.olimplicacion.clases;
 
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -17,30 +16,30 @@ import com.example.olimplicacion.baseDeDatos.FirebaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
-public class EjercicioAdapter extends RecyclerView.Adapter<EjercicioAdapter.ViewHolder>{
-    FirebaseHelper fbHelper;
-    private List<Ejercicio> dataArrayList = new ArrayList<Ejercicio>();
-    private ViewHolder.ItemClickListener clickListener;
 
-    public EjercicioAdapter(List<Ejercicio> dataArrayList, ViewHolder.ItemClickListener clickListener) {
+public class RutinaAdapter  extends RecyclerView.Adapter<RutinaAdapter.ViewHolder>{
+    private List<Rutina> dataArrayList = new ArrayList<Rutina>();
+    private RutinaAdapter.ViewHolder.ItemClickListener clickListener;
+
+    public RutinaAdapter(List<Rutina> dataArrayList, RutinaAdapter.ViewHolder.ItemClickListener clickListener) {
         this.dataArrayList = dataArrayList;
         this.clickListener = clickListener;
 
     }
 
-    public void setListaFiltrada(List<Ejercicio> listaFiltrada){
+    public void setListaFiltrada(List<Rutina> listaFiltrada){
         this.dataArrayList = listaFiltrada;
-        notifyDataSetChanged();//esto es para un buscador
+        //notifyDataSetChanged();//esto es para un buscador
     }
     @NonNull
     @Override
-    public EjercicioAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ejercicio, parent, false);
-        return new ViewHolder(view);
+    public RutinaAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rutina, parent, false);
+        return new RutinaAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull RutinaAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
         holder.bind(dataArrayList.get(position));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,24 +55,20 @@ public class EjercicioAdapter extends RecyclerView.Adapter<EjercicioAdapter.View
     }
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        Context context = itemView.getContext();
-        FirebaseHelper fbHelper;
-        //FirebaseHelper fh;
         TextView nombre;
         ImageView imagen;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            fbHelper = new FirebaseHelper("ejercicios");
-            nombre = itemView.findViewById(R.id.listName01);
-            imagen = itemView.findViewById(R.id.listImage01);
+            nombre = itemView.findViewById(R.id.rutinaNombre);
+            imagen = itemView.findViewById(R.id.rutinaImg);
         }
 
-        public void bind(Ejercicio ejercicio) {
-            nombre.setText(ejercicio.getNombre());
+        public void bind(Rutina rutina) {
+            nombre.setText(rutina.getNombre());
             //imagen.setImageBitmap(ejercicio.getImage());
         }
         public interface ItemClickListener{
-            public void onItemClick(Ejercicio ejercicio);
+            public void onItemClick(Rutina rutina);
         }
     }
 }

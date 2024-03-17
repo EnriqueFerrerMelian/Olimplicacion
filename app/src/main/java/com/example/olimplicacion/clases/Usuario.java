@@ -1,12 +1,13 @@
 package com.example.olimplicacion.clases;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Usuario {
     String id, nombre, clave;
-    List<String> rutinas;
+    List<Integer> rutinas;
 
-    public Usuario(String id, String nombre,String clave, List<String> rutinas) {
+    public Usuario(String id, String nombre,String clave, List<Integer> rutinas) {
         this.id = id;
         this.nombre = nombre;
         this.clave = clave;
@@ -21,11 +22,11 @@ public class Usuario {
         this.clave = clave;
     }
 
-    public List<String> getRutinas() {
+    public List<Integer> getRutinas() {
         return rutinas;
     }
 
-    public void setRutinas(List<String> rutinas) {
+    public void setRutinas(List<Integer> rutinas) {
         this.rutinas = rutinas;
     }
 

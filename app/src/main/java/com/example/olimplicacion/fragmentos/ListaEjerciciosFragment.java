@@ -72,6 +72,7 @@ public class ListaEjerciciosFragment extends Fragment implements EjercicioAdapte
                                 .getReference()
                                 .child("ejercicios"), Ejercicio.class)
                         .build();
+
         ejercicioFbAdapter = new EjercicioFbAdapter(options, this);
 
         //fbHelper = new FirebaseHelper("ejercicios");
