@@ -11,6 +11,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.baseDeDatos.FirebaseHelper;
 
@@ -54,21 +55,27 @@ public class RutinaAdapter  extends RecyclerView.Adapter<RutinaAdapter.ViewHolde
         return dataArrayList.size();
     }
     public static class ViewHolder extends RecyclerView.ViewHolder{
-
+        Context context = itemView.getContext();
         TextView nombre;
+        TextView lunes, martes, miercoles, jueves, viernes, sabado, domingo;
         ImageView imagen;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             nombre = itemView.findViewById(R.id.rutinaNombre);
             imagen = itemView.findViewById(R.id.rutinaImg);
         }
-
-        public void bind(Rutina rutina) {
-            nombre.setText(rutina.getNombre());
-            //imagen.setImageBitmap(ejercicio.getImage());
-        }
         public interface ItemClickListener{
             public void onItemClick(Rutina rutina);
+        }
+        public void bind(Rutina rutina){
+            nombre.setText(rutina.getNombre());
+            Glide.with(context)
+                    .load(rutina.getImg())
+                    .placeholder(R.drawable.baseline_add_24)//si no hay imagen carga una por defecto
+                    .circleCrop()
+                    .error(R.drawable.baseline_add_24)//si ocurre algún error se verá por defecto
+                    .into(imagen);
+
         }
     }
 }

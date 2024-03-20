@@ -52,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
+     * NOTA: INCLUIR LISTA DE EJERCICIOS EN RUTINA DE DATABASE
      * Obtiene un usuario de la base de datos a partir de nombre y clave pasados por parámetro.
      * Crea una referencia a FirebaseDatabase que conectará con la RealTime Databade de Firebase.
      * Se apllicará un listener a esa referencia, que ejecutará el siguiente código cuando se acceda a ella:
@@ -69,17 +70,14 @@ public class MainActivity extends AppCompatActivity {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {//dataSnapshot son todos los usuarios
-                List<Integer> rutinas = new ArrayList<>();
+                List<String> rutinas = new ArrayList<>();
                 for (DataSnapshot user: dataSnapshot.getChildren()) {//
                     if(user.child("nombre").getValue().equals(nombre) && user.child("clave").getValue().equals(clave)){
                         usuario.setId(user.child("id").getValue().toString());
                         usuario.setNombre(user.child("nombre").getValue().toString());
                         usuario.setClave(user.child("clave").getValue().toString());
-                        String[] ruts1 = user.child("rutinas").getValue().toString().split("\\[");
-                        String[] ruts2 = ruts1[1].split("\\]");
-                        String[] rutinasString = ruts2[0].split(", ");
-                        for (int i = 0; i < rutinasString.length; i++) {
-                            rutinas.add(Integer.parseInt(rutinasString[i]));
+                        for (DataSnapshot rutine: user.child("rutinas").getChildren()) {
+                            rutinas.add(rutine.getValue().toString());
                         }
                         usuario.setRutinas(rutinas);
                         openActivity2();

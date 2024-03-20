@@ -1,0 +1,24 @@
+package com.example.olimplicacion.clases;
+
+public class RutinaItem {
+String id;
+
+    public RutinaItem(String id) {
+        this.id = id;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    @Override
+    public String toString() {
+        return "RutinaItem{" +
+                "id='" + id + '\'' +
+                '}';
+    }
+}

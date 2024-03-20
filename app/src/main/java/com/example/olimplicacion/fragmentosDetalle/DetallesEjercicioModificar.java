@@ -1,6 +1,5 @@
-package com.example.olimplicacion.fragmentos;
+package com.example.olimplicacion.fragmentosDetalle;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 

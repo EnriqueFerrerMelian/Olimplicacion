@@ -20,12 +20,15 @@ Retrofit (buscar)
 *Introducing Navigation component :https://www.youtube.com/watch?v=Y0Cs2MQxyIs
 *Cómo crear graficos de navegacion: https://developer.android.com/guide/navigation/navigation-getting-started?hl=es-419#kts
 *Adding Data Points in REAL-TIME to a Graph :https://www.youtube.com/watch?v=XwAmzQtGnTE&t=100s
+*CheckBox: https://developer.android.com/develop/ui/views/components/checkbox?hl=es-419
 
 -SQLite:
 *Using SQLite: https://www.youtube.com/watch?v=uBw9QSWSIww
 *Pre-Populate ROOM Database with Already Loaded Data | Android Studio Tutorial: https://www.youtube.com/watch?v=pe28WeQ0VCc
 
 -Firebase:
+*Store, Retrieve, Search, Delete and Update Data using Firebase Realtime Database in Android Studio: https://www.youtube.com/watch?v=DWIGAkYkpg8
+*Upload Image to Firebase in Android Studio | Upload Image to Firebase Storage | Android Studio: https://www.youtube.com/watch?v=g2Iibnnqga0
 *Retrieve Image from Firebase in Android App: https://www.youtube.com/watch?v=DRqObCUCGl0&t=551s
 *Firebase Data to RecyclerView | How to Retrieve Firebase Data into Recyclerview | Android Studio: https://www.youtube.com/watch?v=M8sKwoVjqU0&t=880s
 *Retrieve Firebase data to RecyclerView: https://www.youtube.com/watch?v=ePKC5ZEqeNY

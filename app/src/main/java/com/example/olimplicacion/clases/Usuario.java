@@ -5,9 +5,9 @@ import java.util.List;
 
 public class Usuario {
     String id, nombre, clave;
-    List<Integer> rutinas;
+    List<String> rutinas;
 
-    public Usuario(String id, String nombre,String clave, List<Integer> rutinas) {
+    public Usuario(String id, String nombre,String clave, List<String> rutinas) {
         this.id = id;
         this.nombre = nombre;
         this.clave = clave;
@@ -22,11 +22,11 @@ public class Usuario {
         this.clave = clave;
     }
 
-    public List<Integer> getRutinas() {
+    public List<String> getRutinas() {
         return rutinas;
     }
 
-    public void setRutinas(List<Integer> rutinas) {
+    public void setRutinas(List<String> rutinas) {
         this.rutinas = rutinas;
     }
 

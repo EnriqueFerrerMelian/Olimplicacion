@@ -9,25 +9,20 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.olimplicacion.MainActivity;
 import com.example.olimplicacion.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.material.imageview.ShapeableImageView;
 
-import java.util.LinkedList;
-import java.util.List;
-
-
-public class EjercicioFbAdapter extends FirebaseRecyclerAdapter<Ejercicio, EjercicioAdapter.ViewHolder> {
-    private EjercicioAdapter.ViewHolder.ItemClickListener clickListener;
+public class EjercicioFbAdapter extends FirebaseRecyclerAdapter<Ejercicio, EjercicioFbAdapter.ViewHolder> {
+    private ItemClickListener clickListener;
     /**
      * Initialize a {@link RecyclerView.Adapter} that listens to a Firebase query. See
      * {@link FirebaseRecyclerOptions} for configuration options.
      *
      * @param options
      */
-    public EjercicioFbAdapter(@NonNull FirebaseRecyclerOptions<Ejercicio> options,  EjercicioAdapter.ViewHolder.ItemClickListener clickListener) {
+    public EjercicioFbAdapter(@NonNull FirebaseRecyclerOptions<Ejercicio> options,  ItemClickListener clickListener) {
         super(options);
         this.clickListener = clickListener;
     }
@@ -43,7 +38,7 @@ public class EjercicioFbAdapter extends FirebaseRecyclerAdapter<Ejercicio, Ejerc
      * @param model the model object containing the data that should be used to populate the view.
      */
     @Override
-    protected void onBindViewHolder(@NonNull EjercicioAdapter.ViewHolder holder, int position, @NonNull Ejercicio model) {
+    protected void onBindViewHolder(@NonNull EjercicioFbAdapter.ViewHolder holder, int position, @NonNull Ejercicio model) {
         holder.nombre.setText(model.getNombre());
         Glide.with(holder.imagen.getContext())
                 .load(model.getImg())
@@ -61,16 +56,16 @@ public class EjercicioFbAdapter extends FirebaseRecyclerAdapter<Ejercicio, Ejerc
 
     @NonNull
     @Override
-    public EjercicioAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public EjercicioFbAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_ejercicio, parent, false);
-        return new EjercicioAdapter.ViewHolder(view);
+        return new EjercicioFbAdapter.ViewHolder(view);
     }
 
-    class myViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder{
         ShapeableImageView imagen;
         TextView nombre;
 
-        public myViewHolder(@NonNull View itemView) {
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imagen = itemView.findViewById(R.id.listImage01);
             nombre = itemView.findViewById(R.id.listName01);
