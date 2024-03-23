@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.baseDeDatos.FirebaseHelper;
 
@@ -56,21 +57,22 @@ public class EjercicioAdapter extends RecyclerView.Adapter<EjercicioAdapter.View
     }
     public static class ViewHolder extends RecyclerView.ViewHolder{
 
-        Context context = itemView.getContext();
-        FirebaseHelper fbHelper;
-        //FirebaseHelper fh;
         TextView nombre;
         ImageView imagen;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            fbHelper = new FirebaseHelper("ejercicios");
             nombre = itemView.findViewById(R.id.listName01);
             imagen = itemView.findViewById(R.id.listImage01);
         }
 
         public void bind(Ejercicio ejercicio) {
             nombre.setText(ejercicio.getNombre());
-            //imagen.setImageBitmap(ejercicio.getImage());
+            Glide.with(imagen.getContext())
+                    .load(ejercicio.getImg())
+                    .placeholder(R.drawable.baseline_add_24)//si no hay imagen carga una por defecto
+                    .circleCrop()
+                    .error(R.drawable.baseline_add_24)//si ocurre algún error se verá por defecto
+                    .into(imagen);
         }
         public interface ItemClickListener{
             public void onItemClick(Ejercicio ejercicio);

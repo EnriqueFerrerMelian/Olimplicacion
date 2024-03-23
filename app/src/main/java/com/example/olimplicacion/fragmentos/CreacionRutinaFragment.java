@@ -40,12 +40,15 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.example.olimplicacion.DetailedActivity01;
 import com.example.olimplicacion.MainActivity;
 import com.example.olimplicacion.MenuPrincipal;
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.clases.Ejercicio;
 import com.example.olimplicacion.clases.EjercicioAdapter;
+import com.example.olimplicacion.clases.Rutina;
 import com.example.olimplicacion.databinding.FragmentCreacionRutinaBinding;
+import com.example.olimplicacion.fragmentosDetalle.DetallesRutinaFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -72,25 +75,35 @@ import java.util.Map;
 public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapter.ViewHolder.ItemClickListener{
 
     //firebase Satorage
-    StorageReference storageReference;
+    private StorageReference storageReference;
     private static Uri imgUriFb = Uri.parse(" ");//contiendrá el link de la imagen en el Store de firebase
     //firebase Satorage
-
-    private static Uri imgUri = Uri.parse(" ");//contiene las imagenes de galeria y camara durante su administración
 
     //recyclerView
     private RecyclerView recyclerView;//lista del xml
     private EjercicioAdapter ejercicioAdapter;//adaptador
-    static ArrayList<Ejercicio> dataArrayList = new ArrayList<>();
+    private static List<Ejercicio> dataArrayList = new ArrayList<>();
     //recyclerView fin
 
     //obtencion de imágenes
+
+    private static Uri imgUri = Uri.parse(" ");//contiene las imagenes de galeria y camara durante su administración
     private ActivityResultLauncher<Intent> camaraLauncher;
     private ActivityResultLauncher<Intent> galeriaLauncher;
     //obtencion de imágenes
-    static FragmentCreacionRutinaBinding binding;
 
-    static Context context;//para usar toast en métodos státicos
+    private static FragmentCreacionRutinaBinding binding;
+    private static Rutina rutina;
+
+    public CreacionRutinaFragment() {
+        // Required empty public constructor
+    }
+    public static CreacionRutinaFragment newInstance(Rutina rutinaF) {
+        System.out.println("Se pasa la rutina");
+        CreacionRutinaFragment fragment = new CreacionRutinaFragment();
+        rutina = rutinaF;
+        return fragment;
+    }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -98,13 +111,39 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
         return binding.getRoot();
     }
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        //si el fragmento se ejecuta pasándole un objeto Rutina, este cargará los datos en el fragmento.
+        if(rutina!=null){
+            dataArrayList=rutina.getEjercicios();
+            Glide.with(getContext())
+                    .load(rutina.getImg())
+                    .placeholder(R.drawable.baseline_add_24)//si no hay imagen carga una por defecto
+                    .circleCrop()
+                    .error(R.drawable.baseline_add_24)//si ocurre algún error se verá por defecto
+                    .into(binding.editarImagen);
+            //inserto el nombre
+            binding.nombreDeRutina.setText(rutina.getNombre());
+            //cambio el color de los días seleccionados
+            if(rutina.getDias().contains("l")){
+                binding.lunes.setChecked(true);
+            }if(rutina.getDias().contains("m")){
+                binding.martes.setChecked(true);
+            }if(rutina.getDias().contains("x")){
+                binding.miercoles.setChecked(true);
+            }if(rutina.getDias().contains("j")){
+                binding.jueves.setChecked(true);
+            }if(rutina.getDias().contains("v")){
+                binding.viernes.setChecked(true);
+            }if(rutina.getDias().contains("s")){
+                binding.sabado.setChecked(true);
+            }if(rutina.getDias().contains("d")){
+                binding.domingo.setChecked(true);
+            }
+        }
         super.onViewCreated(view, savedInstanceState);
-        dataArrayList = new ArrayList<>();
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         ejercicioAdapter = new EjercicioAdapter(dataArrayList, this);
         recyclerView.setAdapter(ejercicioAdapter);
-        dataArrayList.add(new Ejercicio(1, "nombre1", "Musculos1", "Desc1", "Cat1", null));
         cameraLauncher();// Inicializar el ActivityResultLauncher de la camara
         galleryLauncher();// Inicializar el ActivityResultLauncher, de la galeria
 
@@ -135,6 +174,8 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
         binding.cancelar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                rutina = null;
+                dataArrayList = new ArrayList<>();
                 getParentFragmentManager().popBackStack();
             }
         });
@@ -254,6 +295,11 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
         );
     }
 
+    /**
+     * Este método guarda los datos de la rutina nueva creada por el usuario. Dentro de esa rutina, una lista de
+     * ejercicios en los que se incluyen dos datos más: 'pesos' y 'repeticiones y veces'.
+     * @param fecha
+     */
     public void guardarRutinaEnRealtime(String fecha){
         //*******************************************************
         Map<String , Object> rutina = new HashMap<>();
@@ -319,8 +365,18 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
         });
     }
 
-    public static void addToDataList(Ejercicio ejercicio){
-        dataArrayList.add(ejercicio);
+    public static void addToDataList(Ejercicio ejercicio, Context contexto){
+        boolean join = true;
+        for (Ejercicio dato: dataArrayList) {
+            if(dato.getId()== ejercicio.getId()){
+                join=false;
+            }
+        }
+        if(join){
+            dataArrayList.add(ejercicio);
+        }else{
+            Toast.makeText(contexto, "Ya estába en la lista de ejercicios.",Toast.LENGTH_LONG).show();
+        }
     }
     /**
      * Este método convierte una imagen Bitmap a tipo Uri

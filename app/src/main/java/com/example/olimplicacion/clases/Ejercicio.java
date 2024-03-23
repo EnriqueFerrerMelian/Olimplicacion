@@ -8,7 +8,7 @@ import java.util.LinkedList;
 public class Ejercicio {
     //ATRIBUTOS
     int id;
-    String nombre, musculos, descripcion, categoria, img;
+    String nombre, musculos, descripcion, categoria, img, peso, repecitionesYseries;
 
 
     //CONSTRUCTOR
@@ -24,9 +24,21 @@ public class Ejercicio {
     public Ejercicio(){
 
     }
+    public String getPeso() {
+        return peso;
+    }
 
-    //GETTERS Y SETTERS
+    public void setPeso(String peso) {
+        this.peso = peso;
+    }
 
+    public String getRepecitionesYseries() {
+        return repecitionesYseries;
+    }
+
+    public void setRepecitionesYseries(String repecitionesYseries) {
+        this.repecitionesYseries = repecitionesYseries;
+    }
 
     public int getId() {
         return id;

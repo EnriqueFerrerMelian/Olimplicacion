@@ -1,7 +1,5 @@
 package com.example.olimplicacion.fragmentos;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,29 +14,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-import com.example.olimplicacion.MainActivity;
-import com.example.olimplicacion.MenuPrincipal;
 import com.example.olimplicacion.R;
-import com.example.olimplicacion.clases.Ejercicio;
 import com.example.olimplicacion.clases.Rutina;
-import com.example.olimplicacion.clases.RutinaAdapter;
 import com.example.olimplicacion.clases.RutinaFbAdapter;
-import com.example.olimplicacion.databinding.FragmentEjercicioBinding;
 import com.example.olimplicacion.databinding.FragmentRutinaBinding;
-import com.example.olimplicacion.fragmentosDetalle.DetalleActividad01Fragment;
-import com.example.olimplicacion.fragmentosDetalle.DetallesRutinaDatos;
+import com.example.olimplicacion.fragmentosDetalle.DetallesRutinaFragment;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * ESTE DEBERIA SER EL FRAGMENTO AL QUE SE ACCEDA AL INICIAR SESIÓN
@@ -46,15 +28,10 @@ import java.util.Map;
  * USAR RECYCLERVIEW ORDINARIO PARA ESTA FRAGMENTO
  */
 
-public class RutinaFragment extends Fragment  implements RutinaAdapter.ViewHolder.ItemClickListener{
-    MenuPrincipal menuPrincipal;
-    Rutina rutina = new Rutina();
+public class RutinaFragment extends Fragment implements RutinaFbAdapter.ItemClickListener {
     //recyclerView
-    private RecyclerView recyclerView;//lista del xml
-    private RutinaAdapter rutinaAdapter;//adaptador
     private RutinaFbAdapter rutinaFbAdapter;
-    static List<Rutina> dataArrayList = new ArrayList<>();
-    //recyclerView fin
+    private RecyclerView recyclerView;
 
     static FragmentRutinaBinding binding;
     @Override
@@ -73,13 +50,11 @@ public class RutinaFragment extends Fragment  implements RutinaAdapter.ViewHolde
                                 .getReference()
                                 .child("rutinas"), Rutina.class)
                         .build();
-        menuPrincipal = new MenuPrincipal();
-        dataArrayList = new ArrayList<>();
+
+        rutinaFbAdapter = new RutinaFbAdapter(options, this::onItemClick);
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        rutinaFbAdapter = new RutinaFbAdapter(options,this::onItemClick);
         recyclerView.setAdapter(rutinaFbAdapter);
-        //cargarRutina();
         binding.anadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -97,34 +72,6 @@ public class RutinaFragment extends Fragment  implements RutinaAdapter.ViewHolde
     }
 
     @Override
-    public void onItemClick(Rutina rutina) {
-        //CREAR FRAGMENTO DETALLE PARA RUTINAS
-        Fragment fragment = DetallesRutinaDatos.newInstance(rutina.getNombre());//de momento pasare solo el nombre
-        FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.fragmentContainerView, fragment, "nota").addToBackStack(null);//si no funciona cambiar fragment por getParentFragment()
-        fragmentTransaction.commit();
-    }
-
-    public void subirPrueba(){
-        Map<String , Object> rutina = new HashMap<>();
-        rutina.put("nombre", "nombre Rutina");
-        rutina.put("id", "22");
-        rutina.put("img", "no img");
-        List<String> dias = new ArrayList<>();
-        dias.add("l");dias.add("m");
-        rutina.put("dias", dias);
-        List<Ejercicio> ejercicios = new ArrayList<>();
-        ejercicios.add(new Ejercicio(1, "ejercicio 1", "musculos 1", "descripcion 1", "categoria", "no img"));
-
-        rutina.put("ejercicios", ejercicios);
-
-        FirebaseDatabase
-                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app").getReference().child("rutinas")
-                .push()
-                .setValue(rutina);
-    }
-
-    @Override
     public void onStart() {
         super.onStart();
         rutinaFbAdapter.startListening();
@@ -134,6 +81,14 @@ public class RutinaFragment extends Fragment  implements RutinaAdapter.ViewHolde
     public void onStop() {
         super.onStop();
         rutinaFbAdapter.stopListening();
+    }
+
+    @Override
+    public void onItemClick(Rutina rutina) {
+        Fragment fragment = DetallesRutinaFragment.newInstance(rutina);
+        FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentContainerView, fragment, "nota").addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
 /*    public void cargarPrueba(){
@@ -190,5 +145,23 @@ public class RutinaFragment extends Fragment  implements RutinaAdapter.ViewHolde
             public void onCancelled(DatabaseError error) {
             }
         });
+    }*/
+
+  /*  public void subirPrueba(){
+        Map<String , Object> rutina = new HashMap<>();
+        rutina.put("nombre", "nombre Rutina");
+        rutina.put("id", "22");
+        rutina.put("img", "no img");
+        List<String> dias = new ArrayList<>();
+        dias.add("l");dias.add("m");
+        rutina.put("dias", dias);
+        List<Ejercicio> ejercicios = new ArrayList<>();
+
+        rutina.put("ejercicios", ejercicios);
+
+        FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app").getReference().child("rutinas")
+                .push()
+                .setValue(rutina);
     }*/
 }

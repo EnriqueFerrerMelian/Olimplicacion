@@ -1,7 +1,5 @@
 package com.example.olimplicacion.fragmentos;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -16,32 +14,19 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.olimplicacion.R;
-import com.example.olimplicacion.baseDeDatos.FirebaseHelper;
 import com.example.olimplicacion.clases.Ejercicio;
 import com.example.olimplicacion.clases.EjercicioAdapter;
 import com.example.olimplicacion.clases.EjercicioFbAdapter;
 import com.example.olimplicacion.databinding.FragmentListaEjerciciosBinding;
-import com.example.olimplicacion.fragmentosDetalle.DetalleActividad01Fragment;
+import com.example.olimplicacion.fragmentosDetalle.DetalleEjercicioFragment;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FileDownloadTask;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-public class ListaEjerciciosFragment extends Fragment implements EjercicioAdapter.ViewHolder.ItemClickListener {
-    //recyclerView
+public class ListaEjerciciosFragment extends Fragment implements EjercicioFbAdapter.ItemClickListener {
     private EjercicioFbAdapter ejercicioFbAdapter;
-    private RecyclerView recyclerView;//lista del xml
-    private EjercicioAdapter ejercicioAdapter;//adaptador
-    static ArrayList<Ejercicio> dataArrayList;
-    private int numId;
-    //recyclerView fin
+    private RecyclerView recyclerView;
     static FragmentListaEjerciciosBinding binding;
 
     @Override
@@ -62,15 +47,8 @@ public class ListaEjerciciosFragment extends Fragment implements EjercicioAdapte
                         .build();
 
         ejercicioFbAdapter = new EjercicioFbAdapter(options, this::onItemClick);
-
-        //fbHelper = new FirebaseHelper("ejercicios");
-        dataArrayList = new ArrayList<>();
-        numId = dataArrayList.size();
-
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        ejercicioAdapter = new EjercicioAdapter(dataArrayList, this);
-
         recyclerView.setAdapter(ejercicioFbAdapter);
         binding.volver.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,7 +60,7 @@ public class ListaEjerciciosFragment extends Fragment implements EjercicioAdapte
 
     @Override
     public void onItemClick(Ejercicio ejercicio) {
-        Fragment fragment = DetalleActividad01Fragment.newInstance(ejercicio);
+        Fragment fragment = DetalleEjercicioFragment.newInstance(ejercicio);
         FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainerView, fragment, "nota").addToBackStack(null);
         fragmentTransaction.commit();

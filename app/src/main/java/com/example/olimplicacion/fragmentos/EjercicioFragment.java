@@ -52,7 +52,7 @@ public class EjercicioFragment extends Fragment  implements EjercicioAdapter.Vie
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         ejercicioAdapter = new EjercicioAdapter(dataArrayList, this);
         recyclerView.setAdapter(ejercicioAdapter);
-        dataArrayList.add(new Ejercicio(1, "nombre1", "Musculos1", "Desc1", "Cat1", null));
+        //dataArrayList.add(new Ejercicio(1, "nombre1", "Musculos1", "Desc1", "Cat1", null));
 
         /**
          * abre el fragmento EjercicioListaFragment para seleccionar un ejercicio a añadir

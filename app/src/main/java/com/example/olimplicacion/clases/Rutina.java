@@ -8,13 +8,13 @@ import java.util.List;
 public class Rutina {
 //ATRIBUTOS
 String nombre, id;
-Uri img;
+String img;
 List<String> dias;
 List<Ejercicio> ejercicios;
 
 //CONSTRUCTOR
 
-    public Rutina(String id, String nombre, Uri img, List<Ejercicio> ejercicios, List<String> dias) {
+    public Rutina(String id, String nombre, String img, List<Ejercicio> ejercicios, List<String> dias) {
         this.id = id;
         this.nombre = nombre;
         this.img = img;
@@ -58,12 +58,12 @@ List<Ejercicio> ejercicios;
         this.nombre = nombre;
     }
 
-    public Uri getImg() {
+    public String getImg() {
         return img;
     }
 
     public void setImg(String img) {
-        this.img = Uri.parse(img);
+        this.img = img;
     }
 
     @Override

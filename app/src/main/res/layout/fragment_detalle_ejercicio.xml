@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".fragmentosDetalle.DetalleActividad01Fragment">
+    tools:context=".fragmentosDetalle.DetalleEjercicioFragment">
     <Button
         android:id="@+id/volver"
         android:layout_width="match_parent"
@@ -139,7 +139,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="@string/repeticiones"
+                    android:text="Repeticiones y series"
                     android:textSize="24sp" />
 
                 <LinearLayout
