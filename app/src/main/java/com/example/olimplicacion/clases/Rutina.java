@@ -71,7 +71,8 @@ List<Ejercicio> ejercicios;
         return "Rutina{" +
                 "nombre='" + nombre + '\'' +
                 ", id='" + id + '\'' +
-                ", img=" + img +
+                ", img='" + img + '\'' +
+                ", dias=" + dias +
                 ", ejercicios=" + ejercicios +
                 '}';
     }

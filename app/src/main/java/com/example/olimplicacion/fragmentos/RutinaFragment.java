@@ -23,9 +23,10 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
 
 /**
- * ESTE DEBERIA SER EL FRAGMENTO AL QUE SE ACCEDA AL INICIAR SESIÓN
  * CONTENDRÁ UN RECYCLERVIEW DE RECYCLERVIEWS DE EJERCICIOS
- * USAR RECYCLERVIEW ORDINARIO PARA ESTA FRAGMENTO
+ * AL CREAR UNA RUTINA SE EJECUTA EL FRAGMENTO 'CREACIONRUTINAFRAGMENT'
+ * AL SELECCIONAR UNA RUTINA SE EJECUTA 'DETALLESRUTINAFRAGMENT
+ * AL SELECCIONAR 'MODIFICAR' EN 'DETALLESRUTINAFRAGMENT' SE EJECUTA DE NUEVO 'CREACIONRUTINAFRAGMENT'
  */
 
 public class RutinaFragment extends Fragment implements RutinaFbAdapter.ItemClickListener {
@@ -55,6 +56,8 @@ public class RutinaFragment extends Fragment implements RutinaFbAdapter.ItemClic
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(rutinaFbAdapter);
+
+        //Abre el fragmento donde se creará una rutina nueva.
         binding.anadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -64,6 +67,12 @@ public class RutinaFragment extends Fragment implements RutinaFbAdapter.ItemClic
             }
         });
     }
+
+    /**
+     * Reemplaza el fragmento en el contenedor 'fragmentContainerView' por el pasado por
+     * parámetro
+     * @param fragmento
+     */
     public void reemplazarFragmento(Fragment fragmento){
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

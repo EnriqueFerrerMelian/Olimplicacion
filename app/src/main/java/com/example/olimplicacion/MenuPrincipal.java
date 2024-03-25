@@ -75,6 +75,11 @@ public class MenuPrincipal extends AppCompatActivity {
         return true;
     }
 
+    /**
+     * Reemplaza el fragmento en el contenedor 'fragmentContainerView' por el pasado por
+     * parámetro
+     * @param fragmento
+     */
     public void reemplazarFragmento(Fragment fragmento){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

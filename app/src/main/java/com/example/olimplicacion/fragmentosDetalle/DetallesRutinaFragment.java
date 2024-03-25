@@ -66,21 +66,21 @@ public class DetallesRutinaFragment extends Fragment implements EjercicioFbAdapt
         dias = rutina.getDias();
         dataArrayList = rutina.getEjercicios();
         //codigo
-        //cargo el recyclerview
+        //cargo el recyclerview *******************
         ejercicioAdapter = new EjercicioAdapter(dataArrayList, this::onItemClick);
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(ejercicioAdapter);
-        //inserto la imagen
+        //cargo el recyclerview ****************fin
+
+        //inserto los datos en el fragmento *************
         Glide.with(getContext())
                 .load(rutina.getImg())
                 .placeholder(R.drawable.baseline_add_24)//si no hay imagen carga una por defecto
                 .circleCrop()
                 .error(R.drawable.baseline_add_24)//si ocurre algún error se verá por defecto
                 .into(binding.imagen);
-        //inserto el nombre
         binding.nombreDeRutina.setText(rutina.getNombre());
-        //cambio el color de los días seleccionados
         if(dias.contains("l")){
             binding.lunes.setTextColor(Color.rgb(255, 127, 39));
         }if(dias.contains("m")){
@@ -96,6 +96,7 @@ public class DetallesRutinaFragment extends Fragment implements EjercicioFbAdapt
         }if(dias.contains("d")){
             binding.domingo.setTextColor(Color.rgb(255, 127, 39));
         }
+        //inserto los datos en el fragmento **********fin
 
         binding.modificar.setOnClickListener(new View.OnClickListener() {
             @Override

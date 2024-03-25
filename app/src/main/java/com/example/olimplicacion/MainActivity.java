@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(binding.nombre.getText().length()>0 && binding.clave.getText().length()>0){
-                    obtenesUsuario(binding.nombre.getText().toString(), binding.clave.getText().toString());
+                    obtenerUsuario(binding.nombre.getText().toString(), binding.clave.getText().toString());
                 }
             }
         });
@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
      * @param nombre
      * @param clave
      */
-    public void obtenesUsuario(String nombre, String clave){
+    public void obtenerUsuario(String nombre, String clave){
         DatabaseReference ref = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("usuarios");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
