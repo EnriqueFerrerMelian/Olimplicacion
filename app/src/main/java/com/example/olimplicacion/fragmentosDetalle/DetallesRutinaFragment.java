@@ -38,7 +38,6 @@ import java.util.List;
 
 public class DetallesRutinaFragment extends Fragment implements EjercicioFbAdapter.ItemClickListener {
     private static Rutina rutina;
-    private static List<String> dias = new ArrayList<>();
 
     FragmentDetallesRutinaBinding binding;
     private static RecyclerView recyclerView;
@@ -63,17 +62,16 @@ public class DetallesRutinaFragment extends Fragment implements EjercicioFbAdapt
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentDetallesRutinaBinding.inflate(inflater, container, false);
-        dias = rutina.getDias();
-        dataArrayList = rutina.getEjercicios();
         //codigo
+        //inserto los datos en el fragmento *************
         //cargo el recyclerview *******************
+        dataArrayList = rutina.getEjercicios();
         ejercicioAdapter = new EjercicioAdapter(dataArrayList, this::onItemClick);
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(ejercicioAdapter);
         //cargo el recyclerview ****************fin
 
-        //inserto los datos en el fragmento *************
         Glide.with(getContext())
                 .load(rutina.getImg())
                 .placeholder(R.drawable.baseline_add_24)//si no hay imagen carga una por defecto
@@ -81,19 +79,19 @@ public class DetallesRutinaFragment extends Fragment implements EjercicioFbAdapt
                 .error(R.drawable.baseline_add_24)//si ocurre algún error se verá por defecto
                 .into(binding.imagen);
         binding.nombreDeRutina.setText(rutina.getNombre());
-        if(dias.contains("l")){
+        if(rutina.getDias().contains("l")){
             binding.lunes.setTextColor(Color.rgb(255, 127, 39));
-        }if(dias.contains("m")){
+        }if(rutina.getDias().contains("m")){
             binding.martes.setTextColor(Color.rgb(255, 127, 39));
-        }if(dias.contains("x")){
+        }if(rutina.getDias().contains("x")){
             binding.miercoles.setTextColor(Color.rgb(255, 127, 39));
-        }if(dias.contains("j")){
+        }if(rutina.getDias().contains("j")){
             binding.jueves.setTextColor(Color.rgb(255, 127, 39));
-        }if(dias.contains("v")){
+        }if(rutina.getDias().contains("v")){
             binding.viernes.setTextColor(Color.rgb(255, 127, 39));
-        }if(dias.contains("s")){
+        }if(rutina.getDias().contains("s")){
             binding.sabado.setTextColor(Color.rgb(255, 127, 39));
-        }if(dias.contains("d")){
+        }if(rutina.getDias().contains("d")){
             binding.domingo.setTextColor(Color.rgb(255, 127, 39));
         }
         //inserto los datos en el fragmento **********fin

@@ -60,7 +60,7 @@ public class ListaEjerciciosFragment extends Fragment implements EjercicioFbAdap
 
     @Override
     public void onItemClick(Ejercicio ejercicio) {
-        Fragment fragment = DetalleEjercicioFragment.newInstance(ejercicio);
+        Fragment fragment = CreacionEjercicioFragment.newInstance(ejercicio);
         FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainerView, fragment, "nota").addToBackStack(null);
         fragmentTransaction.commit();

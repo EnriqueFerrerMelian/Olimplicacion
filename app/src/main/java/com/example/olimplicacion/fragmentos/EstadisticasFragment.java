@@ -1,8 +1,6 @@
 package com.example.olimplicacion.fragmentos;
 
-import android.app.Dialog;
 import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.icu.text.SimpleDateFormat;
 import android.icu.util.Calendar;
 import android.os.Bundle;
@@ -11,17 +9,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.NumberPicker;
 
 import com.example.olimplicacion.R;
-import com.example.olimplicacion.databinding.BottomsheetlayoutBinding;
-import com.example.olimplicacion.databinding.FragmentEjercicioBinding;
 import com.example.olimplicacion.databinding.FragmentEstadisticasBinding;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.XAxis;
@@ -39,7 +31,6 @@ import java.util.Locale;
 
 public class EstadisticasFragment extends Fragment {
     FragmentEstadisticasBinding binding;
-    BottomsheetlayoutBinding binding2;
     private String fecha;
     private List<String> xValuesMes;
     private List<String> xValuesSemana;
@@ -55,7 +46,6 @@ public class EstadisticasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentEstadisticasBinding.inflate(inflater, container, false);
-        binding2 = BottomsheetlayoutBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -117,24 +107,10 @@ public class EstadisticasFragment extends Fragment {
     private void showBottonDialog(){
         BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
         //creamos la vista
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.bottomsheetlayout, null);
+        View view = LayoutInflater.from(getContext()).inflate(R.layout.my_bottom_sheet_ejercicio, null);
 
         //configuracin de objetos con binding
-        binding2.numDec.setMinValue(1);binding2.numDec.setMaxValue(300);
         String[] data = {",0", ",1", ",2", ",3", ",4", ",5", ",6", ",7", ",8", ",9"};
-        binding2.numUni.setMaxValue(data.length-1);
-        binding2.numUni.setDisplayedValues(data);
-        binding2.numUni.setWrapSelectorWheel(false);
-
-        //listeners
-        binding2.aceptar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //codigo
-
-                bottomSheetDialog.dismiss();//cerrar bottomDialog
-            }
-        });
 
         bottomSheetDialog.setContentView(view);
         bottomSheetDialog.show();

@@ -8,7 +8,8 @@ import java.util.LinkedList;
 public class Ejercicio {
     //ATRIBUTOS
     int id;
-    String nombre, musculos, descripcion, categoria, img, peso, repecitionesYseries;
+    String nombre, musculos, descripcion, categoria, peso, repecitionesYseries;
+    String img;
 
 
     //CONSTRUCTOR

@@ -48,6 +48,7 @@ import com.example.olimplicacion.clases.Ejercicio;
 import com.example.olimplicacion.clases.EjercicioAdapter;
 import com.example.olimplicacion.clases.Rutina;
 import com.example.olimplicacion.databinding.FragmentCreacionRutinaBinding;
+import com.example.olimplicacion.fragmentosDetalle.DetalleEjercicioFragment;
 import com.example.olimplicacion.fragmentosDetalle.DetallesRutinaFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -76,7 +77,7 @@ import java.util.Map;
  * Desde aquí se manejará la creación de rutinas
  * EN FASE DE CONSTRUCCION
  */
-public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapter.ViewHolder.ItemClickListener{
+public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter.ViewHolder.ItemClickListener {
 
     //firebase Satorage ******************************
     private StorageReference storageReference;
@@ -98,28 +99,33 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
     //Variables globales
     private static FragmentCreacionRutinaBinding binding;
     private static Rutina rutina;
-    private static int controlErrores;
+    private boolean confirmacionImg = false;
+    private static int controlErrores;//por implementar
 
     public CreacionRutinaFragment() {
         // Required empty public constructor
     }
+
     public static CreacionRutinaFragment newInstance(Rutina rutinaF) {
         CreacionRutinaFragment fragment = new CreacionRutinaFragment();
-        rutina = rutinaF;
+        if (rutinaF != null) {
+            rutina = rutinaF;
+        }
         return fragment;
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        System.out.println("Valor de rutina: " + rutina);
         binding = FragmentCreacionRutinaBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
+
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        //si el fragmento se ejecuta pasándole un objeto Rutina, este cargará los datos en el fragmento.
-        if(rutina!=null){
+        if (rutina != null) {
             cargarRutina(rutina);
-            System.out.println("Valor de rutina: " + rutina);
         }
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -127,6 +133,8 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
         recyclerView.setAdapter(ejercicioAdapter);
         cameraLauncher();// Inicializar el ActivityResultLauncher de la camara
         galleryLauncher();// Inicializar el ActivityResultLauncher, de la galeria
+
+        //si el fragmento se ejecuta pasándole un objeto Rutina, este cargará los datos en el fragmento.
 
 
         binding.editarImagen.setOnClickListener(new View.OnClickListener() {
@@ -152,10 +160,6 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
             public void onClick(View view) {
                 guardarImagenRutina();
                 //si se ha pasado una rutina por parámetro se aliminará de la base de datos
-                if(rutina!=null){
-                    eliminarRutina(rutina.getId());
-
-                }
                 reemplazarFragmento(new RutinaFragment());
             }
         });
@@ -173,9 +177,10 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
     /**
      * Reemplaza el fragmento en el contenedor 'fragmentContainerView' por el pasado por
      * parámetro
+     *
      * @param fragmento
      */
-    public void reemplazarFragmento(Fragment fragmento){
+    public void reemplazarFragmento(Fragment fragmento) {
         FragmentManager fragmentManager = getParentFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainerView, fragmento).addToBackStack(null);
@@ -183,13 +188,18 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
     }
 
     @Override
-    public void onItemClick(Ejercicio ejercicio) {}
+    public void onItemClick(Ejercicio ejercicio) {
+        Fragment fragment = DetalleEjercicioFragment.newInstance(ejercicio);
+        FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentContainerView, fragment, "nota").addToBackStack(null);
+        fragmentTransaction.commit();
+    }
 
     /**
      * Abre un cuadro de diálogo desde donde se seleccionará añadir una imagen desde la galería
      * o desde la cámara
      */
-    public void showBottonSheet(){
+    public void showBottonSheet() {
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.my_botton_sheet);
@@ -235,7 +245,7 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
-    public void cameraLauncher(){
+    public void cameraLauncher() {
         //obtendra la imagen como Bitmap por defecto
         camaraLauncher = registerForActivityResult(new ActivityResultContracts.StartActivityForResult(),
                 result -> {
@@ -246,7 +256,6 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
                             // Obtener la imagen como un bitmap
                             Bundle extras = data.getExtras();
                             if (extras != null) {
-
                                 Bitmap bitmap = (Bitmap) extras.get("data");
                                 Glide.with(getContext())
                                         .load(bitmap)
@@ -255,6 +264,7 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
                                         .error(R.drawable.iconogris)//si ocurre algún error se verá por defecto
                                         .into(binding.editarImagen);
                                 imgUri = getImageUri(getContext(), bitmap);
+                                confirmacionImg = true;
                             } else {
                                 // Si no hay datos extras, utilizar la Uri para cargar la imagen
                             }
@@ -262,7 +272,8 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
                     }
                 });
     }
-    public void galleryLauncher(){
+
+    public void galleryLauncher() {
         //obtendra la imagen como Uri por defecto
         galeriaLauncher = registerForActivityResult(
                 new ActivityResultContracts.StartActivityForResult(),
@@ -278,13 +289,14 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
                                 Bitmap bitmap = (Bitmap) extras.get("data");
                             } else {
                                 // Si no hay datos extras, utilizar la Uri para cargar la imagen
-                                        Glide.with(getContext())
+                                Glide.with(getContext())
                                         .load(data.getData())
                                         .placeholder(R.drawable.iconogris)//si no hay imagen carga una por defecto
                                         .circleCrop()
                                         .error(R.drawable.iconogris)//si ocurre algún error se verá por defecto
                                         .into(binding.editarImagen);
                                 imgUri = data.getData();
+                                confirmacionImg = true;
                             }
                         }
                     }
@@ -295,27 +307,39 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
     /**
      * Este método guarda los datos de la rutina nueva creada por el usuario. Dentro de esa rutina, una lista de
      * ejercicios en los que se incluyen dos datos más: 'pesos' y 'repeticiones y veces'.
-     * @param fecha
      */
-    public void guardarRutinaEnRealtime(String fecha){
-        Map<String , Object> rutinaMap = new HashMap<>();
+    public void guardarRutinaEnRealtime(String fecha) {
+        System.out.println("guardarRutinaEnRealtime()");
+        Map<String, Object> rutinaMap = new HashMap<>();
         rutinaMap.put("nombre", binding.nombreDeRutina.getText().toString());
-        rutinaMap.put("id", MainActivity.getUsuario().getId()+"_"+fecha);
-        rutinaMap.put("img", imgUriFb.toString());
+        rutinaMap.put("id", MainActivity.getUsuario().getId() + "_" + fecha);
+        if(confirmacionImg){
+            System.out.println("Guardando imgUriFb: " + imgUriFb);
+            rutinaMap.put("img", imgUriFb.toString());
+        }else{
+            System.out.println("Guardando rutina.getImg: " + rutina.getImg());
+            rutinaMap.put("img", rutina.getImg());
+        }
         List<String> dias = new ArrayList<>();
-        if(binding.lunes.isChecked()){
+        if (binding.lunes.isChecked()) {
             dias.add("l");
-        }if(binding.martes.isChecked()){
+        }
+        if (binding.martes.isChecked()) {
             dias.add("m");
-        }if(binding.miercoles.isChecked()){
+        }
+        if (binding.miercoles.isChecked()) {
             dias.add("x");
-        }if(binding.jueves.isChecked()){
+        }
+        if (binding.jueves.isChecked()) {
             dias.add("j");
-        }if(binding.viernes.isChecked()){
+        }
+        if (binding.viernes.isChecked()) {
             dias.add("v");
-        }if(binding.sabado.isChecked()){
+        }
+        if (binding.sabado.isChecked()) {
             dias.add("s");
-        }if(binding.domingo.isChecked()){
+        }
+        if (binding.domingo.isChecked()) {
             dias.add("d");
         }
         rutinaMap.put("dias", dias);
@@ -327,60 +351,149 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
                 .getReference().child("rutinas")
                 .push()
                 .setValue(rutinaMap);
-        System.out.println("Rutina guardada");
         //*******************************************************
         //Actualizo el usuario con la nueva rutina
         FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app").getReference().child("usuarios/"
-                        +MainActivity.getUsuario().getId()+"/rutinas")
+                        + MainActivity.getUsuario().getId() + "/rutinas")
                 .push()
-                .setValue(MainActivity.getUsuario().getId()+"_"+fecha);
-
-
+                .setValue(MainActivity.getUsuario().getId() + "_" + fecha);
+        if (rutina != null) {
+            eliminarRutina(rutina.getId());
+        }
     }
 
     /**
      * Este método guarda una imegen en formato Uri al Store de firebase
      */
-    public void guardarImagenRutina(){
+    public void guardarImagenRutina() {
+        System.out.println("guardarImagenRutina()");
         //guardo la fecha de hoy
         Calendar cal = new GregorianCalendar();
         Date date = cal.getTime();
         String fecha = date.toString();
+        if (rutina == null) {
+            System.out.println("Rutina es null");
+            //creamos una referencia en el Store que será el nombre de la imagen
+            storageReference = FirebaseStorage.getInstance().getReference("usuario_" + MainActivity.getUsuario().getId()
+                    + ";fecha_" + fecha);
+            //subimos la imagen y recojo el link
 
-        //creamos una referencia en el Store que será el nombre de la imagen
-        storageReference = FirebaseStorage.getInstance().getReference("usuario_"+MainActivity.getUsuario().getId()
-                +";fecha_"+fecha);
-        //subimos la imagen y recojo el link
-        storageReference.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                //si no hay problemas durante el proceso obtenemos la uri que usa el store para guardar la imagen
-                Task<Uri>uriTask= taskSnapshot.getStorage().getDownloadUrl();
-                while(!uriTask.isComplete());
-                Uri urlimagen = uriTask.getResult();
-                imgUriFb = urlimagen;
-                //en este punto crea una rutina nueva. Tengo que ver como actualizar la rutina seleccionada.
+            storageReference.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    System.out.println("onSuccess()");
+                    //si no hay problemas durante el proceso obtenemos la uri que usa el store para guardar la imagen
+                    Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                    while (!uriTask.isComplete()) ;
+                    Uri urlimagen = uriTask.getResult();
+                    imgUriFb = urlimagen;
+                    guardarRutinaEnRealtime(fecha);
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    System.out.println("La base de datos no estaba preparada.");
+                }
+            });
+        }else{
+            System.out.println("Rutina no es null");
+            if(confirmacionImg){
+                System.out.println("Se ha hecho una foto");
+                //creamos una referencia en el Store que será el nombre de la imagen
+                storageReference = FirebaseStorage.getInstance().getReference("usuario_" + MainActivity.getUsuario().getId()
+                        + ";fecha_" + fecha);
+                //subimos la imagen y recojo el link
+
+                storageReference.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        System.out.println("onSuccess()");
+                        //si no hay problemas durante el proceso obtenemos la uri que usa el store para guardar la imagen
+                        Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                        while (!uriTask.isComplete()) ;
+                        Uri urlimagen = uriTask.getResult();
+                        imgUriFb = urlimagen;
+                        guardarRutinaEnRealtime(fecha);
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        System.out.println("La base de datos no estaba preparada.");
+                    }
+                });
+            }else{
+                System.out.println("No se ha hecho foto");
                 guardarRutinaEnRealtime(fecha);
             }
-        });
+        }
     }
 
-    public static void addToDataList(Ejercicio ejercicio, Context contexto){
+    /**
+     * Elimina la rutina con el id pasado por parámetro
+     *
+     * @param id
+     */
+    public void eliminarRutina(String id) {
+        System.out.println("eliminarRutina()");
+        DatabaseReference ref = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("rutinas");
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot rut : dataSnapshot.getChildren()) {//
+                    if (rut.child("id").getValue().equals(id)) {
+                        ref.child(rut.getKey()).removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                System.out.println("No se encuentre o hay un error");
+            }
+        });
+        DatabaseReference ref2 = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/" + MainActivity.getUsuario().getId() + "/rutinas");
+
+        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot rut : dataSnapshot.getChildren()) {//
+                    if (rut.getValue().equals(id)) {
+                        ref2.child(rut.getKey()).removeValue();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                System.out.println("No se encuentra o hay un error");
+            }
+        });
+        System.out.println("Reiniciando dataArray y objeto rutina");
+        dataArrayList = new ArrayList<>();
+        rutina = null;
+    }
+
+    public static void addToDataList(Ejercicio ejercicio, Context contexto) {
         boolean join = true;
-        for (Ejercicio dato: dataArrayList) {
-            if(dato.getId()== ejercicio.getId()){
-                join=false;
+        for (Ejercicio dato : dataArrayList) {
+            if (dato.getId() == ejercicio.getId()) {
+                join = false;
             }
         }
-        if(join){
+        if (join) {
             dataArrayList.add(ejercicio);
-        }else{
-            Toast.makeText(contexto, "Ya estába en la lista de ejercicios.",Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(contexto, "Ya estába en la lista de ejercicios.", Toast.LENGTH_LONG).show();
         }
     }
+
     /**
      * Este método convierte una imagen Bitmap a tipo Uri
+     *
      * @param inContext
      * @param inImage
      * @return
@@ -391,59 +504,46 @@ public class CreacionRutinaFragment extends Fragment  implements EjercicioAdapte
         Date fecha = new Date();
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title"+fecha.toString(), null);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title" + fecha.toString(), null);
         return Uri.parse(path);
     }
 
-    public void cargarRutina(Rutina rutina){
-        dataArrayList=rutina.getEjercicios();
+    /**
+     * Si el fragmento se abre mara modificar una rutina ya existente, el objeto global rutina
+     * guardará la información de la rutina seleccionada y se cargarán sus datos en este fragmento.
+     *
+     * @param rutina
+     */
+    public void cargarRutina(Rutina rutina) {
+        dataArrayList = rutina.getEjercicios();
         Glide.with(getContext())
                 .load(rutina.getImg())
                 .placeholder(R.drawable.baseline_add_24)//si no hay imagen carga una por defecto
-                .circleCrop()
                 .error(R.drawable.baseline_add_24)//si ocurre algún error se verá por defecto
                 .into(binding.editarImagen);
         //inserto el nombre
         binding.nombreDeRutina.setText(rutina.getNombre());
         //cambio el color de los días seleccionados
-        if(rutina.getDias().contains("l")){
+        if (rutina.getDias().contains("l")) {
             binding.lunes.setChecked(true);
-        }if(rutina.getDias().contains("m")){
+        }
+        if (rutina.getDias().contains("m")) {
             binding.martes.setChecked(true);
-        }if(rutina.getDias().contains("x")){
+        }
+        if (rutina.getDias().contains("x")) {
             binding.miercoles.setChecked(true);
-        }if(rutina.getDias().contains("j")){
+        }
+        if (rutina.getDias().contains("j")) {
             binding.jueves.setChecked(true);
-        }if(rutina.getDias().contains("v")){
+        }
+        if (rutina.getDias().contains("v")) {
             binding.viernes.setChecked(true);
-        }if(rutina.getDias().contains("s")){
+        }
+        if (rutina.getDias().contains("s")) {
             binding.sabado.setChecked(true);
-        }if(rutina.getDias().contains("d")){
+        }
+        if (rutina.getDias().contains("d")) {
             binding.domingo.setChecked(true);
         }
-    }
-
-    /**
-     * Elimina la rutina con el id pasado por parámetro
-     * @param id
-     */
-    public void eliminarRutina(String id){
-        DatabaseReference ref = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("rutinas");
-
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot rut: dataSnapshot.getChildren()) {//
-                    if(rut.child("id").getValue().equals(id)){
-                        ref.child(rut.getKey()).removeValue();
-                        System.out.println("Rutina " + rut.getKey()+" eliminada");
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-            }
-        });
     }
 }

@@ -8,7 +8,7 @@ import java.util.List;
 public class Rutina {
 //ATRIBUTOS
 String nombre, id;
-String img;
+    String img;
 List<String> dias;
 List<Ejercicio> ejercicios;
 

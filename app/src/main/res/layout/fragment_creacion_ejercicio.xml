@@ -80,73 +80,100 @@
                 android:textColor="@color/darkgrey"
                 android:textSize="24sp"
                 android:textStyle="bold" />
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:gravity="center"
+                android:orientation="vertical"
                 android:textAlignment="center">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="24sp"
                     android:layout_gravity="center"
-                    android:text="@string/peso"/>
+                    android:text="@string/peso"
+                    android:textSize="24sp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textAlignment="center">
+
+                    <NumberPicker
+                        android:id="@+id/numberPeso"
+                        android:layout_width="wrap_content"
+                        android:layout_height="90dp" />
+
                     <TextView
-                        android:id="@+id/numPeso"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:labelFor="@+id/numPeso"
-                        android:textSize="24sp"
-                        android:text="@string/espacio"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:text="."
+                        android:textSize="24sp" />
+
+                    <NumberPicker
+                        android:id="@+id/numberPesoDecimal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="90dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text=" Kg"
+                        android:textSize="24sp" />
                 </LinearLayout>
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
+                android:layout_marginTop="30dp"
                 android:gravity="center"
-                android:textAlignment="center"
-                android:layout_marginTop="30dp">
+                android:orientation="vertical"
+                android:textAlignment="center">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="24sp"
                     android:layout_gravity="center"
-                    android:text="Repeticiones y series"/>
+                    android:text="Repeticiones y series"
+                    android:textSize="24sp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
                     android:textAlignment="center">
 
+                    <NumberPicker
+                        android:id="@+id/numberRepeticiones"
+                        android:layout_width="wrap_content"
+                        android:layout_height="90dp" />
+
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/numRepeticiones"
-                        android:textSize="24sp"
-                        android:text="@string/espacio"
-                        android:layout_gravity="center"/>
+                        android:layout_gravity="center"
+                        android:text="x"
+                        android:textSize="24sp" />
 
+                    <NumberPicker
+                        android:id="@+id/numberVeces"
+                        android:layout_width="wrap_content"
+                        android:layout_height="90dp" />
                 </LinearLayout>
             </LinearLayout>
+
             <Button
-                android:id="@+id/modBtn"
-                android:labelFor="@+id/modBtn"
+                android:id="@+id/agnadir"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="30dp"
-                android:text="@string/modificar"
-                android:layout_marginBottom="20dp"/>
+                android:layout_marginBottom="20dp"
+                android:text="Añadir" />
         </LinearLayout>
     </ScrollView>
 

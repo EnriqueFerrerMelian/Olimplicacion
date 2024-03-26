@@ -39,7 +39,6 @@ public class EjercicioFbAdapter extends FirebaseRecyclerAdapter<Ejercicio, Ejerc
      */
     @Override
     protected void onBindViewHolder(@NonNull EjercicioFbAdapter.ViewHolder holder, int position, @NonNull Ejercicio model) {
-        System.out.println("Cargando ejercicios");
         holder.nombre.setText(model.getNombre());
         Glide.with(holder.imagen.getContext())
                 .load(model.getImg())

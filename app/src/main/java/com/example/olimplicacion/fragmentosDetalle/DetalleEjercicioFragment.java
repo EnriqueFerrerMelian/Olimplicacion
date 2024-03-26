@@ -28,11 +28,9 @@ public class DetalleEjercicioFragment extends Fragment {
     private static final String MUSCULOS = "musculos";
     private static final String DESCRIPCION = "descripcion";
     private static final String CATEGORIA = "categoria";
-    String nombre;
-    String imagen;
-    String musculos;
-    String descripcion;
-    String categoria;
+    private static final String PESO = "peso";
+    private static final String REPETICIONESYSERIES = "repeticionesYseries";
+    String nombre, imagen, musculos, descripcion, categoria, peso, repeticionesYseries;
     int id;
     static FragmentDetalleEjercicioBinding binding;
 
@@ -42,10 +40,11 @@ public class DetalleEjercicioFragment extends Fragment {
         args.putString(NOMBRE, ejercicio.getNombre());
         args.putString(MUSCULOS, ejercicio.getMusculos());
         args.putString(DESCRIPCION, ejercicio.getDescripcion());
-        args.putString(IMAGEN, ejercicio.getImg());
+        args.putString(IMAGEN, String.valueOf(ejercicio.getImg()));
         args.putInt(ID, ejercicio.getId());
         args.putString(CATEGORIA, ejercicio.getCategoria());
-
+        args.putString(PESO, ejercicio.getPeso());
+        args.putString(REPETICIONESYSERIES, ejercicio.getRepecitionesYseries());
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,6 +57,9 @@ public class DetalleEjercicioFragment extends Fragment {
             descripcion = getArguments().getString(DESCRIPCION);
             imagen = getArguments().getString(IMAGEN);
             id = getArguments().getInt(ID);
+            categoria = getArguments().getString(CATEGORIA);
+            peso = getArguments().getString(PESO);
+            repeticionesYseries = getArguments().getString(REPETICIONESYSERIES);
         }
     }
     @Override
@@ -65,34 +67,16 @@ public class DetalleEjercicioFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentDetalleEjercicioBinding.inflate(inflater, container, false);
         //codigo
-        //inicialización de numberPicker**************************
-        binding.numberPeso.setMinValue(1);binding.numberPeso.setMaxValue(100);
-        binding.numberPesoDecimal.setMinValue(0);binding.numberPesoDecimal.setMaxValue(5);
-        binding.numberRepeticiones.setMinValue(1);binding.numberRepeticiones.setMaxValue(30);
-        binding.numberVeces.setMinValue(1);binding.numberVeces.setMaxValue(100);
-        //inicialización de numberPicker**********************fin*
-
         binding.detailName.setText(nombre);
         binding.detailMusculos.setText(musculos);
         binding.detailDesc.setText(descripcion);
         Glide.with(getContext())
                 .load(Uri.parse(imagen))
                 .placeholder(R.drawable.baseline_add_24)//si no hay imagen carga una por defecto
-                .circleCrop()
                 .error(R.drawable.baseline_add_24)//si ocurre algún error se verá por defecto
                 .into(binding.detailImage);
-
-        binding.agnadir.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String peso = binding.numberPeso.getValue() + binding.numberPesoDecimal.getValue()+"";
-                String repeticionesYseries = binding.numberRepeticiones.getValue() +";"+ binding.numberVeces.getValue();
-                Ejercicio ejercicio = new Ejercicio(id, nombre, musculos, descripcion, categoria, imagen);
-                ejercicio.setPeso(peso);ejercicio.setRepecitionesYseries(repeticionesYseries);
-                CreacionRutinaFragment.addToDataList(ejercicio, getContext());
-                getParentFragmentManager().popBackStack();
-            }
-        });
+        binding.numPeso.setText(peso);
+        binding.numRepeticiones.setText(repeticionesYseries);
         binding.volver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
