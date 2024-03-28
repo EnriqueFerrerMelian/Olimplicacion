@@ -1,3 +1,4 @@
+/*
 package com.example.olimplicacion;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,13 +10,13 @@ import android.widget.Toast;
 
 import com.example.olimplicacion.clases.Ejercicio;
 import com.example.olimplicacion.databinding.ActivityDetailed01Binding;
-import com.example.olimplicacion.fragmentos.EjercicioFragment;
+//import com.example.olimplicacion.fragmentos.EjercicioFragment;
 
 public class DetailedActivity01 extends AppCompatActivity {
 
     //ATRIBUTOS
     ActivityDetailed01Binding binding;
-    EjercicioFragment ejercicioFragment;
+    //EjercicioFragment ejercicioFragment;
     int nombre;
     int musculos;
     int desc;
@@ -29,7 +30,7 @@ public class DetailedActivity01 extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         //declaracion de variables
-        ejercicioFragment = new EjercicioFragment();
+       // ejercicioFragment = new EjercicioFragment();
         nombre = 0;musculos = 0;desc = 0;img = 0;
         Intent intent = this.getIntent();
 
@@ -60,7 +61,8 @@ public class DetailedActivity01 extends AppCompatActivity {
         binding.addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                /*if(nombre>0){
+                */
+/*if(nombre>0){
                     String peso = binding.numberPeso.getValue() + "." +binding.numberPesoDecimal.getValue() + " Kg";
                     System.out.println("Peso: "+ peso);
 
@@ -77,9 +79,10 @@ public class DetailedActivity01 extends AppCompatActivity {
                     }else{
                         Toast.makeText(DetailedActivity01.this, "Ya estába en la lista de ejercicios.",Toast.LENGTH_LONG).show();
                     }
-                }*/
+                }*//*
+
             }
         });
 
     }
-}
+}*/

@@ -67,6 +67,7 @@ public class DetalleEjercicioFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentDetalleEjercicioBinding.inflate(inflater, container, false);
         //codigo
+        binding.categoria.setText(categoria);
         binding.detailName.setText(nombre);
         binding.detailMusculos.setText(musculos);
         binding.detailDesc.setText(descripcion);

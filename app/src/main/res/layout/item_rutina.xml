@@ -10,9 +10,9 @@
     android:layout_margin="8dp">
 
     <RelativeLayout
+        android:id="@+id/item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
+        android:layout_height="wrap_content" >
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/rutinaImg"
             android:layout_width="60dp"
@@ -117,9 +117,20 @@
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@+id/sabado"
             android:text="D"
-            android:textColor="@color/grey"
+            android:textColor="#FFFFFF"
             android:textSize="20sp"
             android:textStyle="bold" />
+
+        <ImageButton
+            android:id="@+id/mas"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="34dp"
+            android:layout_marginTop="0dp"
+            android:layout_toEndOf="@+id/domingo"
+            android:backgroundTint="#FFFFFF"
+            android:src="@drawable/mas" />
 
 
     </RelativeLayout>

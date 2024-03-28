@@ -1,7 +1,6 @@
 package com.example.olimplicacion.fragmentosDetalle;
 
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -19,14 +18,9 @@ import com.example.olimplicacion.clases.Ejercicio;
 import com.example.olimplicacion.clases.EjercicioAdapter;
 import com.example.olimplicacion.clases.EjercicioFbAdapter;
 import com.example.olimplicacion.clases.Rutina;
-import com.example.olimplicacion.clases.RutinaFbAdapter;
-import com.example.olimplicacion.databinding.FragmentDetalleEjercicioBinding;
 import com.example.olimplicacion.databinding.FragmentDetallesRutinaBinding;
 import com.example.olimplicacion.fragmentos.CreacionRutinaFragment;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.FirebaseDatabase;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,7 +32,6 @@ import java.util.List;
 
 public class DetallesRutinaFragment extends Fragment implements EjercicioFbAdapter.ItemClickListener {
     private static Rutina rutina;
-
     FragmentDetallesRutinaBinding binding;
     private static RecyclerView recyclerView;
     private EjercicioAdapter ejercicioAdapter;

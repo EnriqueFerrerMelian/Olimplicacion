@@ -66,6 +66,7 @@ public class CreacionEjercicioFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments()!=null){
             nombre = getArguments().getString(NOMBRE);
+            categoria = getArguments().getString(CATEGORIA);
             musculos = getArguments().getString(MUSCULOS);
             descripcion = getArguments().getString(DESCRIPCION);
             imagen = getArguments().getString(IMAGEN);
@@ -84,7 +85,7 @@ public class CreacionEjercicioFragment extends Fragment {
         binding.numberRepeticiones.setMinValue(1);binding.numberRepeticiones.setMaxValue(30);
         binding.numberVeces.setMinValue(1);binding.numberVeces.setMaxValue(100);
         //inicialización de numberPicker**********************fin*
-
+        binding.categoria.setText(categoria);
         binding.detailName.setText(nombre);
         binding.detailMusculos.setText(musculos);
         binding.detailDesc.setText(descripcion);

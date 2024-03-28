@@ -1,3 +1,4 @@
+/*
 package com.example.olimplicacion.fragmentos;
 
 import android.content.Context;
@@ -22,10 +23,12 @@ import com.example.olimplicacion.databinding.FragmentEjercicioBinding;
 import java.util.ArrayList;
 import java.util.List;
 
+*/
 /**
  * este fragmento debería cargar desde la base de datos la lista de ejercicios seleccionada
  * desde el fragmento RutinaFragment
- */
+ *//*
+
 public class EjercicioFragment extends Fragment  implements EjercicioAdapter.ViewHolder.ItemClickListener{
     //recyclerView
     private RecyclerView recyclerView;//lista del xml
@@ -54,9 +57,11 @@ public class EjercicioFragment extends Fragment  implements EjercicioAdapter.Vie
         recyclerView.setAdapter(ejercicioAdapter);
         //dataArrayList.add(new Ejercicio(1, "nombre1", "Musculos1", "Desc1", "Cat1", null));
 
-        /**
+        */
+/**
          * abre el fragmento EjercicioListaFragment para seleccionar un ejercicio a añadir
-         */
+         *//*
+
         binding.anadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,12 +70,14 @@ public class EjercicioFragment extends Fragment  implements EjercicioAdapter.Vie
         });
     }
 
-    /**
+    */
+/**
      * añade un ejercicio a la lista
      * @param ejercicio
      * @param peso
      * @param veces
-     */
+     *//*
+
     public static void addToList(Ejercicio ejercicio, String peso, String veces){
         dataArrayList.add(ejercicio);
         pesoLista.add(peso);
@@ -80,11 +87,13 @@ public class EjercicioFragment extends Fragment  implements EjercicioAdapter.Vie
         //dbm.getEjerciciosDAO().addEjrecicio(ejercicio);
     }
 
-    /**
+    */
+/**
      * comprueba si el ejercicio ya está en la lista
      * @param ejercicio
      * @return
-     */
+     *//*
+
     public static boolean tieneEjercicio(Ejercicio ejercicio) {
         for (int i = 0; i < dataArrayList.size(); i++) {
             if(dataArrayList.get(i).getNombre()==ejercicio.getNombre()){
@@ -98,4 +107,4 @@ public class EjercicioFragment extends Fragment  implements EjercicioAdapter.Vie
     public void onItemClick(Ejercicio ejercicio) {
 
     }
-}
+}*/

@@ -1,3 +1,4 @@
+/*
 package com.example.olimplicacion;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -10,13 +11,13 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.example.olimplicacion.databinding.ActivityDetailed02Binding;
-import com.example.olimplicacion.fragmentos.EjercicioFragment;
+//import com.example.olimplicacion.fragmentos.EjercicioFragment;
 
 public class DetailedActivity02 extends AppCompatActivity {
 
     //ATRIBUTOS
     ActivityDetailed02Binding binding;
-    EjercicioFragment ejercicioFragment;
+    //EjercicioFragment ejercicioFragment;
     int nombre,musculos,desc, img;
     String  peso, veces;
 
@@ -28,7 +29,7 @@ public class DetailedActivity02 extends AppCompatActivity {
         setContentView(binding.getRoot());
 
         //declaracion de variables
-        ejercicioFragment = new EjercicioFragment();
+        //ejercicioFragment = new EjercicioFragment();
         nombre = 0;musculos = 0;desc = 0;img = 0;
         Intent intent = this.getIntent();
 
@@ -68,4 +69,4 @@ public class DetailedActivity02 extends AppCompatActivity {
         fragmento.setArguments(b);
         fragmentTransaction.commit();
     }
-}
+}*/

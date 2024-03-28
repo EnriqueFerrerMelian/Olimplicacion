@@ -92,6 +92,11 @@ public class RutinaFragment extends Fragment implements RutinaFbAdapter.ItemClic
         rutinaFbAdapter.stopListening();
     }
 
+    /**
+     * Este método se pasará a rutinaFbAdapter. De manera que cuando se haga click en una rutina se ejecute el
+     * fragmento DetallesRutinaFragmento
+     * @param rutina
+     */
     @Override
     public void onItemClick(Rutina rutina) {
         Fragment fragment = DetallesRutinaFragment.newInstance(rutina);
@@ -126,10 +131,10 @@ public class RutinaFragment extends Fragment implements RutinaFbAdapter.ItemClic
         });
     }*/
 
-/*    *//**
+/*
      * Este método obtiene las rutinas guardadas en la base de datos de Firebase y se comparan con las rutinas del usuario.
      * Las rutinas que coincidan serán cargadas en el RecyclerView.
-     *//*
+
     public void cargarRutina(){
         DatabaseReference ref = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("rutinas");

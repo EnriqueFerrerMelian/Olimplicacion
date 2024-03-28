@@ -2,19 +2,27 @@ package com.example.olimplicacion.clases;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.olimplicacion.MainActivity;
 import com.example.olimplicacion.R;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.material.imageview.ShapeableImageView;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class RutinaFbAdapter  extends FirebaseRecyclerAdapter<Rutina, RutinaFbAdapter.ViewHolder> {
     private ItemClickListener clickListener;
@@ -34,7 +42,7 @@ public class RutinaFbAdapter  extends FirebaseRecyclerAdapter<Rutina, RutinaFbAd
      * la lista de ejercicios del usuario.
      * Para seleccionar las que pertenecen al usuario logeado, se crea una lista de integros que contendrán los
      * ejercicios que pertenecen a ese usuario.
-     * Luego se comparan los ejercicios descargados con los de la lista y se cargan en el recyclerView los que coincidan.
+     * Luego se comparan los ejercicios descargados con los de la lista y se cargan los que coincidan en el recyclerView
      * @param holder
      * @param position
      * @param model the model object containing the data that should be used to populate the view.
@@ -42,6 +50,7 @@ public class RutinaFbAdapter  extends FirebaseRecyclerAdapter<Rutina, RutinaFbAd
     @Override
     protected void onBindViewHolder(@NonNull RutinaFbAdapter.ViewHolder holder, int position, @NonNull Rutina model) {
         holder.nombre.setText(model.getNombre());
+        holder.rutinaId = model.getId();
         if(model.getImg()!=null){
             Glide.with(holder.imagen.getContext())
                     .load(model.getImg())
@@ -85,13 +94,14 @@ public class RutinaFbAdapter  extends FirebaseRecyclerAdapter<Rutina, RutinaFbAd
     @Override
     public RutinaFbAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rutina, parent, false);
-        return new RutinaFbAdapter.ViewHolder(view);
+        return new RutinaFbAdapter.ViewHolder(view);//
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder{
-        //ShapeableImageView imagen;
+    class ViewHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener {
         TextView nombre, lunes, martes, miercoles, jueves, viernes, sabado, domingo;
         ImageView imagen;
+        ImageButton mas;
+        String rutinaId;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -104,9 +114,74 @@ public class RutinaFbAdapter  extends FirebaseRecyclerAdapter<Rutina, RutinaFbAd
             viernes = itemView.findViewById(R.id.viernes);
             sabado = itemView.findViewById(R.id.sabado);
             domingo = itemView.findViewById(R.id.domingo);
+            mas = itemView.findViewById(R.id.mas);
+            mas.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    popupMenu();
+                }
+            });
+        }
+        public void popupMenu() {
+            PopupMenu popupMenu = new PopupMenu(itemView.getContext(), mas);
+            popupMenu.inflate(R.menu.popup_rutina_menu);
+            popupMenu.setOnMenuItemClickListener(this);
+            popupMenu.show();
+        }
+
+        @Override
+        public boolean onMenuItemClick(MenuItem item) {
+            if(item.getItemId()==R.id.borrar){
+                eliminarRutina(rutinaId);
+                return true;
+            }
+            return false;
         }
     }
     public interface ItemClickListener{
         public void onItemClick(Rutina rutina);
+    }
+
+    /**
+     * Elimina la rutina con el id pasado por parámetro tanto de la lista de rutinas como de
+     * la lista de rutinas que pertenecen al usuario conectado.
+     *
+     * @param id
+     */
+    public void eliminarRutina(String id) {
+        System.out.println("eliminarRutina()");
+        DatabaseReference ref = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("rutinas");
+
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot rut : dataSnapshot.getChildren()) {//
+                    if (rut.child("id").getValue().equals(id)) {
+                        ref.child(rut.getKey()).removeValue();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                System.out.println("No se encuentre o hay un error");
+            }
+        });
+        DatabaseReference ref2 = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/" + MainActivity.getUsuario().getId() + "/rutinas");
+        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot rut : dataSnapshot.getChildren()) {//
+                    if (rut.getValue().equals(id)) {
+                        ref2.child(rut.getKey()).removeValue();
+                    }
+                }
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+                System.out.println("No se encuentra o hay un error");
+            }
+        });
     }
 }
