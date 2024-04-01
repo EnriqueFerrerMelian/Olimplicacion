@@ -1,4 +1,4 @@
-package com.example.olimplicacion.fragmentosDetalle;
+package com.example.olimplicacion.rutinas;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -14,12 +14,11 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.example.olimplicacion.R;
-import com.example.olimplicacion.clases.Ejercicio;
-import com.example.olimplicacion.clases.EjercicioAdapter;
-import com.example.olimplicacion.clases.EjercicioFbAdapter;
-import com.example.olimplicacion.clases.Rutina;
+import com.example.olimplicacion.ejercicios.Ejercicio;
+import com.example.olimplicacion.ejercicios.EjercicioAdapter;
+import com.example.olimplicacion.ejercicios.EjercicioFbAdapter;
 import com.example.olimplicacion.databinding.FragmentDetallesRutinaBinding;
-import com.example.olimplicacion.fragmentos.CreacionRutinaFragment;
+import com.example.olimplicacion.ejercicios.DetalleEjercicioFragment;
 
 import java.util.List;
 
@@ -67,9 +66,9 @@ public class DetallesRutinaFragment extends Fragment implements EjercicioFbAdapt
 
         Glide.with(getContext())
                 .load(rutina.getImg())
-                .placeholder(R.drawable.baseline_add_24)//si no hay imagen carga una por defecto
+                .placeholder(R.drawable.baseline_add_242)//si no hay imagen carga una por defecto
                 .circleCrop()
-                .error(R.drawable.baseline_add_24)//si ocurre algún error se verá por defecto
+                .error(R.drawable.baseline_add_242)//si ocurre algún error se verá por defecto
                 .into(binding.imagen);
         binding.nombreDeRutina.setText(rutina.getNombre());
         if(rutina.getDias().contains("l")){

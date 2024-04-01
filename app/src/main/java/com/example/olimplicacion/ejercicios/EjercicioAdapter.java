@@ -1,30 +1,20 @@
-package com.example.olimplicacion.clases;
+package com.example.olimplicacion.ejercicios;
 
 
 import android.annotation.SuppressLint;
-import android.util.Log;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.olimplicacion.MainActivity;
 import com.example.olimplicacion.R;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+import com.example.olimplicacion.ejercicios.Ejercicio;
+import com.example.olimplicacion.rutinas.Rutina;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -81,9 +71,9 @@ public class EjercicioAdapter extends RecyclerView.Adapter<EjercicioAdapter.View
             nombre.setText(ejercicio.getNombre());
             Glide.with(imagen.getContext())
                     .load(ejercicio.getImg())
-                    .placeholder(R.drawable.baseline_add_24)//si no hay imagen carga una por defecto
+                    .placeholder(R.drawable.baseline_add_242)//si no hay imagen carga una por defecto
                     .circleCrop()
-                    .error(R.drawable.baseline_add_24)//si ocurre algún error se verá por defecto
+                    .error(R.drawable.baseline_add_242)//si ocurre algún error se verá por defecto
                     .into(imagen);
 
         }

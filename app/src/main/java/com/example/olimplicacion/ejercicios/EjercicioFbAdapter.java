@@ -1,4 +1,4 @@
-package com.example.olimplicacion.clases;
+package com.example.olimplicacion.ejercicios;
 
 
 import android.view.LayoutInflater;
@@ -42,9 +42,9 @@ public class EjercicioFbAdapter extends FirebaseRecyclerAdapter<Ejercicio, Ejerc
         holder.nombre.setText(model.getNombre());
         Glide.with(holder.imagen.getContext())
                 .load(model.getImg())
-                .placeholder(R.drawable.baseline_add_24)//si no hay imagen carga una por defecto
+                .placeholder(R.drawable.baseline_add_242)//si no hay imagen carga una por defecto
                 .circleCrop()
-                .error(R.drawable.baseline_add_24)//si ocurre algún error se verá por defecto
+                .error(R.drawable.baseline_add_242)//si ocurre algún error se verá por defecto
                 .into(holder.imagen);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override

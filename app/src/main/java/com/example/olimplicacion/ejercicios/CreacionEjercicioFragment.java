@@ -1,4 +1,4 @@
-package com.example.olimplicacion.fragmentos;
+package com.example.olimplicacion.ejercicios;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -19,10 +19,8 @@ import android.widget.NumberPicker;
 
 import com.bumptech.glide.Glide;
 import com.example.olimplicacion.R;
-import com.example.olimplicacion.clases.Ejercicio;
 import com.example.olimplicacion.databinding.FragmentCreacionEjercicioBinding;
-import com.example.olimplicacion.databinding.FragmentDetalleEjercicioBinding;
-import com.example.olimplicacion.fragmentosDetalle.DetalleEjercicioFragment;
+import com.example.olimplicacion.rutinas.CreacionRutinaFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -91,8 +89,8 @@ public class CreacionEjercicioFragment extends Fragment {
         binding.detailDesc.setText(descripcion);
         Glide.with(getContext())
                 .load(Uri.parse(imagen))
-                .placeholder(R.drawable.baseline_add_24)//si no hay imagen carga una por defecto
-                .error(R.drawable.baseline_add_24)//si ocurre algún error se verá por defecto
+                .placeholder(R.drawable.baseline_add_242)//si no hay imagen carga una por defecto
+                .error(R.drawable.baseline_add_242)//si ocurre algún error se verá por defecto
                 .into(binding.detailImage);
 
         binding.agnadir.setOnClickListener(new View.OnClickListener() {

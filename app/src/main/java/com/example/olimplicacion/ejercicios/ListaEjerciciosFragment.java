@@ -1,4 +1,4 @@
-package com.example.olimplicacion.fragmentos;
+package com.example.olimplicacion.ejercicios;
 
 import android.os.Bundle;
 
@@ -14,15 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.olimplicacion.R;
-import com.example.olimplicacion.clases.Ejercicio;
-import com.example.olimplicacion.clases.EjercicioAdapter;
-import com.example.olimplicacion.clases.EjercicioFbAdapter;
+import com.example.olimplicacion.ejercicios.CreacionEjercicioFragment;
+import com.example.olimplicacion.ejercicios.Ejercicio;
+import com.example.olimplicacion.ejercicios.EjercicioFbAdapter;
 import com.example.olimplicacion.databinding.FragmentListaEjerciciosBinding;
-import com.example.olimplicacion.fragmentosDetalle.DetalleEjercicioFragment;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.ArrayList;
 
 public class ListaEjerciciosFragment extends Fragment implements EjercicioFbAdapter.ItemClickListener {
     private EjercicioFbAdapter ejercicioFbAdapter;

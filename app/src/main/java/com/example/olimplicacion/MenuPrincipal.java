@@ -1,42 +1,35 @@
 package com.example.olimplicacion;
 
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.widget.Toast;
-
 import com.example.olimplicacion.databinding.ActivityMenuPrincipalBinding;
 import com.example.olimplicacion.fragmentos.ActividadesFragment;
 import com.example.olimplicacion.fragmentos.CalendarioFragment;
 import com.example.olimplicacion.fragmentos.EstadisticasFragment;
 import com.example.olimplicacion.fragmentos.PerfilFragment;
-import com.example.olimplicacion.fragmentos.RutinaFragment;
+import com.example.olimplicacion.rutinas.RutinaFragment;
 
 public class MenuPrincipal extends AppCompatActivity {
-
-    //ATRIBUTOS
-    private static Fragment fragmentoDesechable = null;
-
-    //METODOS
+    private static Fragment fragmentoDesechable = null;//se usa para controlar la transacción entre fragmentos
+    private ActivityMenuPrincipalBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityMenuPrincipalBinding binding;
         binding = ActivityMenuPrincipalBinding.inflate(getLayoutInflater());//carga la vista xml al cargar la aplicación
         setContentView(binding.getRoot());
-
-        //declaracion de variables
         setSupportActionBar(binding.toolbar);
 
         //codigo
         reemplazarFragmento(new RutinaFragment());
-
         //listeners
         binding.bottomnav.setOnItemSelectedListener(item ->{
             if(item.getItemId()==R.id.ejercicio){

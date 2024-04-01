@@ -1,9 +1,5 @@
-package com.example.olimplicacion.clases;
+package com.example.olimplicacion.ejercicios;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-
-import java.util.LinkedList;
 
 public class Ejercicio {
     //ATRIBUTOS

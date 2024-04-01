@@ -1,4 +1,4 @@
-package com.example.olimplicacion.fragmentos;
+package com.example.olimplicacion.rutinas;
 
 import android.os.Bundle;
 
@@ -15,10 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.olimplicacion.R;
-import com.example.olimplicacion.clases.Rutina;
-import com.example.olimplicacion.clases.RutinaFbAdapter;
 import com.example.olimplicacion.databinding.FragmentRutinaBinding;
-import com.example.olimplicacion.fragmentosDetalle.DetallesRutinaFragment;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -61,8 +58,6 @@ public class RutinaFragment extends Fragment implements RutinaFbAdapter.ItemClic
         binding.anadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //System.out.println("Subiendo prueba");
-                //subirPrueba();
                 reemplazarFragmento(new CreacionRutinaFragment());
             }
         });
@@ -85,7 +80,6 @@ public class RutinaFragment extends Fragment implements RutinaFbAdapter.ItemClic
         super.onStart();
         rutinaFbAdapter.startListening();
     }
-
     @Override
     public void onStop() {
         super.onStop();

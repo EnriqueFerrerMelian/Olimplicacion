@@ -1,4 +1,4 @@
-package com.example.olimplicacion.clases;
+package com.example.olimplicacion.rutinas;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -13,7 +13,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.olimplicacion.R;
-import com.example.olimplicacion.baseDeDatos.FirebaseHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,9 +70,9 @@ public class RutinaAdapter  extends RecyclerView.Adapter<RutinaAdapter.ViewHolde
             nombre.setText(rutina.getNombre());
             Glide.with(context)
                     .load(rutina.getImg())
-                    .placeholder(R.drawable.baseline_add_24)//si no hay imagen carga una por defecto
+                    .placeholder(R.drawable.baseline_add_242)//si no hay imagen carga una por defecto
                     .circleCrop()
-                    .error(R.drawable.baseline_add_24)//si ocurre algún error se verá por defecto
+                    .error(R.drawable.baseline_add_242)//si ocurre algún error se verá por defecto
                     .into(imagen);
 
         }

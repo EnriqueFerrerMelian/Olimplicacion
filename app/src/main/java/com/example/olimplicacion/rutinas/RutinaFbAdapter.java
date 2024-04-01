@@ -1,4 +1,4 @@
-package com.example.olimplicacion.clases;
+package com.example.olimplicacion.rutinas;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -54,9 +54,9 @@ public class RutinaFbAdapter  extends FirebaseRecyclerAdapter<Rutina, RutinaFbAd
         if(model.getImg()!=null){
             Glide.with(holder.imagen.getContext())
                     .load(model.getImg())
-                    .placeholder(R.drawable.baseline_add_24)//si no hay imagen carga una por defecto
+                    .placeholder(R.drawable.baseline_add_242)//si no hay imagen carga una por defecto
                     .circleCrop()
-                    .error(R.drawable.baseline_add_24)//si ocurre algún error se verá por defecto
+                    .error(R.drawable.baseline_add_242)//si ocurre algún error se verá por defecto
                     .into(holder.imagen);
         }
         for (int i = 0; i < model.getDias().size(); i++) {

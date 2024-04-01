@@ -1,7 +1,6 @@
-package com.example.olimplicacion.clases;
+package com.example.olimplicacion.rutinas;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
+import com.example.olimplicacion.ejercicios.Ejercicio;
 
 import java.util.List;
 
