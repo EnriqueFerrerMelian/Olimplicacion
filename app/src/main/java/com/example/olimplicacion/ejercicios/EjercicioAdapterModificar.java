@@ -90,61 +90,6 @@ public class EjercicioAdapterModificar extends RecyclerView.Adapter<EjercicioAda
 
         }
 
-
-        /*public void eliminarEjercicio(String idRutina, int idEjercicio) {
-            System.out.println("eliminarEjercicio()");
-            DatabaseReference ref = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                    .getReference("rutinas");
-            //en la lista de rutinas, busco la que tenga el id pasado por parámetro
-            ref.addListenerForSingleValueEvent(new ValueEventListener() {
-                @Override
-                public void onDataChange(DataSnapshot dataSnapshot) {
-                    for (DataSnapshot rut : dataSnapshot.getChildren()) {//
-                        //si la rutina que hemos pasado está en la lista
-                        if (rut.child("id").getValue().equals(idRutina)) {
-                            //obtenemos su nombre en la base de datos
-                            String codigoRutina = rut.getKey();
-
-                            //creamos la referencia a los ejercicios de la rutina con ese nombre
-                            DatabaseReference ejercicios = ref.child(codigoRutina+"/ejercicios");
-                            ejercicios.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(DataSnapshot dataSnapshot) {
-                                    for (DataSnapshot rut : dataSnapshot.getChildren()) {
-                                        if (Integer.parseInt(rut.child("id").getValue().toString())==idEjercicio) {
-
-                                            System.out.println(ejercicios.child(rut.getKey()));
-                                            System.out.println("Borrando ejercicio en la rutina");
-                                            for (int i = 0; i < rutina.getEjercicios().size(); i++) {
-                                                if(rutina.getEjercicios().get(i).getId()==idEjercicio){
-                                                    //rutina.getEjercicios().remove(i);
-                                                    System.out.println("rutina.getEjercicios().remove(i): " + rutina.getEjercicios().get(i));
-                                                }
-                                            }
-                                            System.out.println("Borrando ejercicio en la base de datos");
-                                            System.out.println("ejercicios.child(rut.getKey()).removeValue(): " + ejercicios.child(rut.getKey()));
-                                            //ejercicios.child(rut.getKey()).removeValue();
-                                        }
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(DatabaseError error) {
-                                    System.out.println("No se encuentre o hay un error");
-                                }
-                            });
-                        }
-                    }
-                }
-
-                @Override
-                public void onCancelled(DatabaseError error) {
-                    System.out.println("No se encuentre o hay un error");
-                }
-            });
-
-        }*/
-
         public interface ItemClickListener{
             public void onItemClick(Ejercicio ejercicio);
         }

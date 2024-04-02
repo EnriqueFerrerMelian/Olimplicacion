@@ -7,7 +7,7 @@ import java.util.List;
 public class Rutina {
 //ATRIBUTOS
 String nombre, id;
-    String img;
+String img, referencia;
 List<String> dias;
 List<Ejercicio> ejercicios;
 
@@ -19,11 +19,20 @@ List<Ejercicio> ejercicios;
         this.img = img;
         this.ejercicios = ejercicios;
         this.dias = dias;
+        referencia = null;
     }
 
     public Rutina(){}
 //GETTERS Y SETTERS
 
+
+    public String getReferencia() {
+        return referencia;
+    }
+
+    public void setReferencia(String referencia) {
+        this.referencia = referencia;
+    }
 
     public List<String> getDias() {
         return dias;
@@ -71,6 +80,7 @@ List<Ejercicio> ejercicios;
                 "nombre='" + nombre + '\'' +
                 ", id='" + id + '\'' +
                 ", img='" + img + '\'' +
+                ", referencia='" + referencia + '\'' +
                 ", dias=" + dias +
                 ", ejercicios=" + ejercicios +
                 '}';

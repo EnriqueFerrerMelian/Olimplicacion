@@ -14,10 +14,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.olimplicacion.MainActivity;
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.databinding.FragmentRutinaBinding;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  * CONTENDRÁ UN RECYCLERVIEW DE RECYCLERVIEWS DE EJERCICIOS
@@ -27,11 +35,14 @@ import com.google.firebase.database.FirebaseDatabase;
  */
 
 public class RutinaFragment extends Fragment implements RutinaFbAdapter.ItemClickListener {
-    //recyclerView
+    //recyclerView **********
     private RutinaFbAdapter rutinaFbAdapter;
     private RecyclerView recyclerView;
+    //recyclerView *******fin
 
+    //variables globales
     static FragmentRutinaBinding binding;
+    private static List<String> rutinasDeUsuario = new LinkedList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -43,12 +54,9 @@ public class RutinaFragment extends Fragment implements RutinaFbAdapter.ItemClic
         super.onViewCreated(view, savedInstanceState);
         FirebaseRecyclerOptions<Rutina> options =
                 new FirebaseRecyclerOptions.Builder<Rutina>()
-                        .setQuery(FirebaseDatabase
-                                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                                .getReference()
-                                .child("rutinas"), Rutina.class)
+                        .setQuery(FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                                .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/rutinas"), Rutina.class)
                         .build();
-
         rutinaFbAdapter = new RutinaFbAdapter(options, this::onItemClick);
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -98,78 +106,7 @@ public class RutinaFragment extends Fragment implements RutinaFbAdapter.ItemClic
         fragmentTransaction.replace(R.id.fragmentContainerView, fragment, "nota").addToBackStack(null);
         fragmentTransaction.commit();
     }
-
-/*    public void cargarPrueba(){
-        DatabaseReference ref = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("rutinas");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {//dataSnapshot son todos los usuarios
-                for (DataSnapshot rut: dataSnapshot.getChildren()) {//
-                    Rutina rutina = new Rutina();
-                    rutina.setId(rut.child("id").getValue().toString());
-                    rutina.setNombre(rut.child("nombre").getValue().toString());
-                    if(rut.child("img").getValue()!=null){
-                        //rutina.setImg(Uri.parse(rut.child("img").getValue().toString()));
-                    }
-                    if(MainActivity.getUsuario().getRutinas().contains(rutina.getId())){
-                        dataArrayList.add(rutina);
-                    }
-                }
-                rutinaAdapter = new RutinaAdapter(dataArrayList, RutinaFragment.this);
-                recyclerView.setAdapter(rutinaAdapter);
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-            }
-        });
-    }*/
-
-/*
-     * Este método obtiene las rutinas guardadas en la base de datos de Firebase y se comparan con las rutinas del usuario.
-     * Las rutinas que coincidan serán cargadas en el RecyclerView.
-
-    public void cargarRutina(){
-        DatabaseReference ref = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("rutinas");
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {//dataSnapshot son todos los usuarios
-                for (DataSnapshot rut: dataSnapshot.getChildren()) {//
-                    Rutina rutina = new Rutina();
-                    rutina.setId(rut.child("id").getValue().toString());
-                    rutina.setNombre(rut.child("nombre").getValue().toString());
-                    if(rut.child("img").getValue()!=null){
-                        //rutina.setImg(Uri.parse(rut.child("img").getValue().toString()));
-                    }
-                    if(MainActivity.getUsuario().getRutinas().contains(rutina.getId())){
-                        dataArrayList.add(rutina);
-                    }
-                }
-                rutinaAdapter = new RutinaAdapter(dataArrayList, RutinaFragment.this);
-                recyclerView.setAdapter(rutinaAdapter);
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-            }
-        });
-    }*/
-
-  /*  public void subirPrueba(){
-        Map<String , Object> rutina = new HashMap<>();
-        rutina.put("nombre", "nombre Rutina");
-        rutina.put("id", "22");
-        rutina.put("img", "no img");
-        List<String> dias = new ArrayList<>();
-        dias.add("l");dias.add("m");
-        rutina.put("dias", dias);
-        List<Ejercicio> ejercicios = new ArrayList<>();
-
-        rutina.put("ejercicios", ejercicios);
-
-        FirebaseDatabase
-                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app").getReference().child("rutinas")
-                .push()
-                .setValue(rutina);
-    }*/
+    public static List<String> getRutinasDeUsuario(){
+        return rutinasDeUsuario;
+    }
 }

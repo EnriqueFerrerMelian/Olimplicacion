@@ -21,7 +21,7 @@ import java.util.List;
 /**
  * NOTA: Al registrarse en el gimnasio, el administrador dará una clave generada de forma aleatoria
  * con la que el usuario podrá entrar en la aplicación. En el apartado 'Configuración de perfil' se podrá cambiar.
- * Esto significa que no hará falta fragmento de 'Registro'.
+ * Esto significa que no hace falta un fragmento de 'Registro'.
  */
 
 public class MainActivity extends AppCompatActivity {
@@ -39,18 +39,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 if(binding.nombre.getText().length()>0 && binding.clave.getText().length()>0){
-                    obtenerUsuario(binding.nombre.getText().toString(), binding.clave.getText().toString());
+                    verificarUsuario(binding.nombre.getText().toString(), binding.clave.getText().toString());
                 }else{
-                    Toast.makeText(MainActivity.this, "Debes rellenar todos los campos", Toast.LENGTH_LONG).show();
+                    //si no se rellena algún campo saltará una notificación
+                    if(binding.nombre.getText().length()<1){
+                        binding.nombre.setError("No puede estar vacío.");
+                    }else{
+                        binding.clave.setError("No puede estar vacío.");
+                    }
                 }
             }
         });
     }
 
     /**
-     * NOTA: Al registrarse en el gimnasio, el administrador dará una clave generada de forma aleatoria
-     * con la que el usuario podrá entrar en la aplicación. En el apartado 'Configuración de perfil' se podrá cambiar.
-     * Esto significa que no hará falta fragmento de 'Registro'.
      * Obtiene un usuario de la base de datos a partir de nombre y clave pasados por parámetro.
      * Crea una referencia a FirebaseDatabase que conectará con la RealTime Databade de Firebase.
      * Se apllicará un listener a esa referencia, que ejecutará el siguiente código cuando se acceda a ella:
@@ -62,12 +64,13 @@ public class MainActivity extends AppCompatActivity {
      * @param nombre
      * @param clave
      */
-    public void obtenerUsuario(String nombre, String clave){
+    public void verificarUsuario(String nombre, String clave){
         DatabaseReference ref = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("usuarios");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {//dataSnapshot son todos los usuarios
+                boolean confirmado = false;
                 List<String> rutinas = new ArrayList<>();
                 for (DataSnapshot user: dataSnapshot.getChildren()) {//
                     if(user.child("nombre").getValue().equals(nombre) && user.child("clave").getValue().equals(clave)){
@@ -79,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
                             rutinas.add(rutine.getValue().toString());
                         }
                         usuario.setRutinas(rutinas);
-
+                        confirmado=true;
                         //ejecuto el fragmento 'MenuPrincipal'
                         irAMenuPrincipal();
 
@@ -87,6 +90,9 @@ public class MainActivity extends AppCompatActivity {
                         binding.nombre.setText("");
                         binding.clave.setText("");
                     }
+                }
+                if(!confirmado){
+                    Toast.makeText(MainActivity.this, "No estás registrado", Toast.LENGTH_LONG).show();
                 }
             }
             @Override

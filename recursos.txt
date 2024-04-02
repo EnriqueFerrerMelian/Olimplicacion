@@ -23,6 +23,7 @@ Retrofit (buscar)
 *CheckBox: https://developer.android.com/develop/ui/views/components/checkbox?hl=es-419
 *Adding Buttons in RecyclerView Row Items: https://www.youtube.com/watch?v=FA5cGLLiSWs
 *Popup menu inside a RecyclerView: https://www.youtube.com/watch?v=hKyjb4b19YM
+*Android Beginner- How to set error message in EditText: https://www.youtube.com/watch?v=Pbvr2QwK2as
 
 -SQLite:
 *Using SQLite: https://www.youtube.com/watch?v=uBw9QSWSIww
