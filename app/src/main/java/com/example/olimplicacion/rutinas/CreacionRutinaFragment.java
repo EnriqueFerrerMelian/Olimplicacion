@@ -310,8 +310,6 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
                 //creamos una referencia en el Store que será el nombre de la imagen
                 String[] titulo = String.valueOf(imgUri).split("/");
                 storageReference = FirebaseStorage.getInstance().getReference(titulo[titulo.length-1]);
-                System.out.println("no se ha pasado una rutina, se ha configurado una imagen");
-                System.out.println("Nombre de la imagen: " + titulo[titulo.length-1]);
                 storageReference.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                     @Override
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
@@ -338,6 +336,7 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
             //si se ha pasado una rutina por parámetro y se ha hecho una foto
             if(confirmacionImg){
                 System.out.println("se ha pasado una rutina, se ha configurado una imagen");
+                eliminarImagen();
                 //creamos una referencia en el Store que será el nombre de la imagen
                 String[] titulo = String.valueOf(imgUri).split("/");
                 storageReference = FirebaseStorage.getInstance().getReference(titulo[titulo.length-1]);
@@ -420,7 +419,6 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         //añado la lista actual de ejercicios
         List<Ejercicio> ejerciciosLista = dataArrayList;
         rutinaMap.put("ejercicios", ejerciciosLista);
-        System.out.println(!(dias.isEmpty() || ejerciciosLista.isEmpty()));
         if(!(dias.isEmpty() || ejerciciosLista.isEmpty())){
             //cargo el map en la base de datos
             FirebaseDatabase
@@ -450,7 +448,8 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
     }
 
     public void eliminarImagen(){
-
+        StorageReference ref = FirebaseStorage.getInstance().getReferenceFromUrl(rutina.getImg());
+        ref.delete();
     }
     /**
      * NOTA: AÑADIR ELIMINAR IMAGEN DEL STORE
@@ -490,7 +489,6 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
      * @param idEjercicio
      */
     public static void eliminarEjercicio(int idEjercicio) {
-        System.out.println("eliminarEjercicio()");
         for (int i = 0; i < dataArrayList.size(); i++) {
             if(dataArrayList.get(i).getId()==idEjercicio){
                 dataArrayList.remove(index);
@@ -541,7 +539,6 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
      * @param rutina
      */
     public void cargarRutina(Rutina rutina) {
-        System.out.println(rutina);
         dataArrayList = rutina.getEjercicios();
         Glide.with(getContext())
                 .load(rutina.getImg())
