@@ -25,11 +25,11 @@
 
         <TextView
             android:id="@+id/listName01"
-            android:layout_width="wrap_content"
+            android:layout_width="227dp"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@+id/listImage01"
-            android:layout_marginTop="15dp"
             android:layout_marginStart="30dp"
+            android:layout_marginTop="15dp"
+            android:layout_toEndOf="@+id/listImage01"
             android:text="name"
             android:textColor="@color/darkgrey"
             android:textSize="20sp"
