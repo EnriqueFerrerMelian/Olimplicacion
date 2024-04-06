@@ -96,7 +96,7 @@ public class CreacionEjercicioFragment extends Fragment {
         binding.agnadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String peso = binding.numberPeso.getValue() + binding.numberPesoDecimal.getValue()+"";
+                String peso = binding.numberPeso.getValue() +"." + binding.numberPesoDecimal.getValue();
                 String repeticionesYseries = binding.numberRepeticiones.getValue() +" x "+ binding.numberVeces.getValue();
                 Ejercicio ejercicio = new Ejercicio(id, nombre, musculos, descripcion, categoria, imagen);
                 ejercicio.setPeso(peso);ejercicio.setRepecitionesYseries(repeticionesYseries);
@@ -112,36 +112,5 @@ public class CreacionEjercicioFragment extends Fragment {
         });
         //codigo fin
         return binding.getRoot();
-    }
-
-    public void showBottonSheet(){
-        final Dialog dialog = new Dialog(getContext());
-        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        dialog.setContentView(R.layout.my_bottom_sheet_ejercicio);
-        LinearLayout galeriaLayout = dialog.findViewById(R.id.galeriaLayout);
-        LinearLayout camaraLayout = dialog.findViewById(R.id.camaraLayout);
-        Button aceptar = dialog.findViewById(R.id.aceptar);
-        //inicialización de numberPicker**************************
-        NumberPicker numberPeso = dialog.findViewById(R.id.numberPeso);
-        numberPeso.setMinValue(1);numberPeso.setMaxValue(100);
-        NumberPicker numberPesoDecimal = dialog.findViewById(R.id.numberPesoDecimal);
-        numberPesoDecimal.setMinValue(0);numberPesoDecimal.setMaxValue(5);
-        NumberPicker repeticiones = dialog.findViewById(R.id.repeticiones);
-        repeticiones.setMinValue(1);repeticiones.setMaxValue(30);
-        NumberPicker series = dialog.findViewById(R.id.series);
-        series.setMinValue(1);series.setMaxValue(100);
-        //inicialización de numberPicker**********************fin*
-        aceptar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                System.out.println("Metodo de aceptar aquí");
-                //metodoprueba
-            }
-        });
-
-        dialog.show();
-        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 }

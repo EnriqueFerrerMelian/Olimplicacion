@@ -55,7 +55,6 @@ public class DetallesRutinaFragment extends Fragment implements EjercicioFbAdapt
                              Bundle savedInstanceState) {
         binding = FragmentDetallesRutinaBinding.inflate(inflater, container, false);
         //codigo
-        //inserto los datos en el fragmento *************
         //cargo el recyclerview *******************
         dataArrayList = rutina.getEjercicios();
         ejercicioAdapter = new EjercicioAdapter(dataArrayList, this::onItemClick);
@@ -64,29 +63,7 @@ public class DetallesRutinaFragment extends Fragment implements EjercicioFbAdapt
         recyclerView.setAdapter(ejercicioAdapter);
         //cargo el recyclerview ****************fin
 
-        Glide.with(getContext())
-                .load(rutina.getImg())
-                .placeholder(R.drawable.baseline_add_242)//si no hay imagen carga una por defecto
-                .circleCrop()
-                .error(R.drawable.baseline_add_242)//si ocurre algún error se verá por defecto
-                .into(binding.imagen);
-        binding.nombreDeRutina.setText(rutina.getNombre());
-        if(rutina.getDias().contains("l")){
-            binding.lunes.setTextColor(Color.rgb(255, 127, 39));
-        }if(rutina.getDias().contains("m")){
-            binding.martes.setTextColor(Color.rgb(255, 127, 39));
-        }if(rutina.getDias().contains("x")){
-            binding.miercoles.setTextColor(Color.rgb(255, 127, 39));
-        }if(rutina.getDias().contains("j")){
-            binding.jueves.setTextColor(Color.rgb(255, 127, 39));
-        }if(rutina.getDias().contains("v")){
-            binding.viernes.setTextColor(Color.rgb(255, 127, 39));
-        }if(rutina.getDias().contains("s")){
-            binding.sabado.setTextColor(Color.rgb(255, 127, 39));
-        }if(rutina.getDias().contains("d")){
-            binding.domingo.setTextColor(Color.rgb(255, 127, 39));
-        }
-        //inserto los datos en el fragmento **********fin
+        cargarRutina(rutina);
 
         binding.modificar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -117,5 +94,33 @@ public class DetallesRutinaFragment extends Fragment implements EjercicioFbAdapt
         FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
         fragmentTransaction.replace(R.id.fragmentContainerView, fragment, "nota").addToBackStack(null);
         fragmentTransaction.commit();
+    }
+
+    public void cargarRutina(Rutina rutina){
+        Glide.with(getContext())
+                .load(rutina.getImg())
+                .placeholder(R.drawable.logo)//si no hay imagen carga una por defecto
+                .circleCrop()
+                .error(R.drawable.logo)//si ocurre algún error se verá por defecto
+                .into(binding.imagen);
+        binding.nombreDeRutina.setText(rutina.getNombre());
+        if(rutina.getDias().contains("l")){
+            binding.lunes.setTextColor(Color.rgb(255, 127, 39));
+        }if(rutina.getDias().contains("m")){
+            binding.martes.setTextColor(Color.rgb(255, 127, 39));
+        }if(rutina.getDias().contains("x")){
+            binding.miercoles.setTextColor(Color.rgb(255, 127, 39));
+        }if(rutina.getDias().contains("j")){
+            binding.jueves.setTextColor(Color.rgb(255, 127, 39));
+        }if(rutina.getDias().contains("v")){
+            binding.viernes.setTextColor(Color.rgb(255, 127, 39));
+        }if(rutina.getDias().contains("s")){
+            binding.sabado.setTextColor(Color.rgb(255, 127, 39));
+        }if(rutina.getDias().contains("d")){
+            binding.domingo.setTextColor(Color.rgb(255, 127, 39));
+        }
+    }
+    public static Rutina getRutina(){
+        return rutina;
     }
 }

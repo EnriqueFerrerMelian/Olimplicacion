@@ -336,7 +336,9 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
             //si se ha pasado una rutina por parámetro y se ha hecho una foto
             if(confirmacionImg){
                 System.out.println("se ha pasado una rutina, se ha configurado una imagen");
-                eliminarImagen();
+                if(rutina.getImg()!=null){
+                    eliminarImagen();
+                }
                 //creamos una referencia en el Store que será el nombre de la imagen
                 String[] titulo = String.valueOf(imgUri).split("/");
                 storageReference = FirebaseStorage.getInstance().getReference(titulo[titulo.length-1]);
@@ -373,26 +375,18 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         Calendar cal = new GregorianCalendar();
         Date date = cal.getTime();
         String fecha = date.toString();
-        //guardando la rutina en la base de datos **********************************
-        //creo el map que cargará los datos a la base de datos
-        Map<String, Object> rutinaMap = new HashMap<>();
-        //guardo nombre e id
-        rutinaMap.put("nombre", binding.nombreDeRutina.getText().toString());
-        rutinaMap.put("id", MainActivity.getUsuario().getId() + "_" + fecha);
 
+        //guardando la rutina en la base de datos **********************************
+        Rutina rutin = new Rutina();
+        rutin.setNombre(binding.nombreDeRutina.getText().toString());
+        rutin.setId(MainActivity.getUsuario().getId() + "_" + fecha);
         if(confirmacionImg){
-            String[] titulo = String.valueOf(imgUri).split("/");
-            rutinaMap.put("referencia", titulo[titulo.length-1]);
-            //si se ha cambiado la imagen se carga
-            rutinaMap.put("img", imgUriFb.toString());
+            rutin.setImg(imgUriFb.toString());
         }else{
-            //si no se carga la que tenía por defecto
             if(rutina!=null){
-                rutinaMap.put("referencia", rutina.getReferencia());
-                rutinaMap.put("img", rutina.getImg());
+                rutin.setImg(rutina.getImg());
             }
         }
-        //se guardan los días seleccionados
         List<String> dias = new ArrayList<>();
         if (binding.lunes.isChecked()) {
             dias.add("l");
@@ -415,23 +409,26 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         if (binding.domingo.isChecked()) {
             dias.add("d");
         }
-        rutinaMap.put("dias", dias);
-        //añado la lista actual de ejercicios
+        rutin.setDias(dias);
         List<Ejercicio> ejerciciosLista = dataArrayList;
-        rutinaMap.put("ejercicios", ejerciciosLista);
-        if(!(dias.isEmpty() || ejerciciosLista.isEmpty())){
-            //cargo el map en la base de datos
-            FirebaseDatabase
-                    .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                    .getReference().child("usuarios/"+MainActivity.getUsuario().getId()+"/rutinas")
-                    .push()
-                    .setValue(rutinaMap);
-            //guardando la rutina en la base de datos *******************************fin
+        rutin.setEjercicios(ejerciciosLista);
+        Map<String, Object> mapRutin = new HashMap<>();
+        mapRutin.put(binding.nombreDeRutina.getText().toString(), rutin);
 
-            //si se ha pasado una rutina por parámetro se elimina
+        if(!(dias.isEmpty() || ejerciciosLista.isEmpty())){
+            System.out.println("dias y ejercicios estan cumplimentados");
             if (rutina != null) {
-                eliminarRutina(rutina.getId());
+                if(!rutin.getNombre().equals(rutina.getNombre())){
+                    System.out.println("El nombre de la rutina no es igual");
+                    eliminarRutinaM(DetallesRutinaFragment.getRutina());
+                    System.out.println("Se guarda la rutina: " + rutin.getNombre());
+                    actualizarRutina(mapRutin);
+                }else{
+                    System.out.println("Se guarda la rutina: " + rutin.getNombre());
+                    actualizarRutina(mapRutin);
+                }
             }else{
+                actualizarRutina(mapRutin);
                 //si no hay rutina se ponen los valores del fragmento a null
                 dataArrayList = new ArrayList<>();
                 rutina = null;
@@ -439,50 +436,43 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
             controlErrores =0;
         }else{
             controlErrores++;
-            if(dias.isEmpty()){
-                Toast.makeText(getContext(), "Debes seleccionar almenos un día.", Toast.LENGTH_LONG).show();
+            if(rutin.getNombre()!=null){
+                Toast.makeText(getContext(), "El nombre no puede estar en blanco.", Toast.LENGTH_LONG).show();
             }else{
-                Toast.makeText(getContext(), "Debes añadir al menos un ejercicio.", Toast.LENGTH_LONG).show();
+                if(dias.isEmpty()){
+                    Toast.makeText(getContext(), "Debes seleccionar almenos un día.", Toast.LENGTH_LONG).show();
+                }else{
+                    Toast.makeText(getContext(), "Debes añadir al menos un ejercicio.", Toast.LENGTH_LONG).show();
+                }
             }
         }
     }
 
+    /**
+     * Elimina la imagen de la base de datos Storage de Firebase;
+     */
     public void eliminarImagen(){
         StorageReference ref = FirebaseStorage.getInstance().getReferenceFromUrl(rutina.getImg());
         ref.delete();
     }
+
     /**
-     * NOTA: AÑADIR ELIMINAR IMAGEN DEL STORE
-     * Elimina la rutina con el id pasado por parámetro tanto de la lista de rutinas como de
-     * la lista de rutinas que pertenecen al usuario conectado.
-     * @param id
+     * Elimina la rutina de la base de datos de Realtima Firebase.
+     * @param rutin
      */
-    public void eliminarRutina(String id) {
-        //creo una referencia hacia las rutinas del usuario actual
+   public void eliminarRutinaM(Rutina rutin) {
+        //creo una referencia a la rutina que quiero borrar
+       System.out.println("Se elimina la rutina: " + rutin.getNombre());
         DatabaseReference ref2 = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("usuarios/" + MainActivity.getUsuario().getId() + "/rutinas");
+                .getReference("usuarios/" + MainActivity.getUsuario().getId() + "/rutinas/"+rutin.getNombre());
         //elimino la rutina
-        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                for (DataSnapshot rut : dataSnapshot.getChildren()) {//
-                    if (rut.child("id").getValue().equals(id)) {
-                        ref2.child(rut.getKey()).removeValue();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                System.out.println("No se encuentra o hay un error");
-            }
-        });
+        ref2.removeValue();
 
         //al acabar el proceso pongo los valores del fragmento a null
         dataArrayList = new ArrayList<>();
         rutina = null;
     }
+
     /**
      * Eliminará del dataArrayList el ejercicio seleccionado. No se eliminará de la rutina si se hace click
      * en 'cancelar'
@@ -571,4 +561,10 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         }
     }
 
+    public void actualizarRutina(Map<String, Object> mapa){
+        DatabaseReference ref = FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/"+MainActivity.getUsuario().getId()+"/rutinas/");
+        ref.updateChildren(mapa);
+    }
 }

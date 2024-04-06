@@ -1,18 +1,36 @@
 package com.example.olimplicacion.ejercicios;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.NumberPicker;
 
 import com.bumptech.glide.Glide;
+import com.example.olimplicacion.MainActivity;
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.databinding.FragmentDetalleEjercicioBinding;
+import com.example.olimplicacion.rutinas.DetallesRutinaFragment;
+import com.example.olimplicacion.rutinas.Rutina;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Muestra los detalles del ejercicio seleccionado
@@ -36,6 +54,7 @@ public class DetalleEjercicioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentDetalleEjercicioBinding.inflate(inflater, container, false);
+        System.out.println("Ejercicio id: "+ ejercicio.getId());
         //codigo
         binding.categoria.setText(ejercicio.getCategoria());
         binding.detailName.setText(ejercicio.getNombre());
@@ -48,6 +67,13 @@ public class DetalleEjercicioFragment extends Fragment {
                 .into(binding.detailImage);
         binding.numPeso.setText(ejercicio.getPeso());
         binding.numRepeticiones.setText(ejercicio.getRepecitionesYseries());
+
+        binding.modBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showBottonSheet();
+            }
+        });
         binding.volver.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -56,5 +82,65 @@ public class DetalleEjercicioFragment extends Fragment {
         });
         //codigo fin
         return binding.getRoot();
+    }
+
+    public void showBottonSheet(){
+        final Dialog dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.my_bottom_sheet_ejercicio);
+        Button aceptar = dialog.findViewById(R.id.aceptar);
+        //inicialización de numberPicker**************************
+        NumberPicker numberPeso = dialog.findViewById(R.id.numberPeso);
+        numberPeso.setMinValue(1);numberPeso.setMaxValue(100);
+        String[] setPeso = binding.numPeso.getText().toString().split("\\.");
+        numberPeso.setValue(Integer.valueOf(setPeso[0]));
+        NumberPicker numberPesoDecimal = dialog.findViewById(R.id.numberPesoDecimal);
+        numberPesoDecimal.setMinValue(0);numberPesoDecimal.setMaxValue(5);
+        numberPesoDecimal.setValue(Integer.valueOf(setPeso[1]));
+        String setRepSer1 = binding.numRepeticiones.getText().toString().replace(" ","");
+        String [] setRepSer2= setRepSer1.split("x");
+        NumberPicker repeticiones = dialog.findViewById(R.id.repeticiones);
+        repeticiones.setMinValue(1);repeticiones.setMaxValue(30);
+        repeticiones.setValue(Integer.valueOf(setRepSer2[0]));
+        NumberPicker series = dialog.findViewById(R.id.series);
+        series.setMinValue(1);series.setMaxValue(100);
+        series.setValue(Integer.valueOf(setRepSer2[1]));
+        //inicialización de numberPicker**********************fin*
+        aceptar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                binding.numPeso.setText(numberPeso.getValue() +"."+ numberPesoDecimal.getValue());
+                binding.numRepeticiones.setText(repeticiones.getValue() + " x " + series.getValue());
+                pruebaUpdate(DetallesRutinaFragment.getRutina());
+                dialog.dismiss();
+            }
+        });
+
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+    public void pruebaUpdate(Rutina rutina) {
+        boolean bandera = false;
+        int index = 0;
+        for (int i = 0; i < rutina.getEjercicios().size(); i++) {
+            if(rutina.getEjercicios().get(i).getId()== ejercicio.getId()){
+                bandera=true;index = i;
+            }
+        }
+        if(bandera){
+            Map<String, Object> mapaEjercicio = new HashMap<>();
+            Ejercicio ejercicioS = ejercicio;
+            ejercicioS.setPeso(binding.numPeso.getText().toString());
+            ejercicioS.setRepecitionesYseries(binding.numRepeticiones.getText().toString());
+            mapaEjercicio.put(index+"", ejercicioS);
+            DatabaseReference ref = FirebaseDatabase
+                    .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                    .getReference("usuarios/"+MainActivity.getUsuario().getId()+"/rutinas/"+rutina.getNombre()+"/ejercicios");
+            ref.updateChildren(mapaEjercicio);
+            System.out.println("usuarios/"+MainActivity.getUsuario().getId()+"/rutinas/"+rutina.getNombre()+"/ejercicios");
+        }
     }
 }
