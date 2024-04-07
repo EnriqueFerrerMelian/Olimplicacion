@@ -1,13 +1,17 @@
 package com.example.olimplicacion.clases;
 
+import com.example.olimplicacion.rutinas.Rutina;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 public class Usuario {
-    String id, nombre, clave;
-    List<String> rutinas;
+    int id;
+    String nombre, clave;
+    Map<String, Object> rutinas;
 
-    public Usuario(String id, String nombre,String clave, List<String> rutinas) {
+    public Usuario(int id, String nombre,String clave, Map<String, Object> rutinas) {
         this.id = id;
         this.nombre = nombre;
         this.clave = clave;
@@ -22,19 +26,19 @@ public class Usuario {
         this.clave = clave;
     }
 
-    public List<String> getRutinas() {
+    public Map<String, Object> getRutinas() {
         return rutinas;
     }
 
-    public void setRutinas(List<String> rutinas) {
+    public void setRutinas(Map<String, Object> rutinas) {
         this.rutinas = rutinas;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 

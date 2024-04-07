@@ -14,6 +14,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,13 +76,7 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot user: dataSnapshot.getChildren()) {//
                     if(user.child("nombre").getValue().equals(nombre) && user.child("clave").getValue().equals(clave)){
                         //recojo los datos del usuario en un objeto Usuario
-                        usuario.setId(user.child("id").getValue().toString());
-                        usuario.setNombre(user.child("nombre").getValue().toString());
-                        usuario.setClave(user.child("clave").getValue().toString());
-                        for (DataSnapshot rutine: user.child("rutinas").getChildren()) {
-                            rutinas.add(rutine.getValue().toString());
-                        }
-                        usuario.setRutinas(rutinas);
+                        usuario = user.getValue(Usuario.class);
                         confirmado=true;
                         //ejecuto el fragmento 'MenuPrincipal'
                         irAMenuPrincipal();
@@ -114,5 +109,8 @@ public class MainActivity extends AppCompatActivity {
      */
     public static Usuario getUsuario(){
         return usuario;
+    }
+    public static void setUsuario(Usuario user){
+        usuario = user;
     }
 }

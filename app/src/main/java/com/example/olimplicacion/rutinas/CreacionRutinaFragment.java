@@ -31,12 +31,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.olimplicacion.MainActivity;
 import com.example.olimplicacion.R;
+import com.example.olimplicacion.clases.Usuario;
 import com.example.olimplicacion.ejercicios.Ejercicio;
 import com.example.olimplicacion.ejercicios.EjercicioAdapterModificar;
 import com.example.olimplicacion.databinding.FragmentCreacionRutinaBinding;
@@ -238,6 +240,32 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
+    public void showSobrescribirSheet(Map<String, Object> mapRutin, Rutina rutin) {
+        final Dialog dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.my_bottom_sheet_sobrescribir_rutina);
+        Button si = dialog.findViewById(R.id.si);
+        Button no = dialog.findViewById(R.id.no);
+        si.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                eliminarRutinaM(DetallesRutinaFragment.getRutina());
+                actualizarRutina(mapRutin);
+                actualizarUsuario();
+                dialog.dismiss();
+            }
+        });
+        no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
 
     public void cameraLauncher() {
         //obtendra la imagen como Bitmap por defecto
@@ -415,20 +443,21 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         Map<String, Object> mapRutin = new HashMap<>();
         mapRutin.put(binding.nombreDeRutina.getText().toString(), rutin);
 
-        if(!(dias.isEmpty() || ejerciciosLista.isEmpty())){
-            System.out.println("dias y ejercicios estan cumplimentados");
+        if(!(dias.isEmpty() || ejerciciosLista.isEmpty() || binding.nombreDeRutina.length()<1)){
+            System.out.println("dias, ejercicios y nombre estan cumplimentados");
+            //si se está modificando una rutina
             if (rutina != null) {
-                if(!rutin.getNombre().equals(rutina.getNombre())){
-                    System.out.println("El nombre de la rutina no es igual");
-                    eliminarRutinaM(DetallesRutinaFragment.getRutina());
-                    System.out.println("Se guarda la rutina: " + rutin.getNombre());
-                    actualizarRutina(mapRutin);
+                //si el nombre se ha cambiado se comprueba si ya hay otra rutina con el nombre nuevo ya guardada
+                if(MainActivity.getUsuario().getRutinas().get(rutin.getNombre())!=null){
+                    showSobrescribirSheet(mapRutin, rutin);
                 }else{
-                    System.out.println("Se guarda la rutina: " + rutin.getNombre());
+                    eliminarRutinaM(DetallesRutinaFragment.getRutina());
                     actualizarRutina(mapRutin);
+                    actualizarUsuario();
                 }
             }else{
                 actualizarRutina(mapRutin);
+                actualizarUsuario();
                 //si no hay rutina se ponen los valores del fragmento a null
                 dataArrayList = new ArrayList<>();
                 rutina = null;
@@ -436,12 +465,15 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
             controlErrores =0;
         }else{
             controlErrores++;
-            if(rutin.getNombre()!=null){
+            if(rutin.getNombre().length()<1){
+                System.out.println("Nombre: " + rutin.getNombre().length());
                 Toast.makeText(getContext(), "El nombre no puede estar en blanco.", Toast.LENGTH_LONG).show();
             }else{
                 if(dias.isEmpty()){
+                    System.out.println("dias está vacío: " + dias.isEmpty());
                     Toast.makeText(getContext(), "Debes seleccionar almenos un día.", Toast.LENGTH_LONG).show();
-                }else{
+                }else if(ejerciciosLista.isEmpty()){
+                    System.out.println("No hay ejercicios en la lista: " + ejerciciosLista.isEmpty());
                     Toast.makeText(getContext(), "Debes añadir al menos un ejercicio.", Toast.LENGTH_LONG).show();
                 }
             }
@@ -566,5 +598,20 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("usuarios/"+MainActivity.getUsuario().getId()+"/rutinas/");
         ref.updateChildren(mapa);
+    }
+
+    public static void actualizarUsuario(){
+        System.out.println("Actualizando usuario");
+        DatabaseReference ref = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/"+MainActivity.getUsuario().getId());
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {//dataSnapshot son todos los usuarios
+                MainActivity.setUsuario(dataSnapshot.getValue(Usuario.class));
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+            }
+        });
     }
 }

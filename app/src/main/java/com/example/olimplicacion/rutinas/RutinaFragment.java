@@ -106,7 +106,4 @@ public class RutinaFragment extends Fragment implements RutinaFbAdapter.ItemClic
         fragmentTransaction.replace(R.id.fragmentContainerView, fragment, "nota").addToBackStack(null);
         fragmentTransaction.commit();
     }
-    public static List<String> getRutinasDeUsuario(){
-        return rutinasDeUsuario;
-    }
 }

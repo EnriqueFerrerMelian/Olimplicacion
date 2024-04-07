@@ -2,99 +2,6 @@
     <string name="app_name">Olimplicacion</string>
     <string name="client_id">911533527631-em4u3kon7ad0h5if0up5vfulmu0o71rq.apps.googleusercontent.com</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="ejercicioNombre">Nombre de ejercicio</string>
-
-    //Swing con un brazo
-    <string name="swing_con_un_brazo">Swing con un brazo</string>
-    <string name="swing_con_un_brazoM">Músculos trabajados: Glúteos e isquiotibiales, abdominales, cuádriceps, hombros.</string>
-    <string name="swing_con_un_brazoC">Cómo: Ponte en cuclillas y balancea la mancuerna con las piernas
-        antes de impulsarte inmediatamente hacia delante, llevando el peso hacia la cabeza mientras enderezas las piernas. Repite este movimiento y luego cambia de lado.</string>
-
-    //Press de banca con mancuernas
-    <string name="press_de_banca_con_mancuernas">Press de banca con mancuernas</string>
-    <string name="press_de_banca_con_mancuernasM">Músculos trabajados: Pectorales, hombros, tríceps, antebrazos, dorsales, trapecios, romboides.</string>
-    <string name="press_de_banca_con_mancuernasC">Cómo: Túmbate en un banco plano sujetando dos mancuernas sobre el pecho con un agarre por encima de la mano. Empuja hacia arriba hasta que los brazos estén rectos y luego baja con control.</string>
-
-    //Press de hombros con mancuernas
-    <string name="press_de_hombros_con_mancuernas">Press de hombros con mancuernas</string>
-    <string name="press_de_hombros_con_mancuernasM">Músculos trabajados: Deltoides, trapecios, tríceps, pectorales, core.</string>
-    <string name="press_de_hombros_con_mancuernasC">Cómo: Coloca los pies separados a la altura de los hombros y sujeta dos mancuernas a la altura de los hombros con un agarre por encima de la mano. Presiona las pesas por encima de tu cabeza hasta que tus brazos estén completamente extendidos. Vuelve lentamente a la posición inicial.</string>
-
-    //Curl martillo de bíceps cruzado
-    <string name="curl_martillo_de_biceps_cruzado">Curl martillo de bíceps cruzado</string>
-    <string name="curl_martillo_de_biceps_cruzadoM">Músculos trabajados: Bíceps, braquial, antebrazos.</string>
-    <string name="curl_martillo_de_biceps_cruzadoC">Cómo: De uno en uno, eleva cada pesa hacia el hombro contrario. Vuelve bajo control a la posición inicial y repita del otro lado.</string>
-
-    //Remo vertical con mancuernas
-    <string name="remo_vertical_con_mancuernas">Remo vertical con mancuernas</string>
-    <string name="remo_vertical_con_mancuernasM">Músculos trabajados: Delgados, trapecios, romboides y bíceps.</string>
-    <string name="remo_vertical_con_mancuernasC">Cómo: sujeta una mancuerna con una mano delante del cuerpo con un agarre por encima de la mano. Levante el codo hacia arriba y hacia el lado utilizando los músculos de los hombros para elevar la pesa hacia la barbilla. Baje bajo control hasta la posición inicial.</string>
-
-    //Step-ups
-    <string name="step_ups">Step-ups</string>
-    <string name="step_upsM">Músculos trabajados: Cuádriceps, isquiotibiales, glúteos, core.</string>
-    <string name="step_upsC">Cómo: Coloca el pie derecho en la plataforma elevada y empuja con el talón para levantarte y colocar el pie izquierdo en la plataforma. Vuelve a bajar con el pie izquierdo, concentrándote en flexionar la cadera y la rodilla de la pierna derecha. Repite en el otro lado.</string>
-
-    //Spider Curl con mancuernas
-    <string name="spider_curl_con_mancuernas">Spider Curl con mancuernas</string>
-    <string name="spider_curl_con_mancuernasM">Músculos trabajados: Bíceps, tríceps.</string>
-    <string name="spider_curl_con_mancuernasC">Cómo: Túmbate en un banco inclinado y sostén una mancuerna en cada mano, dejándolas colgar por debajo de los hombros. Utiliza los bíceps para levantar las mancuernas hacia los hombros. Vuelve lentamente a la posición inicial y repite.</string>
-
-    //Elevación con mancuernas
-    <string name="elevacion_con_mancuernas">Elevación con mancuernas</string>
-    <string name="elevacion_con_mancuernasM">Músculos trabajados: Espalda, hombros.</string>
-    <string name="elevacion_con_mancuernasC">Cómo: Arquea las pesas hacia los lados manteniendo los brazos rectos en todo momento hasta que sientas un fuerte estiramiento en los hombros. Vuelve lentamente a la posición inicial.</string>
-
-    //Aperturas con mancuernas con brazos flexionados
-    <string name="aperturas_con_mancuernas_con_brazos_flexionados">Aperturas con mancuernas con brazos flexionados</string>
-    <string name="aperturas_con_mancuernas_con_brazos_flexionadosM">Músculos trabajados: Dorsales, hombros, tríceps, pectorales, serrato anterior.</string>
-    <string name="aperturas_con_mancuernas_con_brazos_flexionadosC">Cómo: Túmbate en un banco plano. Sujeta la mancuerna con ambas manos por encima de ti con los brazos ligeramente flexionados. Manteniendo los brazos flexionados, arquea la pesa por detrás de la cabeza y luego vuelve lentamente a la posición inicial.</string>
-
-    //Zancadas con mancuernas
-    <string name="zancadas_con_mancuernas">Zancadas con mancuernas</string>
-    <string name="zancadas_con_mancuernasM">Músculos trabajados: Pantorrillas, abdominales y espalda baja.</string>
-    <string name="zancadas_con_mancuernasC">Cómo: De pie, con las mancuernas a los lados y las palmas de las manos hacia el cuerpo. Avanza todo lo que puedas con la pierna derecha, doblando la rodilla de atrás hasta que casi roce el suelo. Utiliza el talón del pie derecho para empujar la parte superior del cuerpo hasta la posición inicial. Repite la operación con la pierna contraria.</string>
-
-    //Levantamiento de peso muerto con mancuernas a una pierna
-    <string name="levantamiento_de_peso_muerto_con_mancuernas_a_una_pierna">Levantamiento de peso muerto con mancuernas a una pierna</string>
-    <string name="levantamiento_de_peso_muerto_con_mancuernas_a_una_piernaM">Músculos trabajados: Isquiotibiales, glúteos, tobillos y core.</string>
-    <string name="levantamiento_de_peso_muerto_con_mancuernas_a_una_piernaC">Cómo: Sujeta dos mancuernas delante de los muslos, con las palmas hacia dentro. Levanta lentamente una pierna por detrás, doblando ligeramente la otra, e inclínate hacia delante para que tus brazos bajen las mancuernas hacia el suelo. Haz una pausa y vuelve a la posición vertical.</string>
-
-    //Elevación de hombros con una sola mancuerna
-    <string name="elevacion_de_hombros_con_una_sola_mancuerna">Elevación de hombros con una sola mancuerna</string>
-    <string name="elevacion_de_hombros_con_una_sola_mancuernaM">Músculos trabajados: Deltoides, tríceps, trapecios, parte superior del pecho.</string>
-    <string name="elevacion_de_hombros_con_una_sola_mancuernaC">Cómo: Coloca una mano a cada lado de una mancuerna y déjala colgar entre las piernas. Levanta la mancuerna directamente por encima de su cabeza, luego bájala y repite.</string>
-
-    //Elevación de pantorrillas con mancuernas
-    <string name="elevacion_de_pantorrillas_con_mancuernas">Elevación de pantorrillas con mancuernas</string>
-    <string name="elevacion_de_pantorrillas_con_mancuernasM">Músculos trabajados: Pantorrillas, fuerza de agarre.</string>
-    <string name="elevacion_de_pantorrillas_con_mancuernasC">Cómo: De pie, sosteniendo dos mancuernas a los lados. Coloca las puntas de los pies en un escalón o plato de pesas con los talones tocando el suelo. Con los dedos de los pies apuntando hacia delante, levante los talones del suelo y contraiga las pantorrillas. Vuelva lentamente a la posición inicial.</string>
-
-    //Hollow Body Skullcrushers
-    <string name="hollow_body_skullcrushers">Hollow Body Skullcrushers</string>
-    <string name="hollow_body_skullcrushersM">Músculos trabajados: Tríceps, core, abdominales.</string>
-    <string name="hollow_body_skullcrushersC">Cómo: Túmbate con la espalda en el suelo, con las piernas estiradas y dos mancuernas sostenidas directamente sobre los hombros. Aprieta los abdominales, presionando la parte inferior de la espalda contra el suelo. Levanta las piernas unos centímetros del suelo. Levanta los omóplatos del suelo. Manteniendo los brazos rectos, desplace la parte superior de los brazos ligeramente hacia atrás. Doblando sólo los codos, baje las pesas hasta que casi toquen sus hombros, manteniendo el resto del cuerpo apretado en la posición inicial. Vuelve a presionar hacia arriba, enderezando sólo los codos.</string>
-
-    //Sentadilla rotativa con peso
-    <string name="sentadilla_rotativa_con_peso">Sentadilla rotativa con peso</string>
-    <string name="sentadilla_rotativa_con_pesoM">Músculos trabajados: Núcleo, abdominales.</string>
-    <string name="sentadilla_rotativa_con_pesoC">Cómo: Comienza colocándote en el banco declinado, agarrando una pesa ligera con ambas manos. Baja el torso hasta que quede paralelo al suelo. Sostén la pesa recta desde el pecho, manteniendo los brazos lo más rectos posible. Gira el torso y los brazos hacia un lado lo más posible, girando desde la parte baja del torso. Haz una pausa de 1 o 2 segundos. Vuelva a girar hacia el centro mientras aprieta el tronco para realizar una sentadilla, manteniendo los brazos rectos y llevando el peso hacia arriba. Repite en el lado opuesto.</string>
-
-    //Sentadilla lateral con mancuernas
-    <string name="sentadilla_lateral_con_mancuernas">Sentadilla lateral con mancuernas</string>
-    <string name="sentadilla_lateral_con_mancuernasM">Músculos trabajados: Cuádriceps, glúteos, Abductores.</string>
-    <string name="sentadilla_lateral_con_mancuernasC">Cómo: Comienza de pie con los pies separados a la anchura de los hombros y sostén una mancuerna en cada mano a los lados del cuerpo, con las palmas hacia adentro. Da un paso lateralmente hacia un lado, manteniendo el pie apuntando hacia adelante y manteniendo el otro pie en su lugar. Una vez que hayas dado el paso lateral, dobla la rodilla y la cadera para bajar el cuerpo hacia el suelo, manteniendo la espalda recta y el pecho levantado. La rodilla de la pierna que se mueve lateralmente debe estar en línea con el pie y no debe superar la punta de los dedos del pie. Empuja con el pie y vuelve a la posición inicial, llevando la pierna que se movió lateralmente hacia el centro. Repite el movimiento hacia el otro lado y continúa alternando los lados.</string>
-
-    //Peso muerto rumano con mancuernas
-    <string name="peso_muerto_rumano_con_mancuernas">Peso muerto rumano con mancuernas</string>
-    <string name="peso_muerto_rumano_con_mancuernasM">Músculos trabajados: Isquiotibiales, glúteos y erectores de la columna.</string>
-    <string name="peso_muerto_rumano_con_mancuernasC">Cómo: Comienza de pie con los pies separados a la anchura de los hombros y sostén una mancuerna en cada mano, con las palmas de las manos mirando hacia el cuerpo. Mantén la espalda recta y los hombros hacia atrás. Inclínate hacia adelante desde las caderas mientras doblas las rodillas ligeramente. Asegúrate de mantener la espalda en una posición neutral durante todo el movimiento. Baja las mancuernas por delante de las piernas mientras mantienes los brazos extendidos. El movimiento proviene de las caderas, no de la columna vertebral. Continúa bajando hasta que sientas un estiramiento en los isquiotibiales. Una vez que llegues a tu rango de movimiento máximo sin comprometer la técnica, invierte el movimiento y regresa a la posición inicial, llevando las mancuernas hacia arriba mientras mantienes la espalda recta. Repite el movimiento durante el número deseado de repeticiones.</string>
-
-    //Fila renegada con mancuernas
-    <string name="fila_renegada_con_mancuernas">Fila renegada con mancuernas</string>
-    <string name="fila_renegada_con_mancuernasM">Músculos trabajados: espalda alta, brazos, core.</string>
-    <string name="fila_renegada_con_mancuernasC">Cómo: Comienza en una posición de plancha alta con las manos apoyadas en las mancuernas y las piernas extendidas hacia atrás. Asegúrate de que las mancuernas estén directamente debajo de los hombros. Mantén una posición de plancha alta estable, mientras levantas una mancuerna hacia la caja torácica y llevas el codo hacia atrás, manteniendo el brazo pegado al cuerpo. Baja la mancuerna de manera controlada y repite el movimiento con la otra mano. Alterna los levantamientos de mancuernas, manteniendo una postura estable y un control adecuado durante todo el ejercicio.</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="peso">Peso :</string>
     <string name="repeticiones">Repeticiones :</string>
@@ -107,5 +14,6 @@
     <string name="a_adir_ejercicio">+ añadir ejercicio</string>
     <string name="anadir">Añadir</string>
     <string name="eliminar">Eliminar</string>
+    <string name="sobrescribir">Ya existe una rutina con ese nombre.\n Deseas sobrescribir?</string>
 
 </resources>
