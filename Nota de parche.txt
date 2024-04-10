@@ -1,2 +1,1 @@
 1- Añadir selectores en Lista ejercicios para filtrar por tipo de ejercicio.
-2- Implementar modificar peso y repeticiones en ejercicio.
