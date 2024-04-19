@@ -59,33 +59,57 @@
             </androidx.cardview.widget.CardView>
 
             <TextView
-                android:id="@+id/categoria"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:text="Categoría: "
+                android:textColor="@color/darkgrey"/>
+            <TextView
+                android:id="@+id/categoria"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:text="Categoria"
                 android:textColor="@color/darkgrey"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/detailMusculos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:text="Músculos: "
+                android:textColor="@color/darkgrey"/>
+            <TextView
+                android:id="@+id/detailMusculos"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:text="apertura_con_mancuernasM"
                 android:textColor="@color/darkgrey"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/detailDesc"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="20dp"
+                android:textSize="24sp"
+                android:textStyle="bold"
+                android:text="Descripción: "
+                android:textColor="@color/darkgrey"/>
+            <TextView
+                android:id="@+id/detailDesc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="10dp"
                 android:layout_marginEnd="10dp"
                 android:text="apertura_con_mancuernasC"
                 android:textColor="@color/darkgrey"

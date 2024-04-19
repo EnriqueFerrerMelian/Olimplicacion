@@ -356,14 +356,12 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
                     }
                 });
             }else{
-                System.out.println("no se ha pasado una rutina, no se ha configurado una imagen");
                 //si NO se ha recogido una imagen subimos la imagen por defecto y recojo el link
                 guardarRutinaEnRealtime();
             }
         }else{
             //si se ha pasado una rutina por parámetro y se ha hecho una foto
             if(confirmacionImg){
-                System.out.println("se ha pasado una rutina, se ha configurado una imagen");
                 if(rutina.getImg()!=null){
                     eliminarImagen();
                 }
@@ -388,7 +386,6 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
                     }
                 });
             }else{
-                System.out.println("se ha pasado una rutina, no se ha configurado una imagen");
                 //si se ha pasado una rutina por parámetro y no se ha hecho una foto
                 guardarRutinaEnRealtime();
             }
@@ -444,10 +441,9 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         mapRutin.put(binding.nombreDeRutina.getText().toString(), rutin);
 
         if(!(dias.isEmpty() || ejerciciosLista.isEmpty() || binding.nombreDeRutina.length()<1)){
-            System.out.println("dias, ejercicios y nombre estan cumplimentados");
             //si se está modificando una rutina
             if (rutina != null) {
-                //si el nombre se ha cambiado se comprueba si ya hay otra rutina con el nombre nuevo ya guardada
+                //si el nombre se ha cambiado, se comprueba si ya hay otra rutina con el nombre nuevo ya guardada
                 if(MainActivity.getUsuario().getRutinas().get(rutin.getNombre())!=null){
                     showSobrescribirSheet(mapRutin, rutin);
                 }else{
@@ -467,14 +463,14 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
             controlErrores++;
             if(rutin.getNombre().length()<1){
                 System.out.println("Nombre: " + rutin.getNombre().length());
-                Toast.makeText(getContext(), "El nombre no puede estar en blanco.", Toast.LENGTH_LONG).show();
+                escribirToast("El nombre no puede estar en blanco.");
             }else{
                 if(dias.isEmpty()){
                     System.out.println("dias está vacío: " + dias.isEmpty());
-                    Toast.makeText(getContext(), "Debes seleccionar almenos un día.", Toast.LENGTH_LONG).show();
+                    escribirToast("Debes seleccionar almenos un día.");
                 }else if(ejerciciosLista.isEmpty()){
                     System.out.println("No hay ejercicios en la lista: " + ejerciciosLista.isEmpty());
-                    Toast.makeText(getContext(), "Debes añadir al menos un ejercicio.", Toast.LENGTH_LONG).show();
+                    escribirToast("Debes añadir al menos un ejercicio.");
                 }
             }
         }
@@ -613,5 +609,9 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
             public void onCancelled(DatabaseError error) {
             }
         });
+    }
+
+    public void escribirToast(String texto){
+        Toast.makeText(getContext(), texto, Toast.LENGTH_LONG).show();
     }
 }

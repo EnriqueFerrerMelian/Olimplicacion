@@ -9,7 +9,7 @@ android {
 
     defaultConfig {
         applicationId = "com.example.olimplicacion"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 33
         versionCode = 1
         versionName = "1.0"
@@ -39,16 +39,17 @@ dependencies {
     implementation("com.google.firebase:firebase-analytics")
     implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("com.google.firebase:firebase-database:20.3.1")
-    //implementation ("com.firebaseui:firebase-ui-storage:7.2.0")
     implementation ("com.firebaseui:firebase-ui-database:7.2.0")
-    //Splash API
-   // implementation("androidx.core:core-splashscreen:8.0.2")
+    //Splash API implementation("androidx.core:core-splashscreen:8.0.2") //por implementar
     //Picasso
     implementation("com.squareup.picasso:picasso:2.71828")
     //Glide
     implementation ("com.github.bumptech.glide:glide:4.16.0")
-
+    //Gráficos
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
+    implementation("co.yml:ycharts:2.1.0")
+
+
     implementation("androidx.appcompat:appcompat:1.6.1")
     implementation("com.google.android.material:material:1.9.0")
     implementation("androidx.constraintlayout:constraintlayout:2.1.4")

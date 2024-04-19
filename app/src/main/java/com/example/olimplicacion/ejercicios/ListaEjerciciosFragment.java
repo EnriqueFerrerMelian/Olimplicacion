@@ -58,7 +58,7 @@ public class ListaEjerciciosFragment extends Fragment implements EjercicioFbAdap
                     cargarDesdeSpiner(valorSpinner);
                 }
                 if(i==2){
-                    valorSpinner = "kettle";
+                    valorSpinner = "kettlebells";
                     cargarDesdeSpiner(valorSpinner);
                 }
             }

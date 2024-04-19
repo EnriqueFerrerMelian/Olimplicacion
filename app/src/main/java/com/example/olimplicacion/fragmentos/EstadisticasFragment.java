@@ -1,46 +1,72 @@
 package com.example.olimplicacion.fragmentos;
 
+import android.app.Dialog;
 import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.icu.text.SimpleDateFormat;
-import android.icu.util.Calendar;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.NumberPicker;
+import android.widget.Toast;
 
+import com.example.olimplicacion.MainActivity;
 import com.example.olimplicacion.R;
+import com.example.olimplicacion.clases.Peso;
+import com.example.olimplicacion.clases.Usuario;
 import com.example.olimplicacion.databinding.FragmentEstadisticasBinding;
+import com.example.olimplicacion.ejercicios.Ejercicio;
+import com.example.olimplicacion.rutinas.DetallesRutinaFragment;
+import com.example.olimplicacion.rutinas.Rutina;
+import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.LegendEntry;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.github.mikephil.charting.utils.ViewPortHandler;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class EstadisticasFragment extends Fragment {
-    FragmentEstadisticasBinding binding;
-    private String fecha;
-    private List<String> xValuesMes;
-    private List<String> xValuesSemana;
-    private List<String> xValuesDia;
-    private List<Entry> entries1;
-    LineDataSet lineDataSet1;
-    LineData lineData;
-
-
-
+    private static FragmentEstadisticasBinding binding;
+    private static Usuario usuario = MainActivity.getUsuario();
+    private static Peso pesoOB = MainActivity.getPeso();
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -48,81 +74,175 @@ public class EstadisticasFragment extends Fragment {
         binding = FragmentEstadisticasBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
-
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        //declaracion de variables
-        Date fechaHoy = Calendar.getInstance().getTime();
-        SimpleDateFormat df = new SimpleDateFormat("dd-MMM", Locale.getDefault());
-        String formattedDate = df.format(fechaHoy);
-        fecha = formattedDate;
-        System.out.println("Fecha de hoy:"+fecha);
-        Description description = new Description();
-        //xValuesMes = Arrays.asList(inicio);//obtendrá los meses
-        /*xValuesSemana = Arrays.asList("Enero", "Febrero", "Marzo", "Abril", "MaMayo", "Junio");//nombre de valores en eje X
-        xValuesDia = Arrays.asList("Enero", "Febrero", "Marzo", "Abril", "MaMayo", "Junio");//nombre de valores en eje X*/
-        xValuesDia = new ArrayList<>();
+        if(pesoOB==null){
+            pesoOB = new Peso();
+        }else{
+            binding.textoInfo.setVisibility(View.GONE);
+        }
 
-        XAxis xAxis = binding.chart.getXAxis();
-        YAxis yAxis = binding.chart.getAxisLeft();
-
-        //codigo
-        description.setText("Seguimiento de peso");
-        description.setPosition(250f, 15f);
-        binding.chart.setDescription(description);
-        binding.chart.getAxisRight().setDrawLabels(false);
-
-        //configuración de eje horizontal
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);//posicion de valores del eje X
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(xValuesDia));
-        //xAxis.setLabelCount(10);//divisiones que puede llegar a tomar como max en eje X
-        xAxis.setGranularity(1f);
-
-        //Configuración del eje vertical
-        /*yAxis.setAxisMaximum(0f);//valor mínimo de Y
-        yAxis.setAxisMaximum(100f);//valor máximo de Y DEBE SER EL PESO INICIAL INTRODUCIDO POR EL USUARIO*/
-        //yAxis.setAxisLineWidth(4f);//grosor de linea de valores
-        yAxis.setDrawLabels(false);
-        //yAxis.setAxisLineColor(Color.rgb(255,111,0));//color de línea
-        //yAxis.setLabelCount(10);//divide el máximo de valores entre el valor establecido
-
-        entries1 = new ArrayList<>();
-
-        lineDataSet1 = new LineDataSet(entries1, "Peso");
-        lineDataSet1.setColor(Color.GREEN);
-
-        lineData = new LineData(lineDataSet1);
-        binding.chart.setData(lineData);
-        binding.chart.invalidate();
-
-        //listeners
+        Calendar cal = new GregorianCalendar();
+        Date date = cal.getTime();
+        String fecha = String.valueOf(date.getDate()) +" / "+ String.valueOf(date.getMonth());
+        System.out.println("GetDate: " + fecha);
+        cargarChart();
         binding.anadir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showBottonDialog();
+                showBottonSheet();
+            }
+        });
+    }
+    public void showBottonSheet(){
+        final Dialog dialog = new Dialog(getContext());
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.my_bottom_sheet_add_peso);
+        Button add = dialog.findViewById(R.id.add);
+        //inicialización de numberPicker**************************
+        NumberPicker numberPeso = dialog.findViewById(R.id.numberPeso);
+        numberPeso.setMinValue(1);numberPeso.setMaxValue(100);
+        NumberPicker numberPesoDecimal = dialog.findViewById(R.id.numberPesoDecimal);
+        numberPesoDecimal.setMinValue(0);numberPesoDecimal.setMaxValue(9);
+        //inicialización de numberPicker**********************fin*
+        add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //logica del realtime database
+                String pesoOut = numberPeso.getValue() +"." + numberPesoDecimal.getValue();
+                actualizarPeso(addPeso(pesoOut));
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+    }
+
+
+    public Peso addPeso(String peso){
+        Map<String, String> datosPeso = new HashMap<>();
+        datosPeso.put("x", String.valueOf(pesoOB.getDatosPeso().size()));
+        datosPeso.put("y", peso);
+        pesoOB.getDatosPeso().add(datosPeso);
+        System.out.println(pesoOB.getDatosPeso().size());
+        return pesoOB;
+    }
+
+    /**
+     * Actualiza la lista de pesos en el Firebase.
+     * @param peso
+     */
+    public void actualizarPeso(Peso peso){
+        //guardo la fecha de hoy
+        Calendar cal = new GregorianCalendar();
+        Date date = cal.getTime();
+        String fecha = date.getDate() +"/"+ date.getMonth() +"/"+ date.getYear();
+
+        peso.getFecha().add(fecha);
+        peso.setObjetivo("75");
+
+        DatabaseReference ref = FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/peso");
+        ref.setValue(peso).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                actualizarUsuario();
+                cargarChart();
+            }
+        });
+    }
+    public void escribirToast(String texto){
+        Toast.makeText(getContext(), texto, Toast.LENGTH_LONG).show();
+    }
+    public static void actualizarUsuario(){
+        System.out.println("Actualizando usuario");
+        DatabaseReference ref = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/"+MainActivity.getUsuario().getId());
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                MainActivity.setUsuario(dataSnapshot.getValue(Usuario.class));
+                MainActivity.setPeso(dataSnapshot.child("peso").getValue(Peso.class));
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
             }
         });
     }
 
-    private void showBottonDialog(){
-        BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(getContext());
-        //creamos la vista
-        View view = LayoutInflater.from(getContext()).inflate(R.layout.my_bottom_sheet_ejercicio, null);
-
-        //configuracin de objetos con binding
-        String[] data = {",0", ",1", ",2", ",3", ",4", ",5", ",6", ",7", ",8", ",9"};
-
-        bottomSheetDialog.setContentView(view);
-        bottomSheetDialog.show();
+    /**
+     * Configura el chart y carga sus contenidos. Obtiene los datos de un objeto usuario.
+     */
+    public void cargarChart(){
+        System.out.println("Cargando chart: método");
+        //leyenda
+        String legendName[] = {"Objetivo", "Peso"};
+        //configurar descripción
+        Description description = new Description();
+        description.setText("Seguimiento de peso");
+        description.setTextSize(14f);
+        description.setPosition(360f, 25f);
+        binding.lineChart.setDescription(description);
+        binding.lineChart.setDrawBorders(false);
+        //estilando chart
+        binding.lineChart.getAxisRight().setDrawLabels(false);
+        binding.lineChart.getAxisRight().setDrawGridLines(false);
+        binding.lineChart.getAxisLeft().setDrawLabels(false);
+        binding.lineChart.getAxisLeft().setDrawGridLines(false);
+        binding.lineChart.getXAxis().setDrawGridLines(false);
+        binding.lineChart.setDrawGridBackground(false);
+        //insertando fechas en eje X
+        XAxis xAxis = binding.lineChart.getXAxis();
+        binding.lineChart.getXAxis().setDrawLabels(false);
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        List<String> xValues = new ArrayList<>();
+        xValues = pesoOB.getFecha();
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(xValues));
+        //linea de objetivo
+        YAxis leftAxis = binding.lineChart.getAxisLeft();
+        //si se ha seleccionado una marca de objetivo
+        if(pesoOB.getObjetivo()!=null){
+            LimitLine ll = new LimitLine(Float.valueOf(pesoOB.getObjetivo()), "Objetivo");
+            ll.setLineColor(Color.rgb(255,135,0));
+            ll.setLineWidth(3f);
+            ll.setTextColor(Color.BLACK);
+            ll.setTextSize(10f);
+            leftAxis.addLimitLine(ll);
+        }
+        //inserción de datos
+        List<Entry> entries = new ArrayList<>();
+        for (int i = 0; i < pesoOB.getDatosPeso().size(); i++) {
+            entries.add(new Entry(Float.valueOf(pesoOB.getDatosPeso().get(i).get("x")),Float.valueOf(pesoOB.getDatosPeso().get(i).get("y")) ));
+        }
+        //configurando los datos visibles en el chart
+        LineDataSet lineDataSet = new LineDataSet(entries, "Peso");
+        lineDataSet.setColor(Color.GREEN);
+        lineDataSet.setValueTextSize(15);
+        lineDataSet.setLineWidth(3);
+        LineData lineData = new LineData(lineDataSet);
+        binding.lineChart.setData(lineData);
+        //leyends CREAR AL AÑADIR DATOS
+        Legend l = binding.lineChart.getLegend();
+        l.setEnabled(true);
+        l.setTextSize(15);
+        l.setForm(Legend.LegendForm.LINE);
+        LegendEntry[] legendEntry = new LegendEntry[2];
+        LegendEntry lEntry1 = new LegendEntry();
+        lEntry1.formColor = Color.GREEN;
+        lEntry1.label = "Peso";
+        legendEntry[0] = lEntry1;
+        LegendEntry lEntry2 = new LegendEntry();
+        lEntry2.formColor = Color.rgb(255,135,0);
+        lEntry2.label = "Objetivo";
+        legendEntry[1] = lEntry2;
+        l.setCustom(legendEntry);
+        binding.lineChart.setVisibleXRangeMaximum(7f);
+        binding.lineChart.moveViewToX(entries.size()-1);
+        binding.lineChart.setNoDataText("No se ha guardado ningún dato.");
+        binding.lineChart.invalidate();
     }
 
-    //recoge los datos de peso del bottonsheetlayout.
-    public void recogerData(float valorPeso){
-        //inserta la fecha de hoy en la lista de fechas
-        xValuesDia.add(fecha);
-        //insertamos una entrada con el nuevo peso
-        entries1.add(new Entry(entries1.size(),valorPeso));
-        System.out.println("Valor de entries1:" + entries1.get(entries1.size()-1));
-        lineDataSet1 = new LineDataSet(entries1, "Peso");
-    }
 }

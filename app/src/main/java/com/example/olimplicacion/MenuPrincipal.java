@@ -60,10 +60,10 @@ public class MenuPrincipal extends AppCompatActivity {
         int id = item.getItemId();
         if(id == R.id.perfil){
             reemplazarFragmento(new PerfilFragment());
-            Toast.makeText(this, "Estas en la opción Perfil", Toast.LENGTH_LONG).show();
+            escribirToast("Estas en la opción Perfil");
         }
         if(id == R.id.configuracion){
-            Toast.makeText(this, "Estas en la opción Configuracion", Toast.LENGTH_LONG).show();
+            escribirToast("Estas en la opción Configuracion");
         }
         return true;
     }
@@ -83,5 +83,8 @@ public class MenuPrincipal extends AppCompatActivity {
         fragmentTransaction.replace(R.id.fragmentContainerView, fragmento);
         fragmentoDesechable = fragmento;
         fragmentTransaction.commit();
+    }
+    public void escribirToast(String texto){
+        Toast.makeText(MenuPrincipal.this, texto, Toast.LENGTH_LONG).show();
     }
 }

@@ -7,15 +7,17 @@
     tools:context=".fragmentos.EstadisticasFragment">
 
     <com.github.mikephil.charting.charts.LineChart
-        android:id="@+id/chart"
+        android:id="@+id/lineChart"
         android:layout_width="match_parent"
         android:layout_height="228dp"
         android:scrollbars="horizontal"
-        android:layout_margin="8dp"/>
+        android:layout_margin="8dp"
+        android:layout_marginTop="20dp"
+        android:scrollbarAlwaysDrawHorizontalTrack="true"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:orientation="horizontal">
 
         <Button
@@ -44,6 +46,14 @@
             android:background="@color/white"
             android:textAllCaps="false"
             android:text="@string/eliminar" />
-    </LinearLayout>
 
+    </LinearLayout>
+    <TextView
+        android:id="@+id/textoInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Debe refrescarse la pantalla al insertar datos por primera vez."
+        android:textSize="14dp"
+        android:textStyle="bold"/>
 </LinearLayout>

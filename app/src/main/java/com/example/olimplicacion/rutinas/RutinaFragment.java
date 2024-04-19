@@ -13,8 +13,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.example.olimplicacion.MainActivity;
+import com.example.olimplicacion.MenuPrincipal;
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.databinding.FragmentRutinaBinding;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
@@ -106,4 +108,6 @@ public class RutinaFragment extends Fragment implements RutinaFbAdapter.ItemClic
         fragmentTransaction.replace(R.id.fragmentContainerView, fragment, "nota").addToBackStack(null);
         fragmentTransaction.commit();
     }
+
+
 }

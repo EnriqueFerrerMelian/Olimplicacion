@@ -3,6 +3,7 @@ package com.example.olimplicacion.clases;
 import com.example.olimplicacion.rutinas.Rutina;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,14 +11,29 @@ public class Usuario {
     int id;
     String nombre, clave;
     Map<String, Object> rutinas;
+    Map<String, Object> peso;
 
-    public Usuario(int id, String nombre,String clave, Map<String, Object> rutinas) {
+    public Usuario(int id, String nombre,String clave, Map<String, Object> rutinas,  Map<String, Object>  peso) {
         this.id = id;
         this.nombre = nombre;
         this.clave = clave;
         this.rutinas = rutinas;
+        this.peso = peso;
+
     }
-    public Usuario(){}
+    public Usuario(){
+        this.rutinas = new HashMap<>();
+        this.peso = new HashMap<>();
+    }
+
+    public Map<String, Object> getPeso() {
+        return peso;
+    }
+
+    public void setPeso(Map<String, Object> peso) {
+        this.peso = peso;
+    }
+
     public String getClave() {
         return clave;
     }
@@ -53,10 +69,11 @@ public class Usuario {
     @Override
     public String toString() {
         return "Usuario{" +
-                "id='" + id + '\'' +
+                "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", clave='" + clave + '\'' +
                 ", rutinas=" + rutinas +
+                ", peso=" + peso +
                 '}';
     }
 }

@@ -3,6 +3,10 @@ Retrofit (buscar)
 
 -https://dribbble.com/search/android
 
+iImágenes
+https://www.svgviewer.dev/svg-to-png
+
+Android services.
 
 
 -Android:
@@ -25,6 +29,7 @@ Retrofit (buscar)
 *Popup menu inside a RecyclerView: https://www.youtube.com/watch?v=hKyjb4b19YM
 *How to set error message in EditText: https://www.youtube.com/watch?v=Pbvr2QwK2as
 *How to Implement Spinner in Android:https://www.youtube.com/watch?v=4ogzfAipGS8&t=433s
+*How to create a line chart: https://medium.com/@sajitheranda227/how-to-create-a-line-chart-in-an-android-app-part-1-bcb83fd1da3
 
 -SQLite:
 *Using SQLite: https://www.youtube.com/watch?v=uBw9QSWSIww

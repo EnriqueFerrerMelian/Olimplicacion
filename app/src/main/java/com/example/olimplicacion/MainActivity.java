@@ -7,8 +7,10 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.olimplicacion.clases.Peso;
 import com.example.olimplicacion.clases.Usuario;
 import com.example.olimplicacion.databinding.ActivityMainBinding;
+import com.example.olimplicacion.rutinas.Rutina;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -27,6 +29,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     private static Usuario usuario = new Usuario();
+    private static Peso peso = new Peso();
     ActivityMainBinding binding;
 
     @Override
@@ -72,11 +75,12 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {//dataSnapshot son todos los usuarios
                 boolean confirmado = false;
-                List<String> rutinas = new ArrayList<>();
-                for (DataSnapshot user: dataSnapshot.getChildren()) {//
-                    if(user.child("nombre").getValue().equals(nombre) && user.child("clave").getValue().equals(clave)){
+                for (DataSnapshot data: dataSnapshot.getChildren()) {//
+                    if(data.child("nombre").getValue().equals(nombre) && data.child("clave").getValue().equals(clave)){
                         //recojo los datos del usuario en un objeto Usuario
-                        usuario = user.getValue(Usuario.class);
+                        System.out.println(data.getValue(Usuario.class));
+                        usuario = data.getValue(Usuario.class);
+                        peso = data.child("peso").getValue(Peso.class);
                         confirmado=true;
                         //ejecuto el fragmento 'MenuPrincipal'
                         irAMenuPrincipal();
@@ -87,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 if(!confirmado){
-                    Toast.makeText(MainActivity.this, "No estás registrado", Toast.LENGTH_LONG).show();
+                    escribirToast("No estás registrado");
                 }
             }
             @Override
@@ -110,7 +114,17 @@ public class MainActivity extends AppCompatActivity {
     public static Usuario getUsuario(){
         return usuario;
     }
-    public static void setUsuario(Usuario user){
-        usuario = user;
+    public static Peso getPeso(){
+        return peso;
+    }
+
+    public static void setUsuario(Usuario usuarioFb){
+        usuario = usuarioFb;
+    }
+    public static void setPeso(Peso pesoFb){
+        peso = pesoFb;
+    }
+    public void escribirToast(String texto){
+        Toast.makeText(MainActivity.this, texto, Toast.LENGTH_LONG).show();
     }
 }
