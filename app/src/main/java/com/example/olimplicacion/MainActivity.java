@@ -78,7 +78,6 @@ public class MainActivity extends AppCompatActivity {
                 for (DataSnapshot data: dataSnapshot.getChildren()) {//
                     if(data.child("nombre").getValue().equals(nombre) && data.child("clave").getValue().equals(clave)){
                         //recojo los datos del usuario en un objeto Usuario
-                        System.out.println(data.getValue(Usuario.class));
                         usuario = data.getValue(Usuario.class);
                         peso = data.child("peso").getValue(Peso.class);
                         confirmado=true;

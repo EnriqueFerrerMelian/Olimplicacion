@@ -40,6 +40,8 @@ dependencies {
     implementation("com.google.firebase:firebase-storage:20.3.0")
     implementation("com.google.firebase:firebase-database:20.3.1")
     implementation ("com.firebaseui:firebase-ui-database:7.2.0")
+    implementation ("com.google.firebase:firebase-messaging:20.2.3")
+
     //Splash API implementation("androidx.core:core-splashscreen:8.0.2") //por implementar
     //Picasso
     implementation("com.squareup.picasso:picasso:2.71828")
