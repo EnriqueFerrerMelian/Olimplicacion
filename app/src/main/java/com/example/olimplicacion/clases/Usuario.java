@@ -12,6 +12,7 @@ public class Usuario {
     String nombre, clave;
     Map<String, Object> rutinas;
     Map<String, Object> peso;
+    Map<String, Object> avance;
 
     public Usuario(int id, String nombre,String clave, Map<String, Object> rutinas,  Map<String, Object>  peso) {
         this.id = id;
@@ -65,6 +66,7 @@ public class Usuario {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
+
 
     @Override
     public String toString() {

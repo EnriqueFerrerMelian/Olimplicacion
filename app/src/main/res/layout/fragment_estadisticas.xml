@@ -5,7 +5,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".fragmentos.EstadisticasFragment">
-
+    <TextView
+        android:id="@+id/textoInfo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="Debe refrescarse la pantalla al insertar datos por primera vez."
+        android:textSize="14dp"
+        android:textStyle="bold"/>
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="match_parent"
@@ -38,12 +45,15 @@
             android:text="Eliminar peso" />
 
     </LinearLayout>
-    <TextView
-        android:id="@+id/textoInfo"
+
+
+
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barChart"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="Debe refrescarse la pantalla al insertar datos por primera vez."
-        android:textSize="14dp"
-        android:textStyle="bold"/>
+        android:layout_height="228dp"
+        android:scrollbars="horizontal"
+        android:layout_margin="8dp"
+        android:layout_marginTop="20dp"
+        android:scrollbarAlwaysDrawHorizontalTrack="true"/>
 </LinearLayout>

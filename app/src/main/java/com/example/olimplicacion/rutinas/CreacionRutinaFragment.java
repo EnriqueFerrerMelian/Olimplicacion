@@ -38,12 +38,14 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.olimplicacion.MainActivity;
 import com.example.olimplicacion.R;
+import com.example.olimplicacion.clases.Avance;
 import com.example.olimplicacion.clases.Usuario;
 import com.example.olimplicacion.ejercicios.Ejercicio;
 import com.example.olimplicacion.ejercicios.EjercicioAdapterModificar;
 import com.example.olimplicacion.databinding.FragmentCreacionRutinaBinding;
 import com.example.olimplicacion.ejercicios.ListaEjerciciosFragment;
 import com.example.olimplicacion.ejercicios.DetalleEjercicioFragment;
+import com.example.olimplicacion.fragmentos.EstadisticasFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -56,6 +58,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import org.checkerframework.framework.qual.DefaultQualifier;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -147,7 +151,7 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         binding.editarImagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showBottonSheet();
+                showImgOpt();
             }
         });
 
@@ -206,7 +210,7 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
      * Abre un cuadro de diálogo desde donde se seleccionará añadir una imagen desde la galería
      * o desde la cámara
      */
-    public void showBottonSheet() {
+    public void showImgOpt() {
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.my_botton_sheet);
@@ -240,7 +244,7 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
-    public void showSobrescribirSheet(Map<String, Object> mapRutin, Rutina rutin) {
+    public void showSobrescribirSheet(Map<String, Object> mapRutin, List<Ejercicio> ejercicios) {
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.my_bottom_sheet_sobrescribir_rutina);
@@ -250,8 +254,8 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
             @Override
             public void onClick(View view) {
                 eliminarRutinaM(DetallesRutinaFragment.getRutina());
-                actualizarRutina(mapRutin);
-                actualizarUsuario();
+                actualizarRutina(mapRutin, ejercicios);
+
                 dialog.dismiss();
             }
         });
@@ -443,17 +447,16 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         if(!(dias.isEmpty() || ejerciciosLista.isEmpty() || binding.nombreDeRutina.length()<1)){
             //si se está modificando una rutina
             if (rutina != null) {
+                System.out.println(rutin.getNombre());
                 //si el nombre se ha cambiado, se comprueba si ya hay otra rutina con el nombre nuevo ya guardada
                 if(MainActivity.getUsuario().getRutinas().get(rutin.getNombre())!=null){
-                    showSobrescribirSheet(mapRutin, rutin);
+                    showSobrescribirSheet(mapRutin, ejerciciosLista);
                 }else{
                     eliminarRutinaM(DetallesRutinaFragment.getRutina());
-                    actualizarRutina(mapRutin);
-                    actualizarUsuario();
+                    actualizarRutina(mapRutin, ejerciciosLista);
                 }
             }else{
-                actualizarRutina(mapRutin);
-                actualizarUsuario();
+                actualizarRutina(mapRutin, ejerciciosLista);
                 //si no hay rutina se ponen los valores del fragmento a null
                 dataArrayList = new ArrayList<>();
                 rutina = null;
@@ -589,11 +592,18 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         }
     }
 
-    public void actualizarRutina(Map<String, Object> mapa){
+    public void actualizarRutina(Map<String, Object> mapa, List<Ejercicio> ejercicios){
+
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("usuarios/"+MainActivity.getUsuario().getId()+"/rutinas/");
-        ref.updateChildren(mapa);
+        ref.updateChildren(mapa).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                actualizarAvance(ejercicios);
+                actualizarUsuario();
+            }
+        });
     }
 
     public static void actualizarUsuario(){
@@ -610,7 +620,20 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
             }
         });
     }
-
+    public static void actualizarAvance(List<Ejercicio> ejercicios){
+        System.out.println("actualizarAvance()");
+        System.out.println("Ejercicios: " + ejercicios.size());
+        for (int i = 0; i < ejercicios.size(); i++) {
+            if(!MainActivity.getAvance().getEjerciciosNombres().contains(ejercicios.get(i).getNombre())){
+                MainActivity.getAvance().getEjerciciosNombres().add(ejercicios.get(i).getNombre());
+                MainActivity.getAvance().getPesos().add(ejercicios.get(i).getPeso());
+            }
+        }
+        DatabaseReference ref = FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/avance");
+        ref.setValue(MainActivity.getAvance());
+    }
     public void escribirToast(String texto){
         Toast.makeText(getContext(), texto, Toast.LENGTH_LONG).show();
     }

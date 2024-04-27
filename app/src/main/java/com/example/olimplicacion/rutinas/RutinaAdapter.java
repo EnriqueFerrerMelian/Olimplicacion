@@ -83,40 +83,4 @@ public class RutinaAdapter  extends RecyclerView.Adapter<RutinaAdapter.ViewHolde
 
         }
     }
-    /*public void eliminarRutina(String id) {
-        System.out.println("eliminarRutina()");
-        DatabaseReference ref = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("rutinas");
-
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot rut : dataSnapshot.getChildren()) {//
-                    if (rut.child("id").getValue().equals(id)) {
-                        ref.child(rut.getKey()).removeValue();
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                System.out.println("No se encuentre o hay un error");
-            }
-        });
-        DatabaseReference ref2 = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("usuarios/" + MainActivity.getUsuario().getId() + "/rutinas");
-        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot rut : dataSnapshot.getChildren()) {//
-                    if (rut.getValue().equals(id)) {
-                        ref2.child(rut.getKey()).removeValue();
-                    }
-                }
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-                System.out.println("No se encuentra o hay un error");
-            }
-        });
-    }*/
 }

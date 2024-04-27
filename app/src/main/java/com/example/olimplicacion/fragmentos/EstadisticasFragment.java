@@ -29,6 +29,9 @@ import com.github.mikephil.charting.components.LegendEntry;
 import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
@@ -68,13 +71,18 @@ public class EstadisticasFragment extends Fragment {
         }else{
             binding.textoInfo.setVisibility(View.GONE);
         }
-        configurarChart();
+        configurarChartPeso();
+        configurarChartAvance();
         binding.aniadirPeso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showBottonSheetPeso();
             }
         });
+
+        /**
+         * selecciona un dato del chart y lo guarda en una variable global 'pesoSeleccionado'
+         */
         binding.lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(Entry e, Highlight h) {
@@ -94,14 +102,13 @@ public class EstadisticasFragment extends Fragment {
                     int index = binding.lineChart.getLineData().getDataSetByIndex(0).getEntryIndex(pesoSeleccionado);
                     pesoOB.getDatosPeso().remove(index);
                     pesoOB.getFecha().remove(index);
-                    actualizarDatos(pesoOB);
+                    actualizarPeso(pesoOB);
                 }else{
                     escribirToast("Debe haber al menos un registro");
                 }
             }
         });
     }
-
     /**
      * Abre un cuadro de diálogo con el que se podrá introducir un peso en el registro
      */
@@ -125,12 +132,13 @@ public class EstadisticasFragment extends Fragment {
         numberPeso.setMinValue(1);numberPeso.setMaxValue(150);
         NumberPicker numberPesoDecimal = dialog.findViewById(R.id.numberPesoDecimal);
         numberPesoDecimal.setMinValue(0);numberPesoDecimal.setMaxValue(9);
-        if(pesoOB.getDatosPeso().size()>0){
+        if(pesoOB.getDatosPeso()!=null){
             String[] objetivo = pesoOB.getDatosPeso().get(pesoOB.getDatosPeso().size()-1).get("y").split("\\.");
             System.out.println(objetivo[0] + objetivo[1]);
             numberPeso.setValue(Integer.valueOf(objetivo[0]));
             numberPesoDecimal.setValue(Integer.valueOf(objetivo[1]));
         }
+        System.out.println("pesoOB.getDatosPeso(): " + pesoOB.getDatosPeso());
         //inicialización de numberPicker**********************fin*
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -138,7 +146,7 @@ public class EstadisticasFragment extends Fragment {
                 //logica del realtime database
                 String pesoOut = numberPeso.getValue() +"." + numberPesoDecimal.getValue();
                 String objetivoOut = numberPesoOb.getValue() +"." + numberPesoDecimalOb.getValue();
-                actualizarDatos(addDatos(pesoOut, objetivoOut));
+                actualizarPeso(addDatos(pesoOut, objetivoOut));
                 dialog.dismiss();
             }
         });
@@ -176,7 +184,7 @@ public class EstadisticasFragment extends Fragment {
      * Actualiza los datos del peso del usuario en Firebase.
      * @param peso
      */
-    public void actualizarDatos(Peso peso){
+    public void actualizarPeso(Peso peso){
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/peso");
@@ -189,12 +197,10 @@ public class EstadisticasFragment extends Fragment {
     }
 
     /**
-     * Actualiza los onjetos usuario y peso con los de FireBase.
+     * Actualiza los objetos usuario y peso de la aplicación con los de FireBase.
      * Cuando se actualizan se vuelve a cargar el gráfico
      */
     public static void actualizarUsuario(){
-        binding.lineChart.clear();
-        System.out.println("actualizarUsuario()");
         DatabaseReference ref = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("usuarios/"+MainActivity.getUsuario().getId());
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -202,8 +208,7 @@ public class EstadisticasFragment extends Fragment {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 MainActivity.setUsuario(dataSnapshot.getValue(Usuario.class));
                 MainActivity.setPeso(dataSnapshot.child("peso").getValue(Peso.class));
-                System.out.println(pesoOB);
-                configurarChart();
+                configurarChartPeso();
             }
             @Override
             public void onCancelled(DatabaseError error) {
@@ -214,7 +219,7 @@ public class EstadisticasFragment extends Fragment {
     /**
      * Configura la apariencia por defecto del chart y carga los datos del objeto Peso
      */
-    public static void configurarChart(){
+    public static void configurarChartPeso(){
         System.out.println("configurarChart()");
         //configurar descripción
         Description description = new Description();
@@ -273,7 +278,7 @@ public class EstadisticasFragment extends Fragment {
         //inserción de entradas
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < pesoOB.getDatosPeso().size(); i++) {
-            entries.add(new Entry(Float.valueOf(pesoOB.getDatosPeso().get(i).get("x")),Float.valueOf(pesoOB.getDatosPeso().get(i).get("y")) ));
+            entries.add(new Entry(Float.valueOf(i),Float.valueOf(pesoOB.getDatosPeso().get(i).get("y")) ));
         }
         LineDataSet lineDataSet = new LineDataSet(entries, "Peso");
         lineDataSet.setColor(Color.GREEN);
@@ -285,6 +290,53 @@ public class EstadisticasFragment extends Fragment {
         binding.lineChart.moveViewToX(entries.size()-1);
         binding.lineChart.setData(lineData);
         binding.lineChart.invalidate();
+    }
+    public static void configurarChartAvance(){
+        System.out.println("configurarChartAvance()");
+        //configurar descripción
+        Description description = new Description();
+        description.setText("Progreso");
+        description.setTextSize(14f);
+        description.setPosition(360f, 25f);
+
+        //borrando bordes
+        binding.barChart.setDrawBorders(false);
+        binding.barChart.getAxisRight().setDrawLabels(false);
+        binding.barChart.getAxisRight().setDrawGridLines(false);
+        binding.barChart.getAxisLeft().setDrawLabels(false);
+        binding.barChart.getAxisLeft().setDrawGridLines(false);
+        binding.barChart.getXAxis().setDrawGridLines(false);
+        binding.barChart.setDrawGridBackground(false);
+
+
+        binding.barChart.setDescription(description);
+        binding.barChart.canScrollHorizontally(1);
+        binding.barChart.setVisibleXRangeMaximum(7f);
+        binding.barChart.setNoDataText("No se ha guardado ningún dato.");
+
+        //****inserción de datos********
+        //insertando nombres en eje X
+        XAxis xAxis = binding.barChart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        final List<String> ejercicios = MainActivity.getAvance().getEjerciciosNombres();
+        xAxis.setGranularity(1f);
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(ejercicios));
+
+        //inserción de entradas
+        List<BarEntry> entries = new ArrayList<>();
+        for (int i = 0; i < MainActivity.getAvance().getPesos().size(); i++) {//pesos de los ejercicios, array de Strings
+            entries.add(new BarEntry(Float.valueOf(i),Float.valueOf(MainActivity.getAvance().getPesos().get(i))));
+        }
+
+        BarDataSet barDataSet = new BarDataSet(entries, "Avance");
+        barDataSet.setColor(Color.RED);
+        barDataSet.setValueTextSize(15);
+        BarData barData = new BarData(barDataSet);
+        //****inserción de datos*****fin
+
+        binding.barChart.moveViewToX(entries.size()-1);
+        binding.barChart.setData(barData);
+        binding.barChart.invalidate();
     }
     public void escribirToast(String texto){
         Toast.makeText(getContext(), texto, Toast.LENGTH_LONG).show();

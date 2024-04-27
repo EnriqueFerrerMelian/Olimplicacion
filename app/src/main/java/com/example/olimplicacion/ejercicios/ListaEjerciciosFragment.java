@@ -113,7 +113,6 @@ public class ListaEjerciciosFragment extends Fragment implements EjercicioFbAdap
      * @param valor
      */
     public void cargarDesdeSpiner(String valor){
-        System.out.println("Generando opciones 2");
         FirebaseRecyclerOptions<Ejercicio> options =
                 new FirebaseRecyclerOptions.Builder<Ejercicio>()
                         .setQuery(FirebaseDatabase
@@ -121,9 +120,7 @@ public class ListaEjerciciosFragment extends Fragment implements EjercicioFbAdap
                                 .getReference()
                                 .child("ejercicios").orderByChild("categoria").equalTo(valor), Ejercicio.class)
                         .build();
-        System.out.println("Instanciando adaptador 2 ");
         ejercicioFbAdapter = new EjercicioFbAdapter(options, this::onItemClick);
-        System.out.println("Insertando adaptador adaptador 2 ");
         recyclerView.setAdapter(ejercicioFbAdapter);
         ejercicioFbAdapter.startListening();
     }

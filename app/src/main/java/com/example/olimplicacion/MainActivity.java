@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.olimplicacion.clases.Avance;
 import com.example.olimplicacion.clases.Peso;
 import com.example.olimplicacion.clases.Usuario;
 import com.example.olimplicacion.databinding.ActivityMainBinding;
@@ -30,6 +31,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static Usuario usuario = new Usuario();
     private static Peso peso = new Peso();
+    private static Avance avance = new Avance();
+
     ActivityMainBinding binding;
 
     @Override
@@ -80,6 +83,11 @@ public class MainActivity extends AppCompatActivity {
                         //recojo los datos del usuario en un objeto Usuario
                         usuario = data.getValue(Usuario.class);
                         peso = data.child("peso").getValue(Peso.class);
+                        if(data.child("avance").getValue(Avance.class)==null){
+                            avance = new Avance();
+                        }else{
+                            avance = data.child("avance").getValue(Avance.class);
+                        }
                         confirmado=true;
                         //ejecuto el fragmento 'MenuPrincipal'
                         irAMenuPrincipal();
@@ -116,12 +124,16 @@ public class MainActivity extends AppCompatActivity {
     public static Peso getPeso(){
         return peso;
     }
+    public static Avance getAvance() {return avance;}
 
-    public static void setUsuario(Usuario usuarioFb){
-        usuario = usuarioFb;
+    public static void setUsuario(Usuario usuarioOB){
+        usuario = usuarioOB;
     }
-    public static void setPeso(Peso pesoFb){
-        peso = pesoFb;
+    public static void setPeso(Peso pesoOB){
+        peso = pesoOB;
+    }
+    public static void setAvance(Avance avanceOB){
+        avance = avanceOB;
     }
     public void escribirToast(String texto){
         Toast.makeText(MainActivity.this, texto, Toast.LENGTH_LONG).show();

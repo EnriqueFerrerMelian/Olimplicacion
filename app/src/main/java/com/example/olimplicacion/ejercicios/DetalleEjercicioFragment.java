@@ -20,9 +20,12 @@ import android.widget.NumberPicker;
 import com.bumptech.glide.Glide;
 import com.example.olimplicacion.MainActivity;
 import com.example.olimplicacion.R;
+import com.example.olimplicacion.clases.Avance;
+import com.example.olimplicacion.clases.Usuario;
 import com.example.olimplicacion.databinding.FragmentDetalleEjercicioBinding;
 import com.example.olimplicacion.rutinas.DetallesRutinaFragment;
 import com.example.olimplicacion.rutinas.Rutina;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -30,6 +33,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -111,7 +115,7 @@ public class DetalleEjercicioFragment extends Fragment {
             public void onClick(View view) {
                 binding.numPeso.setText(numberPeso.getValue() +"."+ numberPesoDecimal.getValue());
                 binding.numRepeticiones.setText(repeticiones.getValue() + " x " + series.getValue());
-                pruebaUpdate(DetallesRutinaFragment.getRutina());
+                updateEjercicio(DetallesRutinaFragment.getRutina());
                 dialog.dismiss();
             }
         });
@@ -122,7 +126,12 @@ public class DetalleEjercicioFragment extends Fragment {
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
 
-    public void pruebaUpdate(Rutina rutina) {
+    /**
+     * Actualiza el ejercicio en la base de datos
+     * @param rutina
+     */
+    public void updateEjercicio(Rutina rutina) {
+        System.out.println("updateEjercicio()");
         boolean bandera = false;
         int index = 0;
         for (int i = 0; i < rutina.getEjercicios().size(); i++) {
@@ -139,8 +148,51 @@ public class DetalleEjercicioFragment extends Fragment {
             DatabaseReference ref = FirebaseDatabase
                     .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                     .getReference("usuarios/"+MainActivity.getUsuario().getId()+"/rutinas/"+rutina.getNombre()+"/ejercicios");
-            ref.updateChildren(mapaEjercicio);
-            System.out.println("usuarios/"+MainActivity.getUsuario().getId()+"/rutinas/"+rutina.getNombre()+"/ejercicios");
+            ref.updateChildren(mapaEjercicio).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    actualizarAvance();
+                }
+            });
         }
+    }
+    public static void actualizarAvance(){
+        System.out.println("actualizarAvance()");
+        int index = 0;
+        for (int i = 0; i < MainActivity.getAvance().getEjerciciosNombres().size(); i++) {
+            if(MainActivity.getAvance().getEjerciciosNombres().get(i).equals(ejercicio.getNombre())){
+                index = i;
+            }
+        }
+        //elimino el registro de nombre y peso
+        MainActivity.getAvance().getEjerciciosNombres().remove(index);
+        MainActivity.getAvance().getPesos().remove(index);
+
+        //añado el nuevo registro de nombre y peso
+        MainActivity.getAvance().getEjerciciosNombres().add(ejercicio.getNombre());
+        MainActivity.getAvance().getPesos().add(ejercicio.getPeso());
+
+        DatabaseReference ref = FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/avance");
+        ref.setValue(MainActivity.getAvance()).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) { actualizarUsuario();}
+        });
+    }
+
+    public static void actualizarUsuario(){
+        System.out.println("Actualizando usuario");
+        DatabaseReference ref = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/"+MainActivity.getUsuario().getId());
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {//dataSnapshot son todos los usuarios
+                MainActivity.setUsuario(dataSnapshot.getValue(Usuario.class));
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+            }
+        });
     }
 }
