@@ -14,10 +14,26 @@
         android:text="Debe refrescarse la pantalla al insertar datos por primera vez."
         android:textSize="14dp"
         android:textStyle="bold"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:text="Último peso añadido" />
+    <TextView
+        android:id="@+id/ultimoPeso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        android:textColor="#272727"
+        android:text="último peso añadido" />
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="match_parent"
-        android:layout_height="228dp"
+        android:layout_height="150dp"
         android:scrollbars="horizontal"
         android:layout_margin="8dp"
         android:layout_marginTop="20dp"
@@ -26,7 +42,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/grey"
+        android:background="#CACACA"
         android:orientation="horizontal">
 
         <Button
@@ -55,12 +71,28 @@
         android:id="@+id/divider1"
         android:layout_width="match_parent"
         android:layout_height="8dp"
-        android:background="@color/grey" />
+        android:background="#E3E3E3" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="18dp"
+        android:textStyle="bold"
+        android:text="Último progreso actualizado" />
+    <TextView
+        android:id="@+id/ultimoProgreso"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="22dp"
+        android:textStyle="bold"
+        android:textColor="#272727"
+        android:text="Último progreso añadido" />
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barChart"
         android:layout_width="match_parent"
-        android:layout_height="228dp"
+        android:layout_height="150dp"
         android:scrollbars="horizontal"
         android:layout_margin="8dp"
         android:layout_marginTop="20dp"
@@ -83,6 +115,6 @@
         android:id="@+id/divider2"
         android:layout_width="match_parent"
         android:layout_height="8dp"
-        android:background="@color/grey" />
+        android:background="#E3E3E3" />
 
 </LinearLayout>

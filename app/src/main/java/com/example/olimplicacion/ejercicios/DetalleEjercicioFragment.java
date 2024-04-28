@@ -99,7 +99,7 @@ public class DetalleEjercicioFragment extends Fragment {
         String[] setPeso = binding.numPeso.getText().toString().split("\\.");
         numberPeso.setValue(Integer.valueOf(setPeso[0]));
         NumberPicker numberPesoDecimal = dialog.findViewById(R.id.numberPesoDecimal);
-        numberPesoDecimal.setMinValue(0);numberPesoDecimal.setMaxValue(5);
+        numberPesoDecimal.setMinValue(0);numberPesoDecimal.setMaxValue(9);
         numberPesoDecimal.setValue(Integer.valueOf(setPeso[1]));
         String setRepSer1 = binding.numRepeticiones.getText().toString().replace(" ","");
         String [] setRepSer2= setRepSer1.split("x");

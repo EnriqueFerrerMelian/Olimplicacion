@@ -319,13 +319,14 @@ public class EstadisticasFragment extends Fragment {
         //inserción de entradas
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < pesoOB.getDatosPeso().size(); i++) {
-            entries.add(new Entry(Float.valueOf(i),Float.valueOf(pesoOB.getDatosPeso().get(i).get("y")) ));
+            entries.add(new Entry(Float.valueOf(i),Float.valueOf(pesoOB.getDatosPeso().get(i).get("y"))));
         }
         LineDataSet lineDataSet = new LineDataSet(entries, "Peso");
         lineDataSet.setColor(Color.GREEN);
         lineDataSet.setValueTextSize(15);
         lineDataSet.setLineWidth(3);
         LineData lineData = new LineData(lineDataSet);
+        binding.ultimoPeso.setText(pesoOB.getDatosPeso().get(pesoOB.getDatosPeso().size()-1).get("y") + " Kgs");
         //>>>****INSERCIÓN DE DATOS*****FIN
 
         binding.lineChart.moveViewToX(entries.size()-1);
@@ -349,13 +350,19 @@ public class EstadisticasFragment extends Fragment {
         binding.barChart.getXAxis().setDrawGridLines(false);
         binding.barChart.setDrawGridBackground(false);
 
+        //leyends
+        Legend l = binding.barChart.getLegend();
+        l.setEnabled(true);
+        l.setTextSize(15);
+        l.setForm(Legend.LegendForm.LINE);
+        LegendEntry[] legendEntry = new LegendEntry[1];
+        LegendEntry lEntry1 = new LegendEntry();
+        lEntry1.formColor = Color.RED;
+        lEntry1.label = "Kgs";
+        legendEntry[0] = lEntry1;
+        l.setCustom(legendEntry);
 
-        binding.barChart.setDescription(description);
-        binding.barChart.canScrollHorizontally(1);
-        binding.barChart.setVisibleXRangeMaximum(5f);
-        binding.barChart.setNoDataText("No se ha guardado ningún dato.");
-
-        //****inserción de datos********
+        //>>>****INSERCIÓN DE DATOS********
         //insertando nombres en eje X
         XAxis xAxis = binding.barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -372,11 +379,21 @@ public class EstadisticasFragment extends Fragment {
         barDataSet.setColor(Color.RED);
         barDataSet.setValueTextSize(15);
         BarData barData = new BarData(barDataSet);
-        //****inserción de datos*****fin
+        binding.ultimoProgreso
+                .setText(MainActivity.getAvance()
+                        .getEjerciciosNombres()
+                        .get(MainActivity.getAvance()
+                                .getEjerciciosNombres().size()-1));
+        //>>>****INSERCIÓN DE DATOS*****fin
 
+        binding.barChart.setDescription(description);
+        binding.barChart.canScrollHorizontally(1);
+
+        binding.barChart.setNoDataText("No se ha guardado ningún dato.");
         binding.barChart.moveViewToX(entries.size()-1);
         binding.barChart.setData(barData);
         binding.barChart.invalidate();
+        binding.barChart.setVisibleXRangeMaximum(5);
     }
     public static List<String> recortarNombres(List<String> nombres){
         List<String> nombresCortos = new ArrayList<>();
