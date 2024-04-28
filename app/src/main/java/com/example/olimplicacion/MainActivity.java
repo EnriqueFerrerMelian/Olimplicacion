@@ -82,12 +82,18 @@ public class MainActivity extends AppCompatActivity {
                     if(data.child("nombre").getValue().equals(nombre) && data.child("clave").getValue().equals(clave)){
                         //recojo los datos del usuario en un objeto Usuario
                         usuario = data.getValue(Usuario.class);
-                        peso = data.child("peso").getValue(Peso.class);
+                        if(data.child("peso").getValue(Peso.class)==null){
+                            peso = new Peso();
+                        }else{
+                            peso = data.child("peso").getValue(Peso.class);
+                        }
+
                         if(data.child("avance").getValue(Avance.class)==null){
                             avance = new Avance();
                         }else{
                             avance = data.child("avance").getValue(Avance.class);
                         }
+
                         confirmado=true;
                         //ejecuto el fragmento 'MenuPrincipal'
                         irAMenuPrincipal();

@@ -622,7 +622,6 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
     }
     public static void actualizarAvance(List<Ejercicio> ejercicios){
         System.out.println("actualizarAvance()");
-        System.out.println("Ejercicios: " + ejercicios.size());
         for (int i = 0; i < ejercicios.size(); i++) {
             if(!MainActivity.getAvance().getEjerciciosNombres().contains(ejercicios.get(i).getNombre())){
                 MainActivity.getAvance().getEjerciciosNombres().add(ejercicios.get(i).getNombre());

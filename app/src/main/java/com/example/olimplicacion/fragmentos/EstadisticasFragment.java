@@ -20,9 +20,12 @@ import android.widget.Toast;
 
 import com.example.olimplicacion.MainActivity;
 import com.example.olimplicacion.R;
+import com.example.olimplicacion.clases.Avance;
 import com.example.olimplicacion.clases.Peso;
 import com.example.olimplicacion.clases.Usuario;
 import com.example.olimplicacion.databinding.FragmentEstadisticasBinding;
+import com.example.olimplicacion.ejercicios.Ejercicio;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
@@ -35,6 +38,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.highlight.Highlight;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
@@ -56,7 +60,9 @@ import java.util.Map;
 public class EstadisticasFragment extends Fragment {
     private static FragmentEstadisticasBinding binding;
     private static Peso pesoOB = MainActivity.getPeso();
+    private static Avance avanceOB = MainActivity.getAvance();
     private static Entry pesoSeleccionado = new Entry();
+    private static BarEntry progresoSeleccionado = new BarEntry(0,0);
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -70,6 +76,9 @@ public class EstadisticasFragment extends Fragment {
             pesoOB = new Peso();
         }else{
             binding.textoInfo.setVisibility(View.GONE);
+        }
+        if(avanceOB==null){
+            avanceOB = new Avance();
         }
         configurarChartPeso();
         configurarChartAvance();
@@ -90,19 +99,39 @@ public class EstadisticasFragment extends Fragment {
                 pesoSeleccionado = e;
             }
             @Override
-            public void onNothingSelected() {
-
-            }
+            public void onNothingSelected() {}
         });
-        binding.eliminar.setOnClickListener(new View.OnClickListener() {
+        binding.barChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                System.out.println("Progreso: "+ e.getX());
+                progresoSeleccionado = (BarEntry) e;
+            }
+
+            @Override
+            public void onNothingSelected() {}
+        });
+        binding.eliminarPeso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(binding.lineChart.getLineData().getDataSetCount()>0){
-                   // binding.lineChart.getLineData().getDataSetByIndex(0).removeEntry(pesoSeleccionado);
                     int index = binding.lineChart.getLineData().getDataSetByIndex(0).getEntryIndex(pesoSeleccionado);
                     pesoOB.getDatosPeso().remove(index);
                     pesoOB.getFecha().remove(index);
                     actualizarPeso(pesoOB);
+                }else{
+                    escribirToast("Debe haber al menos un registro");
+                }
+            }
+        });
+        binding.eliminarAvance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(binding.lineChart.getLineData().getDataSetCount()>0){
+                    int index = binding.barChart.getBarData().getDataSetByIndex(0).getEntryIndex(progresoSeleccionado);
+                    avanceOB.getEjerciciosNombres().remove(index);
+                    avanceOB.getPesos().remove(index);
+                    actualizarAvance(avanceOB);
                 }else{
                     escribirToast("Debe haber al menos un registro");
                 }
@@ -124,7 +153,6 @@ public class EstadisticasFragment extends Fragment {
         numberPesoDecimalOb.setMinValue(0);numberPesoDecimalOb.setMaxValue(9);
         if(pesoOB.getObjetivo()!=null){
             String[] objetivo = pesoOB.getObjetivo().split("\\.");
-            System.out.println(objetivo[0] + objetivo[1]);
             numberPesoOb.setValue(Integer.valueOf(objetivo[0]));
             numberPesoDecimalOb.setValue(Integer.valueOf(objetivo[1]));
         }
@@ -132,13 +160,11 @@ public class EstadisticasFragment extends Fragment {
         numberPeso.setMinValue(1);numberPeso.setMaxValue(150);
         NumberPicker numberPesoDecimal = dialog.findViewById(R.id.numberPesoDecimal);
         numberPesoDecimal.setMinValue(0);numberPesoDecimal.setMaxValue(9);
-        if(pesoOB.getDatosPeso()!=null){
+        if(pesoOB.getDatosPeso().size()>0){
             String[] objetivo = pesoOB.getDatosPeso().get(pesoOB.getDatosPeso().size()-1).get("y").split("\\.");
-            System.out.println(objetivo[0] + objetivo[1]);
             numberPeso.setValue(Integer.valueOf(objetivo[0]));
             numberPesoDecimal.setValue(Integer.valueOf(objetivo[1]));
         }
-        System.out.println("pesoOB.getDatosPeso(): " + pesoOB.getDatosPeso());
         //inicialización de numberPicker**********************fin*
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -215,12 +241,25 @@ public class EstadisticasFragment extends Fragment {
             }
         });
     }
+    public static void actualizarAvance(Avance avance){
+        System.out.println("actualizarAvance()");
+        DatabaseReference ref = FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/avance");
+        ref.setValue(avance).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                actualizarUsuario();
+                configurarChartAvance();
+            }
+        });
+    }
 
     /**
      * Configura la apariencia por defecto del chart y carga los datos del objeto Peso
      */
     public static void configurarChartPeso(){
-        System.out.println("configurarChart()");
+        System.out.println("configurarLineChart()");
         //configurar descripción
         Description description = new Description();
         description.setText("Seguimiento de peso");
@@ -257,17 +296,18 @@ public class EstadisticasFragment extends Fragment {
         binding.lineChart.setVisibleXRangeMaximum(7f);
         binding.lineChart.setNoDataText("No se ha guardado ningún dato.");
 
-        //****inserción de datos********
+        //>>>****INSERCIÓN DE DATOS********
+
         //insertando fechas en eje X
         XAxis xAxis = binding.lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         final List<String> fechas = pesoOB.getFecha();
         xAxis.setGranularity(1f);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(fechas));
+
         //si se ha seleccionado una marca de objetivo
         if(pesoOB.getObjetivo()!=null){
             YAxis leftAxis = binding.lineChart.getAxisLeft();
-            System.out.println("Insertando objetivo de pesoOb:" + pesoOB.getObjetivo());
             LimitLine ll = new LimitLine(Float.valueOf(pesoOB.getObjetivo()), "Objetivo");
             ll.setLineColor(Color.rgb(255,135,0));
             ll.setLineWidth(3f);
@@ -275,6 +315,7 @@ public class EstadisticasFragment extends Fragment {
             ll.setTextSize(10f);
             leftAxis.addLimitLine(ll);
         }
+
         //inserción de entradas
         List<Entry> entries = new ArrayList<>();
         for (int i = 0; i < pesoOB.getDatosPeso().size(); i++) {
@@ -285,19 +326,19 @@ public class EstadisticasFragment extends Fragment {
         lineDataSet.setValueTextSize(15);
         lineDataSet.setLineWidth(3);
         LineData lineData = new LineData(lineDataSet);
-        //****inserción de datos*****fin
+        //>>>****INSERCIÓN DE DATOS*****FIN
 
         binding.lineChart.moveViewToX(entries.size()-1);
         binding.lineChart.setData(lineData);
         binding.lineChart.invalidate();
     }
     public static void configurarChartAvance(){
-        System.out.println("configurarChartAvance()");
+        System.out.println("configurarBarChart()");
         //configurar descripción
         Description description = new Description();
         description.setText("Progreso");
         description.setTextSize(14f);
-        description.setPosition(360f, 25f);
+        description.setPosition(175f, 25f);
 
         //borrando bordes
         binding.barChart.setDrawBorders(false);
@@ -311,16 +352,15 @@ public class EstadisticasFragment extends Fragment {
 
         binding.barChart.setDescription(description);
         binding.barChart.canScrollHorizontally(1);
-        binding.barChart.setVisibleXRangeMaximum(7f);
+        binding.barChart.setVisibleXRangeMaximum(5f);
         binding.barChart.setNoDataText("No se ha guardado ningún dato.");
 
         //****inserción de datos********
         //insertando nombres en eje X
         XAxis xAxis = binding.barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        final List<String> ejercicios = MainActivity.getAvance().getEjerciciosNombres();
         xAxis.setGranularity(1f);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(ejercicios));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(recortarNombres(MainActivity.getAvance().getEjerciciosNombres())));
 
         //inserción de entradas
         List<BarEntry> entries = new ArrayList<>();
@@ -338,7 +378,19 @@ public class EstadisticasFragment extends Fragment {
         binding.barChart.setData(barData);
         binding.barChart.invalidate();
     }
+    public static List<String> recortarNombres(List<String> nombres){
+        List<String> nombresCortos = new ArrayList<>();
+        for (int i = 0; i < nombres.size(); i++) {
+            if(nombres.get(i).split(" ").length>0){
+                String[] arrayNombres = nombres.get(i).split(" ");
+                nombresCortos.add(arrayNombres[0]);
+            }
+        }
+        return nombresCortos;
+    }
     public void escribirToast(String texto){
         Toast.makeText(getContext(), texto, Toast.LENGTH_LONG).show();
     }
+
+
 }

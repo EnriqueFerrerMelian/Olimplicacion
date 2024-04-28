@@ -127,63 +127,73 @@ public class DetalleEjercicioFragment extends Fragment {
     }
 
     /**
-     * Actualiza el ejercicio en la base de datos
-     * @param rutina
+     * Actualiza el ejercicio en la base de datos. Obtiene la posición del ejercicio en la lista de
+     * ejercicios de la rutina seleccionada. Guarda en el ejercicio seleccionado el nuevo peso y
+     * repeticiones. Con el index seleccionamos el ejercicio a actualizar en la base de datos
+     * añadiendolo a la referencia.
+     * @param rutina seleccionada.
      */
     public void updateEjercicio(Rutina rutina) {
         System.out.println("updateEjercicio()");
-        boolean bandera = false;
         int index = 0;
         for (int i = 0; i < rutina.getEjercicios().size(); i++) {
             if(rutina.getEjercicios().get(i).getId()== ejercicio.getId()){
-                bandera=true;index = i;
-            }
-        }
-        if(bandera){
-            Map<String, Object> mapaEjercicio = new HashMap<>();
-            Ejercicio ejercicioS = ejercicio;
-            ejercicioS.setPeso(binding.numPeso.getText().toString());
-            ejercicioS.setRepecitionesYseries(binding.numRepeticiones.getText().toString());
-            mapaEjercicio.put(index+"", ejercicioS);
-            DatabaseReference ref = FirebaseDatabase
-                    .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                    .getReference("usuarios/"+MainActivity.getUsuario().getId()+"/rutinas/"+rutina.getNombre()+"/ejercicios");
-            ref.updateChildren(mapaEjercicio).addOnSuccessListener(new OnSuccessListener<Void>() {
-                @Override
-                public void onSuccess(Void unused) {
-                    actualizarAvance();
-                }
-            });
-        }
-    }
-    public static void actualizarAvance(){
-        System.out.println("actualizarAvance()");
-        int index = 0;
-        for (int i = 0; i < MainActivity.getAvance().getEjerciciosNombres().size(); i++) {
-            if(MainActivity.getAvance().getEjerciciosNombres().get(i).equals(ejercicio.getNombre())){
                 index = i;
             }
         }
-        //elimino el registro de nombre y peso
-        MainActivity.getAvance().getEjerciciosNombres().remove(index);
-        MainActivity.getAvance().getPesos().remove(index);
-
-        //añado el nuevo registro de nombre y peso
-        MainActivity.getAvance().getEjerciciosNombres().add(ejercicio.getNombre());
-        MainActivity.getAvance().getPesos().add(ejercicio.getPeso());
-
+        ejercicio.setPeso(binding.numPeso.getText().toString());
+        ejercicio.setRepecitionesYseries(binding.numRepeticiones.getText().toString());
+        System.out.println(ejercicio);
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/avance");
-        ref.setValue(MainActivity.getAvance()).addOnSuccessListener(new OnSuccessListener<Void>() {
+                .getReference("usuarios/"+MainActivity.getUsuario().getId()+"/rutinas/"+
+                        rutina.getNombre()+"/ejercicios/"+index);
+        ref.setValue(ejercicio).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
-            public void onSuccess(Void unused) { actualizarUsuario();}
+            public void onSuccess(Void unused) {
+                actualizarAvance();
+            }
         });
     }
-
+    /**
+     * Compara el nombre del ejercicio actualizado con la lista de nombres de ejercicios del objeto 'avance'.
+     * Si encuentra una coincidencia, elimina esa coincidencia del objeto avance, y guarda en nue
+     */
+    public static void actualizarAvance(){
+        System.out.println("actualizarAvance()");
+        int index = 0;
+        boolean bandera = false;
+        if(MainActivity.getAvance().getEjerciciosNombres().size()>0) {
+            for (int i = 0; i < MainActivity.getAvance().getEjerciciosNombres().size(); i++) {
+                if (MainActivity.getAvance().getEjerciciosNombres().get(i).equals(ejercicio.getNombre())) {
+                    index = i;
+                    bandera = true;
+                }
+            }
+            if(bandera){
+                MainActivity.getAvance().getPesos().set(index, ejercicio.getPeso());
+            }else{
+                MainActivity.getAvance().getEjerciciosNombres().add(ejercicio.getNombre());
+                MainActivity.getAvance().getPesos().add(ejercicio.getPeso());
+            }
+        }else{
+            MainActivity.getAvance().getEjerciciosNombres().add(ejercicio.getNombre());
+            MainActivity.getAvance().getPesos().add(ejercicio.getPeso());
+        }
+        DatabaseReference ref = FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/" + MainActivity.getUsuario().getId() + "/avance");
+        ref.setValue(MainActivity.getAvance()).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                actualizarUsuario();
+            }
+        });
+    }
     public static void actualizarUsuario(){
         System.out.println("Actualizando usuario");
-        DatabaseReference ref = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+        DatabaseReference ref = FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("usuarios/"+MainActivity.getUsuario().getId());
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
