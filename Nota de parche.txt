@@ -1,5 +1,2 @@
 1- Mejorar estilo de fuente.
-2- Gráficos
 3- Splash?
-4- Control de errores:
-	*Asegurarse de que almenos permanezca 1 registro en control de peso.

@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.example.olimplicacion.clases.AppHelper;
 import com.example.olimplicacion.databinding.ActivityMenuPrincipalBinding;
 import com.example.olimplicacion.fragmentos.ActividadesFragment;
 import com.example.olimplicacion.fragmentos.CalendarioFragment;
@@ -58,13 +59,6 @@ public class MenuPrincipal extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        if(id == R.id.perfil){
-            reemplazarFragmento(new PerfilFragment());
-            escribirToast("Estas en la opción Perfil");
-        }
-        if(id == R.id.configuracion){
-            escribirToast("Estas en la opción Configuracion");
-        }
         return true;
     }
 
@@ -78,13 +72,10 @@ public class MenuPrincipal extends AppCompatActivity {
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         if(fragmentoDesechable!=null){
             fragmentTransaction.remove(fragmentoDesechable);
-            System.out.println(fragmentoDesechable + "eliminado");
         }
         fragmentTransaction.replace(R.id.fragmentContainerView, fragmento);
         fragmentoDesechable = fragmento;
         fragmentTransaction.commit();
     }
-    public void escribirToast(String texto){
-        Toast.makeText(MenuPrincipal.this, texto, Toast.LENGTH_LONG).show();
-    }
+
 }

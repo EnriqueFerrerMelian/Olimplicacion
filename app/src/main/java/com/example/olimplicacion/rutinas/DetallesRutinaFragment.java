@@ -62,7 +62,6 @@ public class DetallesRutinaFragment extends Fragment implements EjercicioFbAdapt
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(ejercicioAdapter);
         //cargo el recyclerview ****************fin
-
         cargarRutina(rutina);
 
         binding.modificar.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +95,13 @@ public class DetallesRutinaFragment extends Fragment implements EjercicioFbAdapt
         fragmentTransaction.commit();
     }
 
+
+    public static Rutina getRutina(){
+        return rutina;
+    }
+    public static void setRutina(Rutina rutina){
+        DetallesRutinaFragment.rutina = rutina;
+    }
     public void cargarRutina(Rutina rutina){
         Glide.with(getContext())
                 .load(rutina.getImg())
@@ -119,8 +125,5 @@ public class DetallesRutinaFragment extends Fragment implements EjercicioFbAdapt
         }if(rutina.getDias().contains("d")){
             binding.domingo.setTextColor(Color.rgb(255, 127, 39));
         }
-    }
-    public static Rutina getRutina(){
-        return rutina;
     }
 }

@@ -44,7 +44,7 @@ public class RutinaFragment extends Fragment implements RutinaFbAdapter.ItemClic
 
     //variables globales
     static FragmentRutinaBinding binding;
-    private static List<String> rutinasDeUsuario = new LinkedList<>();
+    //private static List<String> rutinasDeUsuario = new LinkedList<>();
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

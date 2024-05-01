@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.olimplicacion.clases.AppHelper;
 import com.example.olimplicacion.clases.Avance;
 import com.example.olimplicacion.clases.Peso;
 import com.example.olimplicacion.clases.Usuario;
@@ -104,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }
                 if(!confirmado){
-                    escribirToast("No estás registrado");
+                    AppHelper.escribirToast("No estás registrado", MainActivity.this);
                 }
             }
             @Override
@@ -141,7 +142,5 @@ public class MainActivity extends AppCompatActivity {
     public static void setAvance(Avance avanceOB){
         avance = avanceOB;
     }
-    public void escribirToast(String texto){
-        Toast.makeText(MainActivity.this, texto, Toast.LENGTH_LONG).show();
-    }
+
 }

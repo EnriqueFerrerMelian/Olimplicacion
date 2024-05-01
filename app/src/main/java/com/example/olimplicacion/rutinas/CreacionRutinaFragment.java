@@ -38,6 +38,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.olimplicacion.MainActivity;
 import com.example.olimplicacion.R;
+import com.example.olimplicacion.clases.AppHelper;
 import com.example.olimplicacion.clases.Avance;
 import com.example.olimplicacion.clases.Usuario;
 import com.example.olimplicacion.ejercicios.Ejercicio;
@@ -138,6 +139,7 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         if (rutina != null) {
             cargarRutina(rutina);
         }
+
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         ejercicioAdapterModificar = new EjercicioAdapterModificar(dataArrayList, this::onItemClick, rutina);
@@ -356,7 +358,7 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        System.out.println("La base de datos no estaba preparada.");
+                        System.out.println(e);
                     }
                 });
             }else{
@@ -366,6 +368,7 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         }else{
             //si se ha pasado una rutina por parámetro y se ha hecho una foto
             if(confirmacionImg){
+
                 if(rutina.getImg()!=null){
                     eliminarImagen();
                 }
@@ -386,7 +389,7 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        System.out.println("La base de datos no estaba preparada.");
+                        System.out.println(e);
                     }
                 });
             }else{
@@ -447,7 +450,6 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         if(!(dias.isEmpty() || ejerciciosLista.isEmpty() || binding.nombreDeRutina.length()<1)){
             //si se está modificando una rutina
             if (rutina != null) {
-                System.out.println(rutin.getNombre());
                 //si el nombre se ha cambiado, se comprueba si ya hay otra rutina con el nombre nuevo ya guardada
                 if(MainActivity.getUsuario().getRutinas().get(rutin.getNombre())!=null){
                     showSobrescribirSheet(mapRutin, ejerciciosLista);
@@ -465,15 +467,12 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         }else{
             controlErrores++;
             if(rutin.getNombre().length()<1){
-                System.out.println("Nombre: " + rutin.getNombre().length());
-                escribirToast("El nombre no puede estar en blanco.");
+                AppHelper.escribirToast("El nombre no puede estar en blanco.", getContext());
             }else{
                 if(dias.isEmpty()){
-                    System.out.println("dias está vacío: " + dias.isEmpty());
-                    escribirToast("Debes seleccionar almenos un día.");
+                    AppHelper.escribirToast("Debes seleccionar almenos un día.", getContext());
                 }else if(ejerciciosLista.isEmpty()){
-                    System.out.println("No hay ejercicios en la lista: " + ejerciciosLista.isEmpty());
-                    escribirToast("Debes añadir al menos un ejercicio.");
+                    AppHelper.escribirToast("Debes añadir al menos un ejercicio.", getContext());
                 }
             }
         }
@@ -493,7 +492,6 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
      */
    public void eliminarRutinaM(Rutina rutin) {
         //creo una referencia a la rutina que quiero borrar
-       System.out.println("Se elimina la rutina: " + rutin.getNombre());
         DatabaseReference ref2 = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("usuarios/" + MainActivity.getUsuario().getId() + "/rutinas/"+rutin.getNombre());
         //elimino la rutina
@@ -607,7 +605,6 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
     }
 
     public static void actualizarUsuario(){
-        System.out.println("Actualizando usuario");
         DatabaseReference ref = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("usuarios/"+MainActivity.getUsuario().getId());
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -621,7 +618,6 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         });
     }
     public static void actualizarAvance(List<Ejercicio> ejercicios){
-        System.out.println("actualizarAvance()");
         for (int i = 0; i < ejercicios.size(); i++) {
             if(!MainActivity.getAvance().getEjerciciosNombres().contains(ejercicios.get(i).getNombre())){
                 MainActivity.getAvance().getEjerciciosNombres().add(ejercicios.get(i).getNombre());
@@ -633,7 +629,5 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
                 .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/avance");
         ref.setValue(MainActivity.getAvance());
     }
-    public void escribirToast(String texto){
-        Toast.makeText(getContext(), texto, Toast.LENGTH_LONG).show();
-    }
+
 }

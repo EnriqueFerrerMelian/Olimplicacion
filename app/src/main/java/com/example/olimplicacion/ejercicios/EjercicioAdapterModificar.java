@@ -74,7 +74,6 @@ public class EjercicioAdapterModificar extends RecyclerView.Adapter<EjercicioAda
                 @Override
                 public void onClick(View view) {
                     CreacionRutinaFragment.eliminarEjercicio(idEjercicio);
-                    //eliminarEjercicio(rutina.getId(), idEjercicio);
                 }
             });
         }

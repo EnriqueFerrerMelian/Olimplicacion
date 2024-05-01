@@ -17,6 +17,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Peso"
+        android:textStyle="bold"
+        android:textColor="#272727"
+        android:textSize="22dp"
+        android:textAlignment="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="18dp"
         android:textStyle="bold"
@@ -26,10 +34,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="22dp"
+        android:textSize="20dp"
         android:textStyle="bold"
         android:textColor="#272727"
         android:text="último peso añadido" />
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="match_parent"
@@ -76,6 +85,14 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:text="Progreso"
+        android:textStyle="bold"
+        android:textColor="#272727"
+        android:textSize="22dp"
+        android:textAlignment="center"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:gravity="center"
         android:textSize="18dp"
         android:textStyle="bold"
@@ -85,10 +102,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:textSize="22dp"
+        android:textSize="20dp"
         android:textStyle="bold"
         android:textColor="#272727"
         android:text="Último progreso añadido" />
+
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barChart"
         android:layout_width="match_parent"

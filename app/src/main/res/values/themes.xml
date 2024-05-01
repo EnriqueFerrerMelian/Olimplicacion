@@ -17,4 +17,8 @@
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">15%</item>
     </style>
+    <style name="roundedImageViewRounded3">
+        <item name="cornerFamily">cut</item>
+        <item name="cornerSize">5%</item>
+    </style>
 </resources>

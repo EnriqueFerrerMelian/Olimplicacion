@@ -4,8 +4,7 @@ package com.example.olimplicacion.ejercicios;
 public class Ejercicio {
     //ATRIBUTOS
     int id;
-    String nombre, musculos, descripcion, categoria, peso, repecitionesYseries;
-    String img;
+    String nombre, musculos, descripcion, categoria, peso, repecitionesYseries, img;
 
 
     //CONSTRUCTOR
