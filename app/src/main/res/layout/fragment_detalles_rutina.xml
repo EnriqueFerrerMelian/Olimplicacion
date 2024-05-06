@@ -12,7 +12,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:background="@color/grey"
+        android:background="@color/azulLogo"
         android:drawableLeft="@drawable/baseline_arrow_back_24"
         android:text="Volver a Lista"
         android:textAllCaps="false"
@@ -161,7 +161,10 @@
             android:id="@+id/modificar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Modificar" />
+            android:text="Modificar"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:backgroundTint="@color/verdeOscuro"/>
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

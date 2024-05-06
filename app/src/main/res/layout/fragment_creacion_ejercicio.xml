@@ -16,7 +16,7 @@
         android:textSize="22dp"
         android:textAllCaps="false"
         android:textColor="@color/white"
-        android:background="@color/grey"/>
+        android:background="@color/azulLogo"/>
 
     <ScrollView
         android:layout_width="match_parent"

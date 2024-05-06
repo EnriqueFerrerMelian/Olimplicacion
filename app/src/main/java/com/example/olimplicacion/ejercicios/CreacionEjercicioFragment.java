@@ -28,33 +28,14 @@ import com.example.olimplicacion.rutinas.CreacionRutinaFragment;
  * create an instance of this fragment.
  */
 public class CreacionEjercicioFragment extends Fragment {
-
-    //ATRIBUTOS
-    private static final String NOMBRE = "nombre";
-    private static final String ID = "id";
-    private static final String IMAGEN = "imagen";
-    private static final String MUSCULOS = "musculos";
-    private static final String DESCRIPCION = "descripcion";
-    private static final String CATEGORIA = "categoria";
-    String nombre;
-    String imagen;
-    String musculos;
-    String descripcion;
-    String categoria;
-    int id;
+    private static Ejercicio ejercicio;
     static FragmentCreacionEjercicioBinding binding;
 
     public CreacionEjercicioFragment() { }
-    public static CreacionEjercicioFragment newInstance(Ejercicio ejercicio) {
+    public static CreacionEjercicioFragment newInstance(Ejercicio ejercicioF) {
         CreacionEjercicioFragment fragment = new CreacionEjercicioFragment();
         Bundle args = new Bundle();
-        args.putString(NOMBRE, ejercicio.getNombre());
-        args.putString(MUSCULOS, ejercicio.getMusculos());
-        args.putString(DESCRIPCION, ejercicio.getDescripcion());
-        args.putString(IMAGEN, String.valueOf(ejercicio.getImg()));
-        args.putInt(ID, ejercicio.getId());
-        args.putString(CATEGORIA, ejercicio.getCategoria());
-
+        ejercicio = ejercicioF;
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,14 +43,7 @@ public class CreacionEjercicioFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments()!=null){
-            nombre = getArguments().getString(NOMBRE);
-            categoria = getArguments().getString(CATEGORIA);
-            musculos = getArguments().getString(MUSCULOS);
-            descripcion = getArguments().getString(DESCRIPCION);
-            imagen = getArguments().getString(IMAGEN);
-            id = getArguments().getInt(ID);
-        }
+
     }
 
     @Override
@@ -83,12 +57,12 @@ public class CreacionEjercicioFragment extends Fragment {
         binding.numberRepeticiones.setMinValue(1);binding.numberRepeticiones.setMaxValue(30);
         binding.numberVeces.setMinValue(1);binding.numberVeces.setMaxValue(100);
         //inicialización de numberPicker**********************fin*
-        binding.categoria.setText(categoria);
-        binding.detailName.setText(nombre);
-        binding.detailMusculos.setText(musculos);
-        binding.detailDesc.setText(descripcion);
+        binding.categoria.setText(ejercicio.getCategoria());
+        binding.detailName.setText(ejercicio.getNombre());
+        binding.detailMusculos.setText(ejercicio.getMusculos());
+        binding.detailDesc.setText(ejercicio.getDescripcion());
         Glide.with(getContext())
-                .load(Uri.parse(imagen))
+                .load(ejercicio.getImg())
                 .placeholder(R.drawable.baseline_add_242)//si no hay imagen carga una por defecto
                 .error(R.drawable.baseline_add_242)//si ocurre algún error se verá por defecto
                 .into(binding.detailImage);
@@ -98,7 +72,6 @@ public class CreacionEjercicioFragment extends Fragment {
             public void onClick(View view) {
                 String peso = binding.numberPeso.getValue() +"." + binding.numberPesoDecimal.getValue();
                 String repeticionesYseries = binding.numberRepeticiones.getValue() +" x "+ binding.numberVeces.getValue();
-                Ejercicio ejercicio = new Ejercicio(id, nombre, musculos, descripcion, categoria, imagen);
                 ejercicio.setPeso(peso);ejercicio.setRepecitionesYseries(repeticionesYseries);
                 CreacionRutinaFragment.addToDataList(ejercicio, getContext());
                 getParentFragmentManager().popBackStack();

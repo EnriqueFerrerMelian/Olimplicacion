@@ -93,6 +93,7 @@ public class DetalleEjercicioFragment extends Fragment {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.my_bottom_sheet_ejercicio);
         Button aceptar = dialog.findViewById(R.id.aceptar);
+        Button cancel = dialog.findViewById(R.id.cancel);
         //inicialización de numberPicker**************************
         NumberPicker numberPeso = dialog.findViewById(R.id.numberPeso);
         numberPeso.setMinValue(1);numberPeso.setMaxValue(100);
@@ -119,7 +120,12 @@ public class DetalleEjercicioFragment extends Fragment {
                 dialog.dismiss();
             }
         });
-
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));

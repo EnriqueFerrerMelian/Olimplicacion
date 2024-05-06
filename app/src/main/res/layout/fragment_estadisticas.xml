@@ -53,16 +53,18 @@
         android:layout_height="wrap_content"
         android:background="#CACACA"
         android:orientation="horizontal">
-
         <Button
             android:id="@+id/aniadirPeso"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="1dp"
+            android:layout_marginLeft="1dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:textAllCaps="false"
-            android:text="Añadir peso" />
+            android:text="Eliminar peso"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:backgroundTint="@color/verdeOscuro"/>
         <Button
             android:id="@+id/eliminarPeso"
             android:layout_width="wrap_content"
@@ -71,7 +73,10 @@
             android:layout_weight="1"
             android:background="@color/white"
             android:textAllCaps="false"
-            android:text="Eliminar peso" />
+            android:text="Eliminar peso"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:backgroundTint="@color/verdeOscuro"/>
 
     </LinearLayout>
 
@@ -119,15 +124,18 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-
         <Button
             android:id="@+id/eliminarAvance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="1dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:textAllCaps="false"
-            android:text="Eliminar registro seleccionado" />
+            android:text="Eliminar registro seleccionado"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:backgroundTint="@color/verdeOscuro"/>
     </LinearLayout>
     <View
         android:id="@+id/divider2"

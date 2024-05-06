@@ -1,4 +1,4 @@
-package com.example.olimplicacion.clases;
+package com.example.olimplicacion.actividades;
 
 public class Actividad {
     String nombre, precio, descripcion, vacantes, profesor, horario, img;

@@ -10,7 +10,7 @@
         android:id="@+id/volver"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/grey"
+        android:background="@color/azulLogo"
         android:drawableLeft="@drawable/baseline_arrow_back_24"
         android:text="Volver a Rutina"
         android:textAllCaps="false"

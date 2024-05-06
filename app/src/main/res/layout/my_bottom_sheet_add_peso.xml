@@ -102,12 +102,29 @@
                 android:textSize="24sp" />
         </LinearLayout>
     </LinearLayout>
-    <Button
-        android:id="@+id/add"
-        android:layout_width="200dp"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:text="Añadir" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/add"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:text="Añadir"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:backgroundTint="@color/verdeOscuro"/>
+        <Button
+            android:id="@+id/cancel"
+            android:layout_width="200dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:text="Cancelar"
+            android:textColor="@color/black"
+            android:textStyle="bold"
+            android:backgroundTint="@color/verdeOscuro"/>
+    </LinearLayout>
+
 
 
 </LinearLayout>

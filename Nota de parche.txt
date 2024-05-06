@@ -1,2 +1,3 @@
 1- Mejorar estilo de fuente.
-3- Splash?
+2- Splash?
+3- Al actualizar los progresos que el ultimo actualizado se mueva al final de la lista

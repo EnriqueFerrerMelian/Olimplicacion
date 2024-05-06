@@ -23,10 +23,10 @@ import com.example.olimplicacion.ejercicios.DetalleEjercicioFragment;
 import java.util.List;
 
 /**
- * Este fragmento mostrará los detalles de la rutina seleccionara en el fragmento RutinaFragment.
- * Se debe incluir un fragmento similar pero en el que se puedan añadir ejercicios, con un boton añadir ejercicio.
- * al seleccionar un ejercicio en este fragmento, debe abrirse un fragmento de ejercicio NUEVO, en el que no se
- * puedan cambiar los detalles, pero con un botón modificar. Es decir, crear un nuevo fragmento de Ejercicio para modificar
+ * Este fragmento mostrará los detalles de la rutina seleccionada en el fragmento RutinaFragment.
+ * Se puede acceder un fragmento similar pero en el que se puede acceder a la lista de ejercicios
+ * con un boton añadir ejercicio. Al seleccionar un ejercicio en este fragmento, se abre otro
+ * fragmento de ejercicio que muestra los detalles del ejercicio.
  */
 
 public class DetallesRutinaFragment extends Fragment implements EjercicioFbAdapter.ItemClickListener {

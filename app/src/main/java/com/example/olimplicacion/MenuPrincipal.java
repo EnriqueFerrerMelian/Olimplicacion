@@ -3,7 +3,6 @@ package com.example.olimplicacion;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,12 +10,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.example.olimplicacion.clases.AppHelper;
+import com.example.olimplicacion.actividades.ActividadesFragment;
 import com.example.olimplicacion.databinding.ActivityMenuPrincipalBinding;
-import com.example.olimplicacion.fragmentos.ActividadesFragment;
 import com.example.olimplicacion.fragmentos.CalendarioFragment;
 import com.example.olimplicacion.fragmentos.EstadisticasFragment;
-import com.example.olimplicacion.fragmentos.PerfilFragment;
 import com.example.olimplicacion.rutinas.RutinaFragment;
 
 public class MenuPrincipal extends AppCompatActivity {

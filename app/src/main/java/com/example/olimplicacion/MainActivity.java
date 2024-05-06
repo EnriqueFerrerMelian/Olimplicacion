@@ -1,5 +1,6 @@
 package com.example.olimplicacion;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.olimplicacion.actividades.Actividad;
 import com.example.olimplicacion.clases.AppHelper;
 import com.example.olimplicacion.clases.Avance;
 import com.example.olimplicacion.clases.Peso;
@@ -33,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     private static Usuario usuario = new Usuario();
     private static Peso peso = new Peso();
     private static Avance avance = new Avance();
+    private static Actividad actividad = new Actividad();
 
     ActivityMainBinding binding;
 
@@ -95,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                             avance = data.child("avance").getValue(Avance.class);
                         }
 
+
                         confirmado=true;
                         //ejecuto el fragmento 'MenuPrincipal'
                         irAMenuPrincipal();
@@ -112,6 +116,26 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError error) {
             }
         });
+        /*DatabaseReference ref2 = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("actividades");
+        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot data: snapshot.getChildren()) {
+                    actividad = data.getValue(Actividad.class);
+                    System.out.println(actividad);
+                }
+               *//* actividad = snapshot.child().getValue(Actividad.class);
+                System.out.println(snapshot.getValue());
+                System.out.println(actividad);*//*
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });*/
     }
     /**
      * Inicia un intent al activity MenuPrincipal.

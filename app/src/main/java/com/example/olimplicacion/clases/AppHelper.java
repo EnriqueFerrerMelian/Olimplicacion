@@ -1,11 +1,24 @@
 package com.example.olimplicacion.clases;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.widget.Toast;
 
+import androidx.annotation.AnyRes;
+import androidx.annotation.NonNull;
+
+import com.bumptech.glide.Glide;
 import com.example.olimplicacion.MainActivity;
+import com.example.olimplicacion.R;
+import com.example.olimplicacion.actividades.Actividad;
+import com.example.olimplicacion.databinding.FragmentDetallesActividadBinding;
 import com.example.olimplicacion.databinding.FragmentEstadisticasBinding;
+import com.example.olimplicacion.fragmentos.EstadisticasFragment;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
@@ -18,12 +31,20 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.github.mikephil.charting.data.BarData;
-import com.github.mikephil.charting.data.BarDataSet;
-import com.github.mikephil.charting.data.BarEntry;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -34,13 +55,42 @@ import java.util.Map;
 import java.util.Objects;
 
 public class AppHelper {
-//ATRIBUTOS
+    private static Uri imgUriFb = Uri.parse(" ");
 
-//CONSTRUCTOR
 
-//GETTERS Y SETTERS
+    /**
+     * Inserta un toast con el texto deseado.
+     * @param texto Texto introducido por el usuario
+     * @param context Contexto del fragmento o actividad donde debe visualizarse
+     */
     public static void escribirToast(String texto, Context context){
         Toast.makeText(context, texto, Toast.LENGTH_LONG).show();
+    }
+    /**
+     * Actualiza los objetos usuario y peso de la aplicación con los de FireBase.
+     * Cuando se actualizan se vuelve a cargar el gráfico
+     */
+    public static void actualizarApp(){
+        DatabaseReference ref = FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/"+MainActivity.getUsuario().getId());
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                MainActivity.setUsuario(dataSnapshot.getValue(Usuario.class));
+
+                Peso peso = dataSnapshot.child("peso")
+                        .getValue(Peso.class)==null ? new Peso() : dataSnapshot.child("peso").getValue(Peso.class);
+                MainActivity.setPeso(peso);
+
+                Avance avance = dataSnapshot.child("avance")
+                        .getValue(Avance.class)==null ? new Avance() : dataSnapshot.child("avance").getValue(Avance.class);
+                MainActivity.setAvance(avance);
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+            }
+        });
     }
 
     // ESTADÍSTICAS**********************************ESTADÍSTICAS**********************************
@@ -52,7 +102,7 @@ public class AppHelper {
      * @param objetivo Objetivo seleccionado, transformado en string.
      * @return Objeto Peso con los datos actualizados
      */
-    public static Peso addDatos(String peso, String objetivo, Peso pesoOB){
+    public static Peso addDatos(String peso, String objetivo){
         //Obtengo la fecha de hoy
         Calendar cal = new GregorianCalendar();
         Date date = cal.getTime();
@@ -60,19 +110,19 @@ public class AppHelper {
 
         //creo un mapa que guarde los ejes
         Map<String, String> datosPeso = new HashMap<>();
-        datosPeso.put("x", String.valueOf(pesoOB.getDatosPeso().size()+1));
+        datosPeso.put("x", String.valueOf(MainActivity.getPeso().getDatosPeso().size()+1));
         datosPeso.put("y", peso);
 
-        pesoOB.getFecha().add(fecha);
-        pesoOB.getDatosPeso().add(datosPeso);
-        pesoOB.setObjetivo(objetivo);
-        return pesoOB;
+        MainActivity.getPeso().getFecha().add(fecha);
+        MainActivity.getPeso().getDatosPeso().add(datosPeso);
+        MainActivity.getPeso().setObjetivo(objetivo);
+        return MainActivity.getPeso();
     }
 
     /**
      * Configura la apariencia por defecto del chart y carga los datos del objeto Peso
      */
-    public static void configurarChartPeso(FragmentEstadisticasBinding binding, Peso pesoOB){
+    public static void configurarChartPeso(FragmentEstadisticasBinding binding){
         float maxView = 0;float minView = 0;
         System.out.println("configurarLineChart()");
 
@@ -110,19 +160,19 @@ public class AppHelper {
         //insertando fechas en eje X
         XAxis xAxis = binding.lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        final List<String> fechas = pesoOB.getFecha();
+        final List<String> fechas = MainActivity.getPeso().getFecha();
         xAxis.setGranularity(1f);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(fechas));
 
         //inserción de entradas
         List<Entry> entries = new ArrayList<>();
-        for (int i = 0; i < pesoOB.getDatosPeso().size(); i++) {
-            entries.add(new Entry((float) i,Float.parseFloat(Objects.requireNonNull(pesoOB.getDatosPeso().get(i).get("y")))));
-            if(Float.parseFloat(Objects.requireNonNull(pesoOB.getDatosPeso().get(i).get("y")))>maxView){
-                maxView = Float.parseFloat(Objects.requireNonNull(pesoOB.getDatosPeso().get(i).get("y")));
+        for (int i = 0; i < MainActivity.getPeso().getDatosPeso().size(); i++) {
+            entries.add(new Entry((float) i,Float.parseFloat(Objects.requireNonNull(MainActivity.getPeso().getDatosPeso().get(i).get("y")))));
+            if(Float.parseFloat(Objects.requireNonNull(MainActivity.getPeso().getDatosPeso().get(i).get("y")))>maxView){
+                maxView = Float.parseFloat(Objects.requireNonNull(MainActivity.getPeso().getDatosPeso().get(i).get("y")));
             }
-            if(Float.parseFloat(Objects.requireNonNull(pesoOB.getDatosPeso().get(i).get("y")))<minView){
-                minView = Float.parseFloat(Objects.requireNonNull(pesoOB.getDatosPeso().get(i).get("y")));
+            if(Float.parseFloat(Objects.requireNonNull(MainActivity.getPeso().getDatosPeso().get(i).get("y")))<minView){
+                minView = Float.parseFloat(Objects.requireNonNull(MainActivity.getPeso().getDatosPeso().get(i).get("y")));
             }
 
         }
@@ -131,14 +181,14 @@ public class AppHelper {
         lineDataSet.setValueTextSize(15);
         lineDataSet.setLineWidth(3);
         LineData lineData = new LineData(lineDataSet);
-        if(pesoOB.getDatosPeso().size()>0){
-            binding.ultimoPeso.setText(pesoOB.getDatosPeso().get(pesoOB.getDatosPeso().size()-1).get("y") + " Kgs");
+        if(MainActivity.getPeso().getDatosPeso().size()>0){
+            binding.ultimoPeso.setText(MainActivity.getPeso().getDatosPeso().get(MainActivity.getPeso().getDatosPeso().size()-1).get("y") + " Kgs");
         }
         //>>>****INSERCIÓN DE DATOS*****FIN
 
         //si se ha seleccionado una marca de objetivo
-        if(pesoOB.getObjetivo()!=null){
-            float leyendVal =Float.parseFloat(pesoOB.getObjetivo());
+        if(MainActivity.getPeso().getObjetivo()!=null){
+            float leyendVal =Float.parseFloat(MainActivity.getPeso().getObjetivo());
             YAxis yAxis = binding.lineChart.getAxisLeft();
             LimitLine ll = new LimitLine(leyendVal, "Objetivo");
             ll.setLineColor(Color.rgb(255,135,0));
@@ -202,11 +252,11 @@ public class AppHelper {
         barDataSet.setColor(Color.RED);
         barDataSet.setValueTextSize(15);
         BarData barData = new BarData(barDataSet);
-        binding.ultimoProgreso
-                .setText(MainActivity.getAvance()
-                        .getEjerciciosNombres()
-                        .get(MainActivity.getAvance()
-                                .getEjerciciosNombres().size()-1));
+        String ultimoValorIntroducido = MainActivity.getAvance().getEjerciciosNombres()
+                .isEmpty() ? " " : MainActivity.getAvance()
+                .getEjerciciosNombres().get(MainActivity.getAvance().getEjerciciosNombres().size()-1);
+        binding.ultimoProgreso.setText(ultimoValorIntroducido);
+
         //>>>****INSERCIÓN DE DATOS*****fin
 
         binding.barChart.setDescription(description);
@@ -218,6 +268,42 @@ public class AppHelper {
         binding.barChart.invalidate();
         binding.barChart.setVisibleXRangeMaximum(5);
     }
+
+    public static void actualizarAvance(Avance avance){
+        System.out.println("actualizarAvance()");
+        DatabaseReference ref = FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/avance");
+        ref.setValue(avance).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                actualizarApp();
+                configurarChartAvance(EstadisticasFragment.getBinding());
+            }
+        });
+    }
+    /**
+     * Actualiza los datos del peso del usuario en Firebase.
+     * @param peso
+     */
+    public static void actualizarPeso(Peso peso){
+        DatabaseReference ref = FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/peso");
+        ref.setValue(peso).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                actualizarApp();
+                configurarChartPeso(EstadisticasFragment.getBinding());
+            }
+        });
+    }
+    /**
+     * Recoge una lista de nombres, los separa en un array por segmentos e introduce el primer
+     * segmento en una lista nueva
+     * @param nombres Lista de nombres introducida
+     * @return Lista de la primera palabra de cada nombre.
+     */
     public static List<String> recortarNombres(List<String> nombres){
         List<String> nombresCortos = new ArrayList<>();
         for (int i = 0; i < nombres.size(); i++) {
@@ -228,15 +314,65 @@ public class AppHelper {
         }
         return nombresCortos;
     }
+
     // ESTADÍSTICAS**********************************ESTADÍSTICAS**********************************
-    public void hotFixAvtividad(){
-        Actividad actividad = new Actividad("Kárate", "22.50€", "Artes marciales", "15", "Andrés", "De 6 a 7:30");
+
+    // ACTIVIDADES**********************************ACTIVIDADES**********************************
+    public static void cargarActividad(FragmentDetallesActividadBinding binding,Context context, Actividad actividad){
+        Glide.with(context)
+                .load(actividad.getImg())
+                .placeholder(R.drawable.baseline_add_242)//si no hay imagen carga una por defecto
+                .error(R.drawable.logo)//si ocurre algún error se verá por defecto
+                .fitCenter()
+                .override(1000)
+                .into(binding.imagenActividad);
+        binding.nombreActividad.setText(actividad.getNombre());
+        binding.descripcionActividad.append(actividad.getDescripcion());
+        binding.profesorActividad.append(actividad.getProfesor());
+        binding.horariosActividad.append(actividad.getHorario());
+        binding.vacantesActividad.append(actividad.getVacantes());
+        binding.precioActividad.append(actividad.getPrecio());
+    }
+    // ACTIVIDADES**********************************ACTIVIDADES**********************************
+    /**
+     * get uri to drawable or any other resource type if u wish
+     * @param context - context
+     * @param drawableId - drawable res id
+     * @return - uri
+     */
+    public static void hotFixImagen(Context context, int drawable){//int corresponde a un drawable
+        System.out.println("Subiendo imagen");
+        Bitmap bm = BitmapFactory.decodeResource(context.getResources(), drawable);
+        Uri imgUri = getImageUri(context, bm);
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference(String.valueOf(drawable));
+        storageReference.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                //si no hay problemas durante el proceso obtenemos el link de la imagen en el Store
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!uriTask.isComplete()) ;
+                Uri urlimagen = uriTask.getResult();
+                imgUriFb = urlimagen;
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println(e);
+            }
+        });
+    }
+
+    public static void hotFixAvtividad(){
+        Actividad actividad = new Actividad("Zumba", "22.50€",
+                " Es una disciplina fitness creada a mediados de los años 1990 por el colombiano Alberto \"Beto\" Pérez, \u200B enfocada por una parte a mantener un cuerpo saludable y por otra a desarrollar, fortalecer y dar flexibilidad al cuerpo mediante movimientos de baile combinados con una serie de rutinas aeróbicas.",
+                "20", "Verórica Forté", "De 7:30 a 8:30");
+        actividad.setImg("https://firebasestorage.googleapis.com/v0/b/olimplicacion-3ba86.appspot.com/o/2131165447?alt=media&token=3fa2a389-c9a1-411b-bf34-fde931b6210d");
         Map<String, Object> actividadMapa = new HashMap<>();
-        actividadMapa.put("Kárate", actividad);
+        actividadMapa.put("zumba", actividad);
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("actividades");
-        ref.setValue(actividadMapa);
+        ref.updateChildren(actividadMapa);
     }
     public static void hotFixPesos(){
         Map<String, String> datos = new HashMap<>(); datos.put("x", "0.0");datos.put("y", "0.0");
@@ -249,5 +385,11 @@ public class AppHelper {
                 .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/peso");
         ref.setValue(peso);
     }
-
+    public static Uri getImageUri(Context inContext, Bitmap inImage) {
+        Date fecha = new Date();
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title" + fecha.toString(), null);
+        return Uri.parse(path);
+    }
 }

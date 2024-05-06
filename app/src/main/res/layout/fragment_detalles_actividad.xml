@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".actividades.DetallesActividadFragment">
+
+    <Button
+        android:id="@+id/volver"
+        android:layout_width="411dp"
+        android:layout_height="wrap_content"
+        android:background="@color/azulLogo"
+        android:drawableLeft="@drawable/baseline_arrow_back_24"
+        android:text="Volver a Lista"
+        android:textAllCaps="false"
+        android:textColor="@color/white"
+        android:textSize="22dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imagenActividad"
+        android:layout_width="wrap_content"
+        android:layout_height="230dp"
+        android:src="@drawable/actividad_ejercicio_r"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/volver" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout5"
+        android:layout_width="395dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imagenActividad">
+
+        <TextView
+            android:id="@+id/nombreActividad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="NombreActividad"
+            android:textAlignment="center"
+            android:textColor="#252525"
+            android:textSize="18dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/descripcionActividad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Descripción: "
+            android:textColor="#252525"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/profesorActividad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Profesor: "
+            android:textColor="#252525"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/horariosActividad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Horarios: "
+            android:textColor="#252525"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/vacantesActividad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Vacnates: "
+            android:textColor="#252525"
+            android:textSize="18dp" />
+
+        <TextView
+            android:id="@+id/precioActividad"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Precio: "
+            android:textColor="#252525"
+            android:textSize="18dp" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
