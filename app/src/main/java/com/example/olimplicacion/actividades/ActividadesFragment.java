@@ -23,6 +23,10 @@ import com.example.olimplicacion.rutinas.RutinaFbAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 public class ActividadesFragment extends Fragment  implements ActividadFbAdapter.ItemClickListener{
     //recyclerView **********
     private ActividadFbAdapter actividadFbAdapter;//adaptador
@@ -43,7 +47,7 @@ public class ActividadesFragment extends Fragment  implements ActividadFbAdapter
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         //AppHelper.hotFixAvtividad();
-        //AppHelper.hotFixImagen(getContext(), R.drawable.zumba);
+        //AppHelper.hotFixImagen(getContext(), R.drawable.esgrima);
         FirebaseRecyclerOptions<Actividad> options =
                 new FirebaseRecyclerOptions.Builder<Actividad>()
                         .setQuery(FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")

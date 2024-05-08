@@ -23,7 +23,14 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 /**
  * NOTA: Al registrarse en el gimnasio, el administrador dará una clave generada de forma aleatoria
@@ -35,7 +42,8 @@ public class MainActivity extends AppCompatActivity {
     private static Usuario usuario = new Usuario();
     private static Peso peso = new Peso();
     private static Avance avance = new Avance();
-    private static Actividad actividad = new Actividad();
+    private static List<Actividad> actividades = new ArrayList<>();
+
 
     ActivityMainBinding binding;
 
@@ -87,18 +95,19 @@ public class MainActivity extends AppCompatActivity {
                         //recojo los datos del usuario en un objeto Usuario
                         usuario = data.getValue(Usuario.class);
                         if(data.child("peso").getValue(Peso.class)==null){
-                            peso = new Peso();
-                        }else{
                             peso = data.child("peso").getValue(Peso.class);
                         }
 
-                        if(data.child("avance").getValue(Avance.class)==null){
-                            avance = new Avance();
-                        }else{
+                        if(data.child("avance").getValue(Avance.class)!=null){
                             avance = data.child("avance").getValue(Avance.class);
                         }
-
-
+                        if(data.child("actividades").getValue()!=null){
+                            for (DataSnapshot data2: data.child("actividades").getChildren()) {
+                                Actividad actividad = data2.getValue(Actividad.class);
+                                System.out.println(actividad.getFecha());
+                                actividades.add(actividad);
+                            }
+                        }
                         confirmado=true;
                         //ejecuto el fragmento 'MenuPrincipal'
                         irAMenuPrincipal();
@@ -116,26 +125,6 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(DatabaseError error) {
             }
         });
-        /*DatabaseReference ref2 = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("actividades");
-        ref2.addListenerForSingleValueEvent(new ValueEventListener() {
-
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot data: snapshot.getChildren()) {
-                    actividad = data.getValue(Actividad.class);
-                    System.out.println(actividad);
-                }
-               *//* actividad = snapshot.child().getValue(Actividad.class);
-                System.out.println(snapshot.getValue());
-                System.out.println(actividad);*//*
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });*/
     }
     /**
      * Inicia un intent al activity MenuPrincipal.
@@ -167,4 +156,28 @@ public class MainActivity extends AppCompatActivity {
         avance = avanceOB;
     }
 
+    public static List<Actividad> getActividades() {
+        return actividades;
+    }
+
+    public static void setActividades(List<Actividad> actividades) {
+        MainActivity.actividades = actividades;
+        System.out.println("Actualizando" + MainActivity.actividades);
+    }
+
+    private static void validarFechaActividad(){
+        //Obtengo la fecha de hoy
+        Calendar cal = new GregorianCalendar();
+        Date date = cal.getTime();
+        String fecha = date.getYear() +"/"+ date.getMonth()+"/"+ date.getDate()+"";
+        String[] fechas1 = fecha.split("/");
+        int a1 = Integer.valueOf(fechas1[0]),b1 = Integer.valueOf(fechas1[1]),c1 = Integer.valueOf(fechas1[2]);
+        for (int i = 0; i < actividades.size(); i++) {
+            String[] fechas2 = actividades.get(i).getFecha().split("/");
+            int a2 = Integer.valueOf(fechas2[0]),b2 = Integer.valueOf(fechas2[1]),c2 = Integer.valueOf(fechas2[2]);
+            if(a1>a2 || (a1==a2 && b1>b2) || (a1==a2 && b1==b2 && (c1-c2>4))){
+                AppHelper.eliminarReserva(actividades.remove(i));
+            }
+        }
+    }
 }

@@ -1,5 +1,6 @@
 package com.example.olimplicacion.actividades;
 
+import android.graphics.Color;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -34,12 +35,35 @@ public class ActividadFbAdapter extends FirebaseRecyclerAdapter<Actividad, Activ
     protected void onBindViewHolder(@NonNull ActividadFbAdapter.ViewHolder holder, int position, @NonNull Actividad model) {
         holder.nombre.setText(model.getNombre());
         holder.descripcion.setText(model.getDescripcion());
-        if(model.getImg()!=null){
+        if(model.getImg1()!=null){
             Glide.with(holder.imagen.getContext())
-                    .load(model.getImg())
+                    .load(model.getImg1())
                     .placeholder(R.drawable.baseline_add_242)//si no hay imagen carga una por defecto
                     .error(R.drawable.baseline_add_242)//si ocurre algún error se verá por defecto
                     .into(holder.imagen);
+        }
+        for (int i = 0; i < model.getDias().size(); i++) {
+            if(model.getDias().get(i).equals("l")){
+                holder.lunes.setTextColor(Color.rgb(255, 127, 39));
+            }
+            if(model.getDias().get(i).equals("m")){
+                holder.martes.setTextColor(Color.rgb(255, 127, 39));
+            }
+            if(model.getDias().get(i).equals("x")){
+                holder.miercoles.setTextColor(Color.rgb(255, 127, 39));
+            }
+            if(model.getDias().get(i).equals("j")){
+                holder.jueves.setTextColor(Color.rgb(255, 127, 39));
+            }
+            if(model.getDias().get(i).equals("v")){
+                holder.viernes.setTextColor(Color.rgb(255, 127, 39));
+            }
+            if(model.getDias().get(i).equals("s")){
+                holder.sabado.setTextColor(Color.rgb(255, 127, 39));
+            }
+            if(model.getDias().get(i).equals("d")){
+                holder.domingo.setTextColor(Color.rgb(255, 127, 39));
+            }
         }
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,7 +80,7 @@ public class ActividadFbAdapter extends FirebaseRecyclerAdapter<Actividad, Activ
         return new ActividadFbAdapter.ViewHolder(view);
     }
     class ViewHolder extends RecyclerView.ViewHolder implements PopupMenu.OnMenuItemClickListener {
-        TextView nombre,descripcion;
+        TextView nombre, descripcion, lunes, martes, miercoles, jueves, viernes, sabado, domingo;
         ImageView imagen;
 
         public ViewHolder(@NonNull View itemView) {
@@ -64,6 +88,13 @@ public class ActividadFbAdapter extends FirebaseRecyclerAdapter<Actividad, Activ
             nombre = itemView.findViewById(R.id.nombreActividad);
             descripcion = itemView.findViewById(R.id.descripcionActividad);
             imagen = itemView.findViewById(R.id.imgActividad);
+            lunes = itemView.findViewById(R.id.lunes);
+            martes = itemView.findViewById(R.id.martes);
+            miercoles = itemView.findViewById(R.id.miercoles);
+            jueves = itemView.findViewById(R.id.jueves);
+            viernes = itemView.findViewById(R.id.viernes);
+            sabado = itemView.findViewById(R.id.sabado);
+            domingo = itemView.findViewById(R.id.domingo);
         }
 
         @Override

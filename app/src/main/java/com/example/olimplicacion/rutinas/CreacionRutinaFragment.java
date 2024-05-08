@@ -412,10 +412,14 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         Rutina rutin = new Rutina();
         rutin.setNombre(binding.nombreDeRutina.getText().toString());
         rutin.setId(MainActivity.getUsuario().getId() + "_" + fecha);
+        //si se ha capturado una imagen
         if(confirmacionImg){
+            //se guarda
             rutin.setImg(imgUriFb.toString());
         }else{
+            //si no y además se está modificando una rutina
             if(rutina!=null){
+                //se guarda la imagen que almacenaba la rutina anteriormente
                 rutin.setImg(rutina.getImg());
             }
         }

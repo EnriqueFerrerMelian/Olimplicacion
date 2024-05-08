@@ -86,6 +86,15 @@ public class AppHelper {
                 Avance avance = dataSnapshot.child("avance")
                         .getValue(Avance.class)==null ? new Avance() : dataSnapshot.child("avance").getValue(Avance.class);
                 MainActivity.setAvance(avance);
+
+                List<Actividad> actividades = new ArrayList<>();
+                if(dataSnapshot.child("actividades").getValue()!=null){
+                    for (DataSnapshot data: dataSnapshot.child("actividades").getChildren()) {
+                        Actividad actividad = data.getValue(Actividad.class);
+                        actividades.add(actividad);
+                    }
+                }
+                MainActivity.setActividades(actividades);
             }
             @Override
             public void onCancelled(DatabaseError error) {
@@ -124,7 +133,6 @@ public class AppHelper {
      */
     public static void configurarChartPeso(FragmentEstadisticasBinding binding){
         float maxView = 0;float minView = 0;
-        System.out.println("configurarLineChart()");
 
         //borrando bordes
         binding.lineChart.setDrawBorders(false);
@@ -207,7 +215,6 @@ public class AppHelper {
     }
 
     public static void configurarChartAvance(FragmentEstadisticasBinding binding){
-        System.out.println("configurarBarChart()");
         //configurar descripción
         Description description = new Description();
         description.setText("Progreso");
@@ -270,7 +277,6 @@ public class AppHelper {
     }
 
     public static void actualizarAvance(Avance avance){
-        System.out.println("actualizarAvance()");
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/avance");
@@ -319,8 +325,29 @@ public class AppHelper {
 
     // ACTIVIDADES**********************************ACTIVIDADES**********************************
     public static void cargarActividad(FragmentDetallesActividadBinding binding,Context context, Actividad actividad){
+        if (actividad.getDias().contains("l")) {
+            binding.lunes.setTextColor(Color.rgb(255, 127, 39));
+        }
+        if (actividad.getDias().contains("m")) {
+            binding.martes.setTextColor(Color.rgb(255, 127, 39));
+        }
+        if (actividad.getDias().contains("x")) {
+            binding.miercoles.setTextColor(Color.rgb(255, 127, 39));
+        }
+        if (actividad.getDias().contains("j")) {
+            binding.jueves.setTextColor(Color.rgb(255, 127, 39));
+        }
+        if (actividad.getDias().contains("v")) {
+            binding.viernes.setTextColor(Color.rgb(255, 127, 39));
+        }
+        if (actividad.getDias().contains("s")) {
+            binding.sabado.setTextColor(Color.rgb(255, 127, 39));
+        }
+        if (actividad.getDias().contains("d")) {
+            binding.domingo.setTextColor(Color.rgb(255, 127, 39));
+        }
         Glide.with(context)
-                .load(actividad.getImg())
+                .load(actividad.getImg2())
                 .placeholder(R.drawable.baseline_add_242)//si no hay imagen carga una por defecto
                 .error(R.drawable.logo)//si ocurre algún error se verá por defecto
                 .fitCenter()
@@ -333,15 +360,68 @@ public class AppHelper {
         binding.vacantesActividad.append(actividad.getVacantes());
         binding.precioActividad.append(actividad.getPrecio());
     }
+
+    public static void reservarActividad(Actividad actividad){
+        //si hay vacantes
+        //Obtengo la fecha de hoy
+        Calendar cal = new GregorianCalendar();
+        Date date = cal.getTime();
+        String fecha = date.getYear() +"/"+ date.getMonth()+"/"+ date.getDate()+"";
+        int vacantes = Integer.parseInt(actividad.getVacantes())-1;
+        actividad.setVacantes(String.valueOf(vacantes));
+        actividad.setFecha(fecha);
+        DatabaseReference ref = FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/actividades/"+actividad.getNombre());
+        ref.setValue(actividad).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                actualizarVacante(actividad);
+            }
+        });
+    }
+    public static void eliminarReserva(Actividad actividad){
+        int vacantes = Integer.parseInt(actividad.getVacantes())+1;
+        actividad.setVacantes(String.valueOf(vacantes));
+        DatabaseReference ref = FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/actividades/"+actividad.getNombre());
+        ref.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                actualizarVacante(actividad);
+            }
+        });
+    }
+    public static void actualizarVacante(Actividad actividad){
+        DatabaseReference ref1 = FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("actividades/"+actividad.getNombre());
+        ref1.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                DatabaseReference ref2 = FirebaseDatabase
+                        .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                        .getReference("actividades/"+actividad.getNombre());
+                ref2.setValue(actividad).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        actualizarApp();
+                    }
+                });
+            }
+        });
+
+
+    }
+
     // ACTIVIDADES**********************************ACTIVIDADES**********************************
     /**
      * get uri to drawable or any other resource type if u wish
      * @param context - context
-     * @param drawableId - drawable res id
      * @return - uri
      */
     public static void hotFixImagen(Context context, int drawable){//int corresponde a un drawable
-        System.out.println("Subiendo imagen");
         Bitmap bm = BitmapFactory.decodeResource(context.getResources(), drawable);
         Uri imgUri = getImageUri(context, bm);
         StorageReference storageReference = FirebaseStorage.getInstance().getReference(String.valueOf(drawable));
@@ -363,16 +443,47 @@ public class AppHelper {
     }
 
     public static void hotFixAvtividad(){
-        Actividad actividad = new Actividad("Zumba", "22.50€",
-                " Es una disciplina fitness creada a mediados de los años 1990 por el colombiano Alberto \"Beto\" Pérez, \u200B enfocada por una parte a mantener un cuerpo saludable y por otra a desarrollar, fortalecer y dar flexibilidad al cuerpo mediante movimientos de baile combinados con una serie de rutinas aeróbicas.",
-                "20", "Verórica Forté", "De 7:30 a 8:30");
-        actividad.setImg("https://firebasestorage.googleapis.com/v0/b/olimplicacion-3ba86.appspot.com/o/2131165447?alt=media&token=3fa2a389-c9a1-411b-bf34-fde931b6210d");
+        Actividad actividad = new Actividad("Esgrima", "20.00€",
+                " es un deporte de combate en el que se enfrentan dos contrincantes debidamente protegidos que deben intentar tocarse con un arma blanca, en función de la cual se diferencian tres modalidades: sable, espada y florete.",
+                "10", "Cirano de Vergerac", "De 8:30 a 9:30");
+        actividad.setImg1("https://firebasestorage.googleapis.com/v0/b/olimplicacion-3ba86.appspot.com/o/2131165449?alt=media&token=212d3b2f-e1f8-4876-b1ee-42008c1cda5a");
+        actividad.setImg2("https://firebasestorage.googleapis.com/v0/b/olimplicacion-3ba86.appspot.com/o/2131165448?alt=media&token=2db03e43-bd07-4aaf-bf29-f9360660280a");
+        List<String> dias = new ArrayList<>();dias.add("m");dias.add("j");
+        actividad.setDias(dias);
         Map<String, Object> actividadMapa = new HashMap<>();
-        actividadMapa.put("zumba", actividad);
+        actividadMapa.put("esgrima", actividad);
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("actividades");
-        ref.updateChildren(actividadMapa);
+        ref.updateChildren(actividadMapa).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                Actividad actividad = new Actividad("Kárate", "15.00€",
+                        " es un arte marcial tradicional basada en algunos estilos de las artes marciales chinas y en otras disciplinas provenientes de Okinawa. A la persona que lo practica se la llama karateca.",
+                        "15", "Andrés", "De 6:30 a 7:30");
+                actividad.setImg1("https://firebasestorage.googleapis.com/v0/b/olimplicacion-3ba86.appspot.com/o/2131165450?alt=media&token=6cfbbc04-9029-41bc-987b-59e08fc92cd6");
+                actividad.setImg2("https://firebasestorage.googleapis.com/v0/b/olimplicacion-3ba86.appspot.com/o/2131165452?alt=media&token=89be4d90-e92b-4a7f-abcc-9c975517b76a");
+                List<String> dias = new ArrayList<>();dias.add("m");dias.add("j");dias.add("s");
+                actividad.setDias(dias);
+                Map<String, Object> actividadMapa = new HashMap<>();
+                actividadMapa.put("karate", actividad);
+                ref.updateChildren(actividadMapa).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        Actividad actividad = new Actividad("Zumba", "10.00€",
+                                " es una disciplina enfocada por una parte a mantener un cuerpo saludable y por otra a desarrollar, fortalecer y dar flexibilidad al cuerpo mediante movimientos de baile combinados con una serie de rutinas aeróbicas.",
+                                "15", "Señora Profesora", "De 7:30 a 8:30");
+                        actividad.setImg1("https://firebasestorage.googleapis.com/v0/b/olimplicacion-3ba86.appspot.com/o/2131165449?alt=media&token=212d3b2f-e1f8-4876-b1ee-42008c1cda5a");
+                        actividad.setImg2("https://firebasestorage.googleapis.com/v0/b/olimplicacion-3ba86.appspot.com/o/2131165448?alt=media&token=2db03e43-bd07-4aaf-bf29-f9360660280a");
+                        List<String> dias = new ArrayList<>();dias.add("l");dias.add("x");dias.add("v");
+                        actividad.setDias(dias);
+                        Map<String, Object> actividadMapa = new HashMap<>();
+                        actividadMapa.put("zumba", actividad);
+                        ref.updateChildren(actividadMapa);
+                    }
+                });
+            }
+        });
     }
     public static void hotFixPesos(){
         Map<String, String> datos = new HashMap<>(); datos.put("x", "0.0");datos.put("y", "0.0");
