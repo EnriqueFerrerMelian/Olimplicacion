@@ -1,24 +1,25 @@
 package com.example.olimplicacion.clases;
 
-import android.content.ContentResolver;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.view.View;
 import android.widget.Toast;
 
-import androidx.annotation.AnyRes;
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.example.olimplicacion.MainActivity;
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.actividades.Actividad;
+import com.example.olimplicacion.calendario.CalendarioFragment;
 import com.example.olimplicacion.databinding.FragmentDetallesActividadBinding;
 import com.example.olimplicacion.databinding.FragmentEstadisticasBinding;
 import com.example.olimplicacion.fragmentos.EstadisticasFragment;
+import com.example.olimplicacion.rutinas.Rutina;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
@@ -34,6 +35,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -43,6 +45,11 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+
+import org.naishadhparmar.zcustomcalendar.CustomCalendar;
+import org.naishadhparmar.zcustomcalendar.OnDateSelectedListener;
+import org.naishadhparmar.zcustomcalendar.OnNavigationButtonClickedListener;
+import org.naishadhparmar.zcustomcalendar.Property;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -77,16 +84,17 @@ public class AppHelper {
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                //actualizo el usuario
                 MainActivity.setUsuario(dataSnapshot.getValue(Usuario.class));
-
+                //actualizo el peso
                 Peso peso = dataSnapshot.child("peso")
                         .getValue(Peso.class)==null ? new Peso() : dataSnapshot.child("peso").getValue(Peso.class);
                 MainActivity.setPeso(peso);
-
+                //actualizo el progreso
                 Avance avance = dataSnapshot.child("avance")
                         .getValue(Avance.class)==null ? new Avance() : dataSnapshot.child("avance").getValue(Avance.class);
                 MainActivity.setAvance(avance);
-
+                //actualizo las actividades
                 List<Actividad> actividades = new ArrayList<>();
                 if(dataSnapshot.child("actividades").getValue()!=null){
                     for (DataSnapshot data: dataSnapshot.child("actividades").getChildren()) {
@@ -95,6 +103,15 @@ public class AppHelper {
                     }
                 }
                 MainActivity.setActividades(actividades);
+                //actualizo las rutinas
+                List<Rutina> rutinas = new ArrayList<>();
+                if(dataSnapshot.child("rutinas").getValue()!=null){
+                    for (DataSnapshot data2: dataSnapshot.child("rutinas").getChildren()) {
+                        Rutina rutina = data2.getValue(Rutina.class);
+                        rutinas.add(rutina);
+                    }
+                }
+                MainActivity.setRutinas(rutinas);
             }
             @Override
             public void onCancelled(DatabaseError error) {
@@ -416,6 +433,168 @@ public class AppHelper {
     }
 
     // ACTIVIDADES**********************************ACTIVIDADES**********************************
+
+    // CALENDARIO**********************************CALENDARIO************************************
+    private static Map<Integer, Object>[] arr = new Map[2];
+    private static List<String> deLunesADomingo = new ArrayList();
+    /**
+     * devuelve una lista del tamaño de los dias que tenga el mes en cuestion. En vez de contener los números del día
+     * contendrá el día de la semana en la posición del día
+     * @param calendar
+     * @return
+     */
+    public static List<String> listaDeDiasPorSemanas(Calendar calendar){
+        String algoConDias = algoConLosDias(calendar);
+        int diasDelMes = calendar.getActualMaximum(5);
+        String[] diasArray = {"l", "m", "x", "j", "v", "s", "d"};
+        int diaIndex = 0;
+        List<String> diasEnDiasSemanas = new ArrayList<>();
+        //se recorre el array de dias
+        for (int i = 0; i < diasArray.length; i++) {
+            //si el dia de hoy coincide con uno de la lista
+            if(diasArray[i].equals(algoConDias)){
+                //se obtiene el índice en la lista de diasArray[]
+                diaIndex = i;
+            }
+        }
+        //
+        for (int i = 0; i < diasDelMes; i++) {
+            diasEnDiasSemanas.add(diasArray[diaIndex]);
+            diaIndex++;
+            if(diaIndex>diasArray.length-1){
+                diaIndex=0;
+            }
+        }
+        deLunesADomingo = diasEnDiasSemanas;
+
+        return diasEnDiasSemanas;
+    }
+    /**
+     * devuelve el dia de la semana del primer dia del mes
+     * @param calendar
+     * @return
+     */
+    public static String algoConLosDias(Calendar calendar){
+        String convertirDiaSemana = convertirDiaSemana(calendar);
+        String[] diasArray = {"l", "m", "x", "j", "v", "s", "d"};
+        String diasd = "";
+        int diaIndex = 0;
+        int diaBandera = 0;
+        int diaDelMes = calendar.get(5);
+        //se recorre el array de dias
+        for (int i = 0; i < diasArray.length; i++) {
+            //si el dia de hoy coincide con uno de la lista
+            if(diasArray[i].equals(convertirDiaSemana)){
+                //se obtiene el índice en la lista que representa ese día
+                diaIndex = i;
+                diaBandera = diaIndex;
+            }
+        }
+
+        for (int i = 0; i < diaDelMes; i++) {
+            //se recorre la lista de dias hacia atras
+            diasd =  diasArray[diaBandera];
+            diaBandera--;
+
+            //si el indice de la lista de dias llega a cero, se reasigna la variable para evitar desbordamiento
+            if(diaBandera<0 && i<diaDelMes){
+                diaBandera = diasArray.length-1;
+                diasd =  diasArray[0];
+            }
+        }
+        return diasd;
+    }
+    public static String convertirDiaSemana(Calendar calendar){
+        switch(calendar.get(7)) {
+            case 1:
+                return "d";
+            case 2:
+                return "l";
+            case 3:
+                return "m";
+            case 4:
+                return "x";
+            case 5:
+                return "j";
+            case 6:
+                return "v";
+            case 7:
+                return "s";
+            default:
+                return null;
+        }
+    }
+    public static void configurarArr(Calendar calendar){
+        List<String> listaDiasSemanas = listaDeDiasPorSemanas(calendar);
+        for (int i = 0; i < MainActivity.getRutinas().size(); i++) {
+            for (int j = 0; j < listaDiasSemanas.size(); j++) {
+                if(MainActivity.getRutinas().get(i).getDias().contains(listaDiasSemanas.get(j))){
+                    arr[0].put(j+1, "rutina");
+                }
+            }
+        }
+    }
+    public static void updateArr(Calendar calendar){
+        arr[0].clear();
+        List<String> listaDiasSemanas = listaDeDiasPorSemanas(calendar);
+        for (int i = 0; i < MainActivity.getRutinas().size(); i++) {
+            for (int j = 0; j < listaDiasSemanas.size(); j++) {
+                if(MainActivity.getRutinas().get(i).getDias().contains(listaDiasSemanas.get(j))){
+                    arr[0].put(j+1, "rutina");
+                }
+            }
+        }
+    }
+    public static void cargarCalendario(CustomCalendar customCalendar, Context context, OnNavigationButtonClickedListener onbcl){
+        arr[0] = new HashMap<>();
+        HashMap<Object, Property> mapDescToProp = new HashMap<>();
+        Property propDefault = new Property();
+        propDefault.layoutResource = R.layout.default_view;
+        propDefault.dateTextViewResource = R.id.textView;
+        mapDescToProp.put("default", propDefault);
+
+       /* Property propUnavailable = new Property();
+        propUnavailable.layoutResource = R.layout.unavailable_view;
+        //You can leave the text view field blank. Custom calendar won't try to set a date on such views
+        propUnavailable.enable = false;
+        mapDescToProp.put("unavailable", propUnavailable);*/
+
+        Property propHoliday = new Property();
+        propHoliday.layoutResource = R.layout.current_view;
+        propHoliday.dateTextViewResource = R.id.textView;
+        mapDescToProp.put("rutina", propHoliday);
+
+        customCalendar.setMapDescToProp(mapDescToProp);
+        Calendar calendar = Calendar.getInstance();
+        configurarArr(calendar);
+
+        customCalendar.setOnNavigationButtonClickedListener(CustomCalendar.PREVIOUS, onbcl);
+        customCalendar.setOnNavigationButtonClickedListener(CustomCalendar.NEXT, onbcl);
+        customCalendar.setDate(calendar, arr[0]);
+        customCalendar.setOnDateSelectedListener(new OnDateSelectedListener() {
+            @Override
+            public void onDateSelected(View view, Calendar selectedDate, Object desc) {
+                List<Rutina> rutinas = new ArrayList<>();
+                //aqui el selector que seleccionará el contenido de cada día
+                //escribirToast(selectedDate.get(Calendar.DAY_OF_MONTH) + " selected", context);
+                //crea una lista de objetos rutina que se obtendrá desde el fragmento CalendarioFragment
+                for (int i = 0; i < MainActivity.getRutinas().size(); i++) {
+                    if(MainActivity.getRutinas().get(i).getDias().contains(deLunesADomingo.get(selectedDate.get(Calendar.DAY_OF_MONTH)-1))){
+                        rutinas.add(MainActivity.getRutinas().get(i));
+                    }
+                }
+                CalendarioFragment.setRutinaSelected(rutinas);
+            }
+        });
+    }
+    public static Map<Integer, Object>[] getArr(){
+            return arr;
+    }
+    public static void setArr(Map<Integer, Object>[] arrr){
+        arr = arrr;
+    }
+
+    // CALENDARIO**********************************CALENDARIO*********************************FIN
     /**
      * get uri to drawable or any other resource type if u wish
      * @param context - context
@@ -503,4 +682,30 @@ public class AppHelper {
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title" + fecha.toString(), null);
         return Uri.parse(path);
     }
+    public void queEsQue(){
+         /* Calendar calendar = Calendar.getInstance();
+        System.out.println("get(Calendar.YEAR): " + calendar.get(Calendar.YEAR));//año
+        System.out.println("get(Calendar.MONTH): " + calendar.get(Calendar.MONTH));//num del mes
+        System.out.println("get(Calendar.DAY_OF_MONTH): " + calendar.get((Calendar.DAY_OF_MONTH)));//dia del mes
+        System.out.println("get(Calendar.DAY_OF_WEEK): " + calendar.get(Calendar.DAY_OF_WEEK));//dia de la semana en int
+        System.out.println("get(1) es el año: " + calendar.get(1));
+        System.out.println("get(2) es el mes: " + calendar.get(2));
+        System.out.println("get(3): " + calendar.get(3));
+        System.out.println("get(4): " + calendar.get(4));
+        System.out.println("get(5) es el día: " + calendar.get(5));
+        System.out.println("get(6) dia en el año?: " + calendar.get(6));
+        System.out.println("get(7) dia de la semana: " + calendar.get(7));
+        System.out.println("getTime(): " + calendar.getTime());
+        System.out.println("getTime().getYear(): " + calendar.getTime().getYear());
+        System.out.println("getTime().getDate(): " + calendar.getTime().getDate());
+        System.out.println("getTime().getMonth(): " + calendar.getTime().getMonth());
+        System.out.println("getTime().getDay(): " + calendar.getTime().getDay());
+        System.out.println("getActualMinimum(5): " + calendar.getActualMinimum(5));
+        System.out.println("getActualMaximum(5) son los dias que tiene un mes: " + calendar.getActualMaximum(5));
+        System.out.println("getCalendarType(): " + calendar.getCalendarType());
+        System.out.println("getFirstDayOfWeek(): " + calendar.getFirstDayOfWeek());
+        calendar.setFirstDayOfWeek(2);
+        System.out.println("getFirstDayOfWeek(): " + calendar.getFirstDayOfWeek());*/
+    }
+
 }

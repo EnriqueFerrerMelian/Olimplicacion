@@ -1,59 +1,47 @@
-package com.example.olimplicacion.rutinas;
+package com.example.olimplicacion.actividades;
 
-import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+
 import com.bumptech.glide.Glide;
 import com.example.olimplicacion.R;
+import com.example.olimplicacion.rutinas.Rutina;
+import com.example.olimplicacion.rutinas.RutinaAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Versión de un adaptador de Rutina para listView sin clickListener
- */
-
-public class RutinaAdapter  extends RecyclerView.Adapter<RutinaAdapter.ViewHolder>{
-    private List<Rutina> dataArrayList = new ArrayList<Rutina>();
-
-    public RutinaAdapter(List<Rutina> dataArrayList) {
+public class ActividadAdapter extends RecyclerView.Adapter<ActividadAdapter.ViewHolder>{
+    private List<Actividad> dataArrayList = new ArrayList<Actividad>();
+    public ActividadAdapter(List<Actividad> dataArrayList) {
         this.dataArrayList = dataArrayList;
 
     }
-
-    public void setListaFiltrada(List<Rutina> listaFiltrada){
-        this.dataArrayList = listaFiltrada;
-    }
     @NonNull
     @Override
-    public RutinaAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rutina_generic, parent, false);
-        return new RutinaAdapter.ViewHolder(view);
+    public ActividadAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_actividad, parent, false);
+        return new ActividadAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RutinaAdapter.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
+    public void onBindViewHolder(@NonNull ActividadAdapter.ViewHolder holder, int position) {
         holder.bind(dataArrayList.get(position));
     }
 
     @Override
-    public int getItemCount() {
-        return dataArrayList.size();
-    }
+    public int getItemCount() { return dataArrayList.size();}
     public static class ViewHolder extends RecyclerView.ViewHolder{
         TextView nombre, lunes, martes, miercoles, jueves, viernes, sabado, domingo;
         ImageView imagen;
-        String rutinaId;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             imagen = itemView.findViewById(R.id.rutinaImg);
@@ -65,13 +53,13 @@ public class RutinaAdapter  extends RecyclerView.Adapter<RutinaAdapter.ViewHolde
             viernes = itemView.findViewById(R.id.viernes);
             sabado = itemView.findViewById(R.id.sabado);
             domingo = itemView.findViewById(R.id.domingo);
+
         }
-        public void bind(Rutina model){
+        public void bind(Actividad model){
             nombre.setText(model.getNombre());
-            rutinaId = model.getId();
-            if(model.getImg()!=null){
+            if(model.getImg2()!=null){
                 Glide.with(imagen.getContext())
-                        .load(model.getImg())
+                        .load(model.getImg2())
                         .placeholder(R.drawable.baseline_add_242)//si no hay imagen carga una por defecto
                         .circleCrop()
                         .error(R.drawable.baseline_add_242)//si ocurre algún error se verá por defecto

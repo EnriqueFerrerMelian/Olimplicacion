@@ -15,5 +15,7 @@
     <string name="anadir">Añadir</string>
     <string name="eliminar">Eliminar</string>
     <string name="sobrescribir">Ya existe una rutina con ese nombre.\n Deseas sobrescribir?</string>
+    <string name="atras"><![CDATA[<-]]></string>
+    <string name="adelante"><![CDATA[->]]></string>
 
 </resources>

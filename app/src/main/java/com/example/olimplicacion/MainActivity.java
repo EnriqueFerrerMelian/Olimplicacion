@@ -1,12 +1,10 @@
 package com.example.olimplicacion;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Toast;
 
 import com.example.olimplicacion.actividades.Actividad;
 import com.example.olimplicacion.clases.AppHelper;
@@ -20,17 +18,12 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.firestore.auth.User;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Objects;
 
 /**
  * NOTA: Al registrarse en el gimnasio, el administrador dará una clave generada de forma aleatoria
@@ -43,6 +36,7 @@ public class MainActivity extends AppCompatActivity {
     private static Peso peso = new Peso();
     private static Avance avance = new Avance();
     private static List<Actividad> actividades = new ArrayList<>();
+    private static List<Rutina> rutinas = new ArrayList<>();
 
 
     ActivityMainBinding binding;
@@ -104,8 +98,13 @@ public class MainActivity extends AppCompatActivity {
                         if(data.child("actividades").getValue()!=null){
                             for (DataSnapshot data2: data.child("actividades").getChildren()) {
                                 Actividad actividad = data2.getValue(Actividad.class);
-                                System.out.println(actividad.getFecha());
                                 actividades.add(actividad);
+                            }
+                        }
+                        if(data.child("rutinas").getValue()!=null){
+                            for (DataSnapshot data2: data.child("rutinas").getChildren()) {
+                                Rutina rutina = data2.getValue(Rutina.class);
+                                rutinas.add(rutina);
                             }
                         }
                         confirmado=true;
@@ -162,7 +161,14 @@ public class MainActivity extends AppCompatActivity {
 
     public static void setActividades(List<Actividad> actividades) {
         MainActivity.actividades = actividades;
-        System.out.println("Actualizando" + MainActivity.actividades);
+    }
+
+    public static List<Rutina> getRutinas() {
+        return rutinas;
+    }
+
+    public static void setRutinas(List<Rutina> rutinas) {
+        MainActivity.rutinas = rutinas;
     }
 
     private static void validarFechaActividad(){

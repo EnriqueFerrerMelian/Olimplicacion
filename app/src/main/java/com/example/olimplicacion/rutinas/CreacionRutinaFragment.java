@@ -603,21 +603,7 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
             @Override
             public void onSuccess(Void unused) {
                 actualizarAvance(ejercicios);
-                actualizarUsuario();
-            }
-        });
-    }
-
-    public static void actualizarUsuario(){
-        DatabaseReference ref = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("usuarios/"+MainActivity.getUsuario().getId());
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {//dataSnapshot son todos los usuarios
-                MainActivity.setUsuario(dataSnapshot.getValue(Usuario.class));
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
+                AppHelper.actualizarApp();
             }
         });
     }

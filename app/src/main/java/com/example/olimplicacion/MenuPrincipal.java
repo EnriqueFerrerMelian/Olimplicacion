@@ -12,7 +12,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.example.olimplicacion.actividades.ActividadesFragment;
 import com.example.olimplicacion.databinding.ActivityMenuPrincipalBinding;
-import com.example.olimplicacion.fragmentos.CalendarioFragment;
+import com.example.olimplicacion.calendario.CalendarioFragment;
 import com.example.olimplicacion.fragmentos.EstadisticasFragment;
 import com.example.olimplicacion.rutinas.RutinaFragment;
 
