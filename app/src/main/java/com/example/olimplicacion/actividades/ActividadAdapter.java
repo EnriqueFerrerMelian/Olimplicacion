@@ -28,7 +28,7 @@ public class ActividadAdapter extends RecyclerView.Adapter<ActividadAdapter.View
     @NonNull
     @Override
     public ActividadAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_actividad, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_actividad_generic, parent, false);
         return new ActividadAdapter.ViewHolder(view);
     }
 
@@ -40,12 +40,13 @@ public class ActividadAdapter extends RecyclerView.Adapter<ActividadAdapter.View
     @Override
     public int getItemCount() { return dataArrayList.size();}
     public static class ViewHolder extends RecyclerView.ViewHolder{
-        TextView nombre, lunes, martes, miercoles, jueves, viernes, sabado, domingo;
+        TextView nombre, lunes, martes, miercoles, jueves, viernes, sabado, domingo, horario;
         ImageView imagen;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imagen = itemView.findViewById(R.id.rutinaImg);
-            nombre = itemView.findViewById(R.id.rutinaNombre);
+            imagen = itemView.findViewById(R.id.imgActividad);
+            nombre = itemView.findViewById(R.id.nombreActividad);
+            horario = itemView.findViewById(R.id.horarioActividad);
             lunes = itemView.findViewById(R.id.lunes);
             martes = itemView.findViewById(R.id.martes);
             miercoles = itemView.findViewById(R.id.miercoles);
@@ -57,6 +58,7 @@ public class ActividadAdapter extends RecyclerView.Adapter<ActividadAdapter.View
         }
         public void bind(Actividad model){
             nombre.setText(model.getNombre());
+            horario.setText(model.getHorario());
             if(model.getImg2()!=null){
                 Glide.with(imagen.getContext())
                         .load(model.getImg2())
@@ -88,7 +90,6 @@ public class ActividadAdapter extends RecyclerView.Adapter<ActividadAdapter.View
                     domingo.setTextColor(Color.rgb(255, 127, 39));
                 }
             }
-
         }
     }
 }

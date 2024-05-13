@@ -8,20 +8,31 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".calendario.CalendarioFragment">
+
     <org.naishadhparmar.zcustomcalendar.CustomCalendar
         android:id="@+id/customCalendar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:day_of_week_start_from="monday"
         />
-
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Rutinas:"
+        android:textStyle="bold"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewRutina"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="200dp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Actividades:"
+        android:textStyle="bold"/>
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewActividad"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="200dp" />
+
 
 </LinearLayout>

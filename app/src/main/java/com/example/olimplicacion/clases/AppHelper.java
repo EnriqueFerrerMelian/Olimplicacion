@@ -533,6 +533,18 @@ public class AppHelper {
                 }
             }
         }
+        for (int i = 0; i < MainActivity.getActividades().size(); i++) {
+            for (int j = 0; j < listaDiasSemanas.size(); j++) {
+
+                if(MainActivity.getActividades().get(i).getDias().contains(listaDiasSemanas.get(j))){
+                    if(arr[0].containsKey(j+1)){
+                        arr[0].put(j+1, "mix");
+                    }else{
+                        arr[0].put(j+1, "actividad");
+                    }
+                }
+            }
+        }
     }
     public static void updateArr(Calendar calendar){
         arr[0].clear();
@@ -544,25 +556,41 @@ public class AppHelper {
                 }
             }
         }
+        for (int i = 0; i < MainActivity.getActividades().size(); i++) {
+            for (int j = 0; j < listaDiasSemanas.size(); j++) {
+
+                if(MainActivity.getActividades().get(i).getDias().contains(listaDiasSemanas.get(j))){
+                    if(arr[0].containsKey(j+1)){
+                        arr[0].put(j+1, "mix");
+                    }else{
+                        arr[0].put(j+1, "actividad");
+                    }
+                }
+            }
+        }
     }
     public static void cargarCalendario(CustomCalendar customCalendar, Context context, OnNavigationButtonClickedListener onbcl){
         arr[0] = new HashMap<>();
         HashMap<Object, Property> mapDescToProp = new HashMap<>();
         Property propDefault = new Property();
-        propDefault.layoutResource = R.layout.default_view;
+        propDefault.layoutResource = R.layout.cal_default_view;
         propDefault.dateTextViewResource = R.id.textView;
         mapDescToProp.put("default", propDefault);
 
-       /* Property propUnavailable = new Property();
-        propUnavailable.layoutResource = R.layout.unavailable_view;
-        //You can leave the text view field blank. Custom calendar won't try to set a date on such views
-        propUnavailable.enable = false;
-        mapDescToProp.put("unavailable", propUnavailable);*/
+        Property propVarios = new Property();
+        propVarios.layoutResource = R.layout.cal_mix_view;
+        propVarios.dateTextViewResource = R.id.textView;
+        mapDescToProp.put("mix", propVarios);
 
-        Property propHoliday = new Property();
-        propHoliday.layoutResource = R.layout.current_view;
-        propHoliday.dateTextViewResource = R.id.textView;
-        mapDescToProp.put("rutina", propHoliday);
+        Property propActividad = new Property();
+        propActividad.layoutResource = R.layout.cal_actividad_view;
+        propActividad.dateTextViewResource = R.id.textView;
+        mapDescToProp.put("actividad", propActividad);
+
+        Property propRutina = new Property();
+        propRutina.layoutResource = R.layout.cal_rutina_view;
+        propRutina.dateTextViewResource = R.id.textView;
+        mapDescToProp.put("rutina", propRutina);
 
         customCalendar.setMapDescToProp(mapDescToProp);
         Calendar calendar = Calendar.getInstance();
@@ -575,6 +603,7 @@ public class AppHelper {
             @Override
             public void onDateSelected(View view, Calendar selectedDate, Object desc) {
                 List<Rutina> rutinas = new ArrayList<>();
+                List<Actividad> actividades = new ArrayList<>();
                 //aqui el selector que seleccionará el contenido de cada día
                 //escribirToast(selectedDate.get(Calendar.DAY_OF_MONTH) + " selected", context);
                 //crea una lista de objetos rutina que se obtendrá desde el fragmento CalendarioFragment
@@ -583,7 +612,12 @@ public class AppHelper {
                         rutinas.add(MainActivity.getRutinas().get(i));
                     }
                 }
-                CalendarioFragment.setRutinaSelected(rutinas);
+                for (int i = 0; i < MainActivity.getActividades().size(); i++) {
+                    if(MainActivity.getActividades().get(i).getDias().contains(deLunesADomingo.get(selectedDate.get(Calendar.DAY_OF_MONTH)-1))){
+                        actividades.add(MainActivity.getActividades().get(i));
+                    }
+                }
+                CalendarioFragment.setRecyclerView(rutinas, actividades);
             }
         });
     }
