@@ -70,8 +70,6 @@ public class CalendarioFragment extends Fragment implements OnNavigationButtonCl
 
     @Override
     public Map<Integer, Object>[] onNavigationButtonClicked(int whichButton, Calendar newMonth) {
-        int n = whichButton>0 ? -1 : 1;
-        newMonth.set(Calendar.MONTH, newMonth.get(Calendar.MONTH) - n);
         AppHelper.updateArr(newMonth);
         Map<Integer, Object>[] arr = AppHelper.getArr();
         return arr;
