@@ -48,6 +48,7 @@ public class RutinaFragment extends Fragment implements RutinaFbAdapter.ItemClic
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentRutinaBinding.inflate(inflater, container, false);
+        ((MenuPrincipal) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         return binding.getRoot();
     }
 

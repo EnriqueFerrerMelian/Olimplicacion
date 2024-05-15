@@ -1,4 +1,4 @@
-package com.example.olimplicacion.actividades;
+package com.example.olimplicacion.calendario;
 
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -10,43 +10,43 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.bumptech.glide.Glide;
 import com.example.olimplicacion.R;
-import com.example.olimplicacion.rutinas.Rutina;
-import com.example.olimplicacion.rutinas.RutinaAdapter;
+import com.example.olimplicacion.clases.Evento;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ActividadAdapter extends RecyclerView.Adapter<ActividadAdapter.ViewHolder>{
-    private List<Actividad> dataArrayList = new ArrayList<Actividad>();
-    public ActividadAdapter(List<Actividad> dataArrayList) {
+public class ObjetoAdapter extends RecyclerView.Adapter<ObjetoAdapter.ViewHolder>{
+    private List<Evento> dataArrayList = new ArrayList<Evento>();
+    public ObjetoAdapter(List<Evento> dataArrayList) {
         this.dataArrayList = dataArrayList;
 
     }
     @NonNull
     @Override
-    public ActividadAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_actividad_generic, parent, false);
-        return new ActividadAdapter.ViewHolder(view);
+    public ObjetoAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_objeto, parent, false);
+        return new ObjetoAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ActividadAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ObjetoAdapter.ViewHolder holder, int position) {
         holder.bind(dataArrayList.get(position));
+
     }
 
     @Override
     public int getItemCount() { return dataArrayList.size();}
+
     public static class ViewHolder extends RecyclerView.ViewHolder{
         TextView nombre, lunes, martes, miercoles, jueves, viernes, sabado, domingo, horario;
         ImageView imagen;
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            imagen = itemView.findViewById(R.id.imgActividad);
-            nombre = itemView.findViewById(R.id.nombreActividad);
-            horario = itemView.findViewById(R.id.horarioActividad);
+            imagen = itemView.findViewById(R.id.img);
+            nombre = itemView.findViewById(R.id.nombre);
+            horario = itemView.findViewById(R.id.horario);
             lunes = itemView.findViewById(R.id.lunes);
             martes = itemView.findViewById(R.id.martes);
             miercoles = itemView.findViewById(R.id.miercoles);
@@ -56,7 +56,7 @@ public class ActividadAdapter extends RecyclerView.Adapter<ActividadAdapter.View
             domingo = itemView.findViewById(R.id.domingo);
 
         }
-        public void bind(Actividad model){
+        public void bind(Evento model){
             nombre.setText(model.getNombre());
             horario.setText(model.getHorario());
             if(model.getImg2()!=null){

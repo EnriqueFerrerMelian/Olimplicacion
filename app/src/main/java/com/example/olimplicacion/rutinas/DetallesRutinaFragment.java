@@ -3,16 +3,19 @@ package com.example.olimplicacion.rutinas;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.example.olimplicacion.MenuPrincipal;
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.ejercicios.Ejercicio;
 import com.example.olimplicacion.ejercicios.EjercicioAdapter;
@@ -54,6 +57,7 @@ public class DetallesRutinaFragment extends Fragment implements EjercicioFbAdapt
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentDetallesRutinaBinding.inflate(inflater, container, false);
+        ((MenuPrincipal) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //codigo
         //cargo el recyclerview *******************
         dataArrayList = rutina.getEjercicios();
@@ -68,12 +72,6 @@ public class DetallesRutinaFragment extends Fragment implements EjercicioFbAdapt
             @Override
             public void onClick(View view) {
                 modificarRutina(rutina);
-            }
-        });
-        binding.volver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getParentFragmentManager().popBackStack();
             }
         });
         //codigo fin
@@ -94,7 +92,6 @@ public class DetallesRutinaFragment extends Fragment implements EjercicioFbAdapt
         fragmentTransaction.replace(R.id.fragmentContainerView, fragment, "nota").addToBackStack(null);
         fragmentTransaction.commit();
     }
-
 
     public static Rutina getRutina(){
         return rutina;

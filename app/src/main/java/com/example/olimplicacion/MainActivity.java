@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
                     if(data.child("nombre").getValue().equals(nombre) && data.child("clave").getValue().equals(clave)){
                         //recojo los datos del usuario en un objeto Usuario
                         usuario = data.getValue(Usuario.class);
-                        if(data.child("peso").getValue(Peso.class)==null){
+                        if(data.child("peso").getValue(Peso.class)!=null){
                             peso = data.child("peso").getValue(Peso.class);
                         }
 

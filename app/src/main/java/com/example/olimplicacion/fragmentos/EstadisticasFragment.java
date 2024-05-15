@@ -44,19 +44,11 @@ public class EstadisticasFragment extends Fragment {
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-       /* if(pesoOB==null){
-            pesoOB = new Peso();
-        }else{
-            binding.textoInfo.setVisibility(View.GONE);
-        }*/
         if(MainActivity.getPeso()==null){
             MainActivity.setPeso(new Peso());
         }else{
             binding.textoInfo.setVisibility(View.GONE);
         }
-        /*if(avanceOB==null){
-            avanceOB = new Avance();
-        }*/
         if(MainActivity.getAvance()==null){
             MainActivity.setAvance(new Avance());
         }
@@ -111,6 +103,7 @@ public class EstadisticasFragment extends Fragment {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.my_bottom_sheet_add_peso);
         Button add = dialog.findViewById(R.id.add);
+        Button cancel = dialog.findViewById(R.id.cancel);
         //inicialización de numberPicker**************************
         NumberPicker numberPesoOb = dialog.findViewById(R.id.numberPesoOb);
         numberPesoOb.setMinValue(0);numberPesoOb.setMaxValue(150);
@@ -138,6 +131,12 @@ public class EstadisticasFragment extends Fragment {
                 String pesoOut = numberPeso.getValue() +"." + numberPesoDecimal.getValue();
                 String objetivoOut = numberPesoOb.getValue() +"." + numberPesoDecimalOb.getValue();
                 AppHelper.actualizarPeso(AppHelper.addDatos(pesoOut, objetivoOut));
+                dialog.dismiss();
+            }
+        });
+        cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
                 dialog.dismiss();
             }
         });

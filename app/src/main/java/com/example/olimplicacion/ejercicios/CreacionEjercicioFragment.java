@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 
 import com.bumptech.glide.Glide;
+import com.example.olimplicacion.MenuPrincipal;
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.databinding.FragmentCreacionEjercicioBinding;
 import com.example.olimplicacion.rutinas.CreacionRutinaFragment;
@@ -43,7 +44,7 @@ public class CreacionEjercicioFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        ((MenuPrincipal) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override
@@ -74,12 +75,6 @@ public class CreacionEjercicioFragment extends Fragment {
                 String repeticionesYseries = binding.numberRepeticiones.getValue() +" x "+ binding.numberVeces.getValue();
                 ejercicio.setPeso(peso);ejercicio.setRepecitionesYseries(repeticionesYseries);
                 CreacionRutinaFragment.addToDataList(ejercicio, getContext());
-                getParentFragmentManager().popBackStack();
-            }
-        });
-        binding.volver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
                 getParentFragmentManager().popBackStack();
             }
         });

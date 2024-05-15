@@ -199,7 +199,6 @@ public class AppHelper {
             if(Float.parseFloat(Objects.requireNonNull(MainActivity.getPeso().getDatosPeso().get(i).get("y")))<minView){
                 minView = Float.parseFloat(Objects.requireNonNull(MainActivity.getPeso().getDatosPeso().get(i).get("y")));
             }
-
         }
         LineDataSet lineDataSet = new LineDataSet(entries, "Peso");
         lineDataSet.setColor(Color.GREEN);
@@ -602,30 +601,43 @@ public class AppHelper {
         customCalendar.setOnDateSelectedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(View view, Calendar selectedDate, Object desc) {
-                List<Rutina> rutinas = new ArrayList<>();
-                List<Actividad> actividades = new ArrayList<>();
-                //aqui el selector que seleccionará el contenido de cada día
-                //escribirToast(selectedDate.get(Calendar.DAY_OF_MONTH) + " selected", context);
-                //crea una lista de objetos rutina que se obtendrá desde el fragmento CalendarioFragment
-                for (int i = 0; i < MainActivity.getRutinas().size(); i++) {
-                    if(MainActivity.getRutinas().get(i).getDias().contains(deLunesADomingo.get(selectedDate.get(Calendar.DAY_OF_MONTH)-1))){
-                        rutinas.add(MainActivity.getRutinas().get(i));
+                List<Evento> eventosList = new ArrayList<>();
+                List<Evento> eventos = getObjectos();
+                for (int i = 0; i < eventos.size(); i++) {
+                    if(eventos.get(i).getDias().contains(deLunesADomingo.get(selectedDate.get(Calendar.DAY_OF_MONTH)-1))){
+                        eventosList.add(eventos.get(i));
                     }
                 }
-                for (int i = 0; i < MainActivity.getActividades().size(); i++) {
-                    if(MainActivity.getActividades().get(i).getDias().contains(deLunesADomingo.get(selectedDate.get(Calendar.DAY_OF_MONTH)-1))){
-                        actividades.add(MainActivity.getActividades().get(i));
-                    }
-                }
-                CalendarioFragment.setRecyclerView(rutinas, actividades);
+                CalendarioFragment.setRecyclerView(eventosList);
             }
         });
     }
     public static Map<Integer, Object>[] getArr(){
             return arr;
     }
-    public static void setArr(Map<Integer, Object>[] arrr){
-        arr = arrr;
+
+    /**
+     * Obtiene las actividades y rutinas del usuario y las mete en una lista como eventos en común
+     * @return List<Evento> eventos
+     */
+    public static List<Evento> getObjectos(){
+        List<Evento> eventos = new ArrayList<>();
+        for (int i = 0; i < MainActivity.getActividades().size(); i++) {
+            Evento evento = new Evento();
+            evento.setDias(MainActivity.getActividades().get(i).getDias());
+            evento.setHorario(MainActivity.getActividades().get(i).getHorario());
+            evento.setNombre(MainActivity.getActividades().get(i).getNombre());
+            evento.setImg2(MainActivity.getActividades().get(i).getImg2());
+            eventos.add(evento);
+        }
+        for (int i = 0; i < MainActivity.getRutinas().size(); i++) {
+            Evento evento = new Evento();
+            evento.setDias(MainActivity.getRutinas().get(i).getDias());
+            evento.setNombre(MainActivity.getRutinas().get(i).getNombre());
+            evento.setImg2(MainActivity.getRutinas().get(i).getImg());
+            eventos.add(evento);
+        }
+        return eventos;
     }
 
     // CALENDARIO**********************************CALENDARIO*********************************FIN
@@ -715,31 +727,6 @@ public class AppHelper {
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title" + fecha.toString(), null);
         return Uri.parse(path);
-    }
-    public void queEsQue(){
-         /* Calendar calendar = Calendar.getInstance();
-        System.out.println("get(Calendar.YEAR): " + calendar.get(Calendar.YEAR));//año
-        System.out.println("get(Calendar.MONTH): " + calendar.get(Calendar.MONTH));//num del mes
-        System.out.println("get(Calendar.DAY_OF_MONTH): " + calendar.get((Calendar.DAY_OF_MONTH)));//dia del mes
-        System.out.println("get(Calendar.DAY_OF_WEEK): " + calendar.get(Calendar.DAY_OF_WEEK));//dia de la semana en int
-        System.out.println("get(1) es el año: " + calendar.get(1));
-        System.out.println("get(2) es el mes: " + calendar.get(2));
-        System.out.println("get(3): " + calendar.get(3));
-        System.out.println("get(4): " + calendar.get(4));
-        System.out.println("get(5) es el día: " + calendar.get(5));
-        System.out.println("get(6) dia en el año?: " + calendar.get(6));
-        System.out.println("get(7) dia de la semana: " + calendar.get(7));
-        System.out.println("getTime(): " + calendar.getTime());
-        System.out.println("getTime().getYear(): " + calendar.getTime().getYear());
-        System.out.println("getTime().getDate(): " + calendar.getTime().getDate());
-        System.out.println("getTime().getMonth(): " + calendar.getTime().getMonth());
-        System.out.println("getTime().getDay(): " + calendar.getTime().getDay());
-        System.out.println("getActualMinimum(5): " + calendar.getActualMinimum(5));
-        System.out.println("getActualMaximum(5) son los dias que tiene un mes: " + calendar.getActualMaximum(5));
-        System.out.println("getCalendarType(): " + calendar.getCalendarType());
-        System.out.println("getFirstDayOfWeek(): " + calendar.getFirstDayOfWeek());
-        calendar.setFirstDayOfWeek(2);
-        System.out.println("getFirstDayOfWeek(): " + calendar.getFirstDayOfWeek());*/
     }
 
 }

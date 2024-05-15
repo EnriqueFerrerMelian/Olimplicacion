@@ -56,7 +56,11 @@ public class MenuPrincipal extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        return true;
+        if(id==16908332){
+            getSupportFragmentManager().popBackStack();
+        }
+        //return true;
+        return super.onOptionsItemSelected(item);
     }
 
     /**

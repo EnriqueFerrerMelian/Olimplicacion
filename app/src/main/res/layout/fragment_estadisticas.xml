@@ -61,7 +61,7 @@
             android:layout_weight="1"
             android:background="@color/white"
             android:textAllCaps="false"
-            android:text="Eliminar peso"
+            android:text="Añadir peso"
             android:textColor="@color/black"
             android:textStyle="bold"
             android:backgroundTint="@color/verdeOscuro"/>

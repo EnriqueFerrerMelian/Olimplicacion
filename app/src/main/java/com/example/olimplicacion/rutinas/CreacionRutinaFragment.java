@@ -37,6 +37,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.olimplicacion.MainActivity;
+import com.example.olimplicacion.MenuPrincipal;
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.clases.AppHelper;
 import com.example.olimplicacion.clases.Avance;
@@ -123,6 +124,7 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentCreacionRutinaBinding.inflate(inflater, container, false);
+        ((MenuPrincipal) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         return binding.getRoot();
     }
 

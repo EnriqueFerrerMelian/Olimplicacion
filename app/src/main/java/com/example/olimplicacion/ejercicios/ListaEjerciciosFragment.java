@@ -16,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
+import com.example.olimplicacion.MenuPrincipal;
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.ejercicios.CreacionEjercicioFragment;
 import com.example.olimplicacion.ejercicios.Ejercicio;
@@ -38,6 +39,7 @@ public class ListaEjerciciosFragment extends Fragment implements EjercicioFbAdap
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentListaEjerciciosBinding.inflate(inflater, container, false);
+        ((MenuPrincipal) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         return binding.getRoot();
     }
 
@@ -66,12 +68,6 @@ public class ListaEjerciciosFragment extends Fragment implements EjercicioFbAdap
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
 
-            }
-        });
-        binding.volver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getParentFragmentManager().popBackStack();
             }
         });
     }

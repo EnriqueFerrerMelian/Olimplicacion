@@ -19,6 +19,7 @@ import android.widget.NumberPicker;
 
 import com.bumptech.glide.Glide;
 import com.example.olimplicacion.MainActivity;
+import com.example.olimplicacion.MenuPrincipal;
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.clases.Avance;
 import com.example.olimplicacion.clases.Usuario;
@@ -58,6 +59,7 @@ public class DetalleEjercicioFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentDetalleEjercicioBinding.inflate(inflater, container, false);
+        ((MenuPrincipal) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         System.out.println("Ejercicio id: "+ ejercicio.getId());
         //codigo
         binding.categoria.setText(ejercicio.getCategoria());
@@ -76,12 +78,6 @@ public class DetalleEjercicioFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 showBottonSheet();
-            }
-        });
-        binding.volver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getParentFragmentManager().popBackStack();
             }
         });
         //codigo fin

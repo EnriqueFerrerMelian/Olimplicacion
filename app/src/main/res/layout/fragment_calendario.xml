@@ -23,16 +23,8 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerViewRutina"
         android:layout_width="match_parent"
-        android:layout_height="200dp"/>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Actividades:"
-        android:textStyle="bold"/>
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewActividad"
-        android:layout_width="match_parent"
-        android:layout_height="200dp" />
+        android:layout_height="match_parent"/>
+
 
 
 </LinearLayout>

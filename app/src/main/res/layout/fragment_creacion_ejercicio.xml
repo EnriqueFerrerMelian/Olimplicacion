@@ -7,16 +7,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".ejercicios.DetalleEjercicioFragment">
-    <Button
-        android:id="@+id/volver"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/baseline_arrow_back_24"
-        android:text="Volver a Lista"
-        android:textSize="22dp"
-        android:textAllCaps="false"
-        android:textColor="@color/white"
-        android:background="@color/azulLogo"/>
 
     <ScrollView
         android:layout_width="match_parent"

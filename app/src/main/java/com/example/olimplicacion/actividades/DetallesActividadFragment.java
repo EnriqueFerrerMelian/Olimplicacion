@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.example.olimplicacion.MainActivity;
+import com.example.olimplicacion.MenuPrincipal;
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.clases.AppHelper;
 import com.example.olimplicacion.databinding.FragmentDetallesActividadBinding;
@@ -41,6 +42,7 @@ public class DetallesActividadFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDetallesActividadBinding.inflate(inflater, container, false);
+        ((MenuPrincipal) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         AppHelper.cargarActividad(binding, getContext(), actividad);
         //si la actividad no está reservada
         boolean esta = false;
@@ -79,13 +81,6 @@ public class DetallesActividadFragment extends Fragment{
             binding.reservar.setTextColor(Color.BLACK);
             binding.reservar.setBackgroundColor(Color.TRANSPARENT);
         }
-
-        binding.volver.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getParentFragmentManager().popBackStack();
-            }
-        });
         return binding.getRoot();
     }
 }
