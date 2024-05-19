@@ -496,7 +496,7 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
      * Elimina la rutina de la base de datos de Realtima Firebase.
      * @param rutin
      */
-   public void eliminarRutinaM(Rutina rutin) {
+    public void eliminarRutinaM(Rutina rutin) {
         //creo una referencia a la rutina que quiero borrar
         DatabaseReference ref2 = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("usuarios/" + MainActivity.getUsuario().getId() + "/rutinas/"+rutin.getNombre());

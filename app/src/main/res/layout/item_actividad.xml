@@ -26,16 +26,17 @@
         <TextView
             android:id="@+id/nombreActividad"
             android:layout_width="wrap_content"
-            android:layout_height="20dp"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/linearLayout2"
             android:layout_alignParentStart="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginStart="275dp"
+            android:layout_marginStart="198dp"
             android:layout_marginTop="-9dp"
-            android:layout_marginEnd="16dp"
+            android:layout_marginEnd="12dp"
             android:text="ActividadNombre"
             android:textAlignment="textEnd"
             android:textColor="@color/white"
+            android:textSize="18dp"
             android:textStyle="bold" />
 
         <TextView
@@ -61,7 +62,7 @@
             android:layout_marginTop="2dp"
             android:layout_marginBottom="8dp"
             android:gravity="center"
-            android:background="@color/azulLogo"
+            android:background="@color/white"
             android:orientation="horizontal">
 
             <TextView
@@ -128,6 +129,12 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="8dp"
+            android:background="#303030"/>
+
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>

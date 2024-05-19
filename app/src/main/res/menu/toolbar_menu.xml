@@ -5,11 +5,16 @@
     <item
         android:title="Perfil"
         android:id="@+id/perfil"
-        android:icon="@drawable/baseline_person_24"
-        app:showAsAction="ifRoom"/>
+        android:icon="@drawable/baseline_person_24"/>
+
+    <item
+        android:title="Tablón"
+        android:id="@+id/tablon"
+        android:icon="@drawable/baseline_settings_24"/>
+
     <item
         android:title="Configuración"
         android:id="@+id/configuracion"
-        android:icon="@drawable/baseline_settings_24"
-        app:showAsAction="ifRoom"/>
+        android:icon="@drawable/baseline_settings_24"/>
+
 </menu>

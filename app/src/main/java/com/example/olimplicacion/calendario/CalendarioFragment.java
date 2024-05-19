@@ -51,6 +51,9 @@ public class CalendarioFragment extends Fragment implements OnNavigationButtonCl
         eventoAdapter = new ObjetoAdapter(eventos);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(eventoAdapter);
+        //despliega en la lista los eventos del día actual, si los hay
+        Calendar calendar = Calendar.getInstance();
+        AppHelper.todayIsTheDay(calendar);
     }
 
 

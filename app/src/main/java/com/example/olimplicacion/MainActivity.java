@@ -85,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {//dataSnapshot son todos los usuarios
                 boolean confirmado = false;
                 for (DataSnapshot data: dataSnapshot.getChildren()) {//
-                    if(data.child("nombre").getValue().equals(nombre) && data.child("clave").getValue().equals(clave)){
+                    if(data.child("usuario").getValue().equals(nombre) && data.child("clave").getValue().equals(clave)){
                         //recojo los datos del usuario en un objeto Usuario
                         usuario = data.getValue(Usuario.class);
                         if(data.child("peso").getValue(Peso.class)!=null){

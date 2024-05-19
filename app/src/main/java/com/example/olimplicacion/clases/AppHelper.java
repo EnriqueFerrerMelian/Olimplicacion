@@ -18,6 +18,7 @@ import com.example.olimplicacion.actividades.Actividad;
 import com.example.olimplicacion.calendario.CalendarioFragment;
 import com.example.olimplicacion.databinding.FragmentDetallesActividadBinding;
 import com.example.olimplicacion.databinding.FragmentEstadisticasBinding;
+import com.example.olimplicacion.databinding.FragmentPerfilBinding;
 import com.example.olimplicacion.fragmentos.EstadisticasFragment;
 import com.example.olimplicacion.rutinas.Rutina;
 import com.github.mikephil.charting.components.Description;
@@ -63,61 +64,6 @@ import java.util.Objects;
 
 public class AppHelper {
     private static Uri imgUriFb = Uri.parse(" ");
-
-
-    /**
-     * Inserta un toast con el texto deseado.
-     * @param texto Texto introducido por el usuario
-     * @param context Contexto del fragmento o actividad donde debe visualizarse
-     */
-    public static void escribirToast(String texto, Context context){
-        Toast.makeText(context, texto, Toast.LENGTH_LONG).show();
-    }
-    /**
-     * Actualiza los objetos usuario y peso de la aplicación con los de FireBase.
-     * Cuando se actualizan se vuelve a cargar el gráfico
-     */
-    public static void actualizarApp(){
-        DatabaseReference ref = FirebaseDatabase
-                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("usuarios/"+MainActivity.getUsuario().getId());
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //actualizo el usuario
-                MainActivity.setUsuario(dataSnapshot.getValue(Usuario.class));
-                //actualizo el peso
-                Peso peso = dataSnapshot.child("peso")
-                        .getValue(Peso.class)==null ? new Peso() : dataSnapshot.child("peso").getValue(Peso.class);
-                MainActivity.setPeso(peso);
-                //actualizo el progreso
-                Avance avance = dataSnapshot.child("avance")
-                        .getValue(Avance.class)==null ? new Avance() : dataSnapshot.child("avance").getValue(Avance.class);
-                MainActivity.setAvance(avance);
-                //actualizo las actividades
-                List<Actividad> actividades = new ArrayList<>();
-                if(dataSnapshot.child("actividades").getValue()!=null){
-                    for (DataSnapshot data: dataSnapshot.child("actividades").getChildren()) {
-                        Actividad actividad = data.getValue(Actividad.class);
-                        actividades.add(actividad);
-                    }
-                }
-                MainActivity.setActividades(actividades);
-                //actualizo las rutinas
-                List<Rutina> rutinas = new ArrayList<>();
-                if(dataSnapshot.child("rutinas").getValue()!=null){
-                    for (DataSnapshot data2: dataSnapshot.child("rutinas").getChildren()) {
-                        Rutina rutina = data2.getValue(Rutina.class);
-                        rutinas.add(rutina);
-                    }
-                }
-                MainActivity.setRutinas(rutinas);
-            }
-            @Override
-            public void onCancelled(DatabaseError error) {
-            }
-        });
-    }
 
     // ESTADÍSTICAS**********************************ESTADÍSTICAS**********************************
     //TODOS LOS MÉTODOS DEL FRAGMENTO ESTADISTICAS AQUÍ
@@ -279,7 +225,6 @@ public class AppHelper {
                 .isEmpty() ? " " : MainActivity.getAvance()
                 .getEjerciciosNombres().get(MainActivity.getAvance().getEjerciciosNombres().size()-1);
         binding.ultimoProgreso.setText(ultimoValorIntroducido);
-
         //>>>****INSERCIÓN DE DATOS*****fin
 
         binding.barChart.setDescription(description);
@@ -601,14 +546,7 @@ public class AppHelper {
         customCalendar.setOnDateSelectedListener(new OnDateSelectedListener() {
             @Override
             public void onDateSelected(View view, Calendar selectedDate, Object desc) {
-                List<Evento> eventosList = new ArrayList<>();
-                List<Evento> eventos = getObjectos();
-                for (int i = 0; i < eventos.size(); i++) {
-                    if(eventos.get(i).getDias().contains(deLunesADomingo.get(selectedDate.get(Calendar.DAY_OF_MONTH)-1))){
-                        eventosList.add(eventos.get(i));
-                    }
-                }
-                CalendarioFragment.setRecyclerView(eventosList);
+                todayIsTheDay(selectedDate);
             }
         });
     }
@@ -640,7 +578,31 @@ public class AppHelper {
         return eventos;
     }
 
+    /**
+     * Muestra en la lista de eventos las rutinas y actividades programadas para el día de hoy.
+     * @param selectedDate
+     */
+    public static void todayIsTheDay(Calendar selectedDate){
+        List<Evento> eventosList = new ArrayList<>();
+        List<Evento> eventos = getObjectos();
+        for (int i = 0; i < eventos.size(); i++) {
+            if(eventos.get(i).getDias().contains(deLunesADomingo.get(selectedDate.get(Calendar.DAY_OF_MONTH)-1))){
+                eventosList.add(eventos.get(i));
+            }
+        }
+        CalendarioFragment.setRecyclerView(eventosList);
+    }
+
     // CALENDARIO**********************************CALENDARIO*********************************FIN
+
+    // PERFIL****************************************PERFIL**************************************
+    public static void cargaPerfil(FragmentPerfilBinding binding){
+        binding.nombre.setText(MainActivity.getUsuario().getUsuario());
+        binding.mayorpesolevantado.setText(calcularMxPesoLevantado(MainActivity.getAvance().getPesos()));
+        binding.kilosyfechadePesolevantado.setText(MainActivity.getPeso().getDatosPeso().get(MainActivity.getPeso().getDatosPeso().size()-1).get("y")+ "Kg - " +
+                MainActivity.getPeso().getFecha().get(MainActivity.getPeso().getFecha().size()-1));
+    }
+    // PERFIL****************************************PERFIL***********************************FIN
     /**
      * get uri to drawable or any other resource type if u wish
      * @param context - context
@@ -666,7 +628,18 @@ public class AppHelper {
             }
         });
     }
+public static String calcularMxPesoLevantado(List<String> lista){
+    float max = Float.valueOf(lista.get(0));
+    int index = 0;
+    for (int i = 0; i < lista.size(); i++) {
+        if(Float.valueOf(lista.get(i))>max){
+            max = Float.valueOf(lista.get(i));
+            index = i;
+        }
+    }
 
+    return max + " Kg - " + MainActivity.getAvance().getEjerciciosNombres().get(index);
+}
     public static void hotFixAvtividad(){
         Actividad actividad = new Actividad("Esgrima", "20.00€",
                 " es un deporte de combate en el que se enfrentan dos contrincantes debidamente protegidos que deben intentar tocarse con un arma blanca, en función de la cual se diferencian tres modalidades: sable, espada y florete.",
@@ -727,6 +700,59 @@ public class AppHelper {
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title" + fecha.toString(), null);
         return Uri.parse(path);
+    }
+    /**
+     * Inserta un toast con el texto deseado.
+     * @param texto Texto introducido por el usuario
+     * @param context Contexto del fragmento o actividad donde debe visualizarse
+     */
+    public static void escribirToast(String texto, Context context){
+        Toast.makeText(context, texto, Toast.LENGTH_LONG).show();
+    }
+    /**
+     * Actualiza los objetos usuario y peso de la aplicación con los de FireBase.
+     * Cuando se actualizan se vuelve a cargar el gráfico
+     */
+    public static void actualizarApp(){
+        DatabaseReference ref = FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/"+MainActivity.getUsuario().getId());
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //actualizo el usuario
+                MainActivity.setUsuario(dataSnapshot.getValue(Usuario.class));
+                //actualizo el peso
+                Peso peso = dataSnapshot.child("peso")
+                        .getValue(Peso.class)==null ? new Peso() : dataSnapshot.child("peso").getValue(Peso.class);
+                MainActivity.setPeso(peso);
+                //actualizo el progreso
+                Avance avance = dataSnapshot.child("avance")
+                        .getValue(Avance.class)==null ? new Avance() : dataSnapshot.child("avance").getValue(Avance.class);
+                MainActivity.setAvance(avance);
+                //actualizo las actividades
+                List<Actividad> actividades = new ArrayList<>();
+                if(dataSnapshot.child("actividades").getValue()!=null){
+                    for (DataSnapshot data: dataSnapshot.child("actividades").getChildren()) {
+                        Actividad actividad = data.getValue(Actividad.class);
+                        actividades.add(actividad);
+                    }
+                }
+                MainActivity.setActividades(actividades);
+                //actualizo las rutinas
+                List<Rutina> rutinas = new ArrayList<>();
+                if(dataSnapshot.child("rutinas").getValue()!=null){
+                    for (DataSnapshot data2: dataSnapshot.child("rutinas").getChildren()) {
+                        Rutina rutina = data2.getValue(Rutina.class);
+                        rutinas.add(rutina);
+                    }
+                }
+                MainActivity.setRutinas(rutinas);
+            }
+            @Override
+            public void onCancelled(DatabaseError error) {
+            }
+        });
     }
 
 }

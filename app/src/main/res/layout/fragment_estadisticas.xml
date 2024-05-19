@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".fragmentos.EstadisticasFragment">
+
     <TextView
         android:id="@+id/textoInfo"
         android:layout_width="match_parent"
@@ -13,46 +14,59 @@
         android:gravity="center"
         android:text="Debe refrescarse la pantalla al insertar datos por primera vez."
         android:textSize="14dp"
-        android:textStyle="bold"/>
+        android:textStyle="bold"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
+        android:id="@+id/pesoTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Peso"
-        android:textStyle="bold"
+        android:textAlignment="center"
         android:textColor="#272727"
         android:textSize="22dp"
-        android:textAlignment="center"/>
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/textoInfo" />
+
     <TextView
+        android:id="@+id/ultimoTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:text="Último peso añadido"
         android:textSize="18dp"
         android:textStyle="bold"
-        android:text="Último peso añadido" />
+        app:layout_constraintTop_toBottomOf="@id/pesoTV" />
+
     <TextView
         android:id="@+id/ultimoPeso"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:text="último peso añadido"
+        android:textColor="#272727"
         android:textSize="20dp"
         android:textStyle="bold"
-        android:textColor="#272727"
-        android:text="último peso añadido" />
+        app:layout_constraintTop_toBottomOf="@id/ultimoTV" />
 
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/lineChart"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:scrollbars="horizontal"
         android:layout_margin="8dp"
         android:layout_marginTop="20dp"
-        android:scrollbarAlwaysDrawHorizontalTrack="true"/>
+        android:scrollbarAlwaysDrawHorizontalTrack="true"
+        android:scrollbars="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/ultimoPeso" />
 
     <LinearLayout
+        android:id="@+id/botonesLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="#CACACA"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/lineChart">
+
         <Button
             android:id="@+id/aniadirPeso"
             android:layout_width="wrap_content"
@@ -60,11 +74,12 @@
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
             android:background="@color/white"
-            android:textAllCaps="false"
+            android:backgroundTint="@color/verdeOscuro"
             android:text="Añadir peso"
+            android:textAllCaps="false"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            android:backgroundTint="@color/verdeOscuro"/>
+            android:textStyle="bold" />
+
         <Button
             android:id="@+id/eliminarPeso"
             android:layout_width="wrap_content"
@@ -72,58 +87,70 @@
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
             android:background="@color/white"
-            android:textAllCaps="false"
+            android:backgroundTint="@color/verdeOscuro"
             android:text="Eliminar peso"
+            android:textAllCaps="false"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            android:backgroundTint="@color/verdeOscuro"/>
+            android:textStyle="bold" />
 
     </LinearLayout>
-
 
     <View
         android:id="@+id/divider1"
         android:layout_width="match_parent"
         android:layout_height="8dp"
-        android:background="#E3E3E3" />
+        android:background="#E3E3E3"
+        app:layout_constraintTop_toBottomOf="@id/botonesLayout" />
 
     <TextView
+        android:id="@+id/progresoTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Progreso"
-        android:textStyle="bold"
+        android:textAlignment="center"
         android:textColor="#272727"
         android:textSize="22dp"
-        android:textAlignment="center"/>
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@id/divider1" />
+
     <TextView
+        android:id="@+id/ultimoPesoTV"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:text="Último progreso actualizado"
         android:textSize="18dp"
         android:textStyle="bold"
-        android:text="Último progreso actualizado" />
+        app:layout_constraintTop_toBottomOf="@id/progresoTV" />
+
     <TextView
         android:id="@+id/ultimoProgreso"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:text="Último progreso añadido"
+        android:textColor="#272727"
         android:textSize="20dp"
         android:textStyle="bold"
-        android:textColor="#272727"
-        android:text="Último progreso añadido" />
+        app:layout_constraintTop_toBottomOf="@id/ultimoPesoTV" />
 
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barChart"
         android:layout_width="match_parent"
         android:layout_height="150dp"
-        android:scrollbars="horizontal"
         android:layout_margin="8dp"
         android:layout_marginTop="20dp"
-        android:scrollbarAlwaysDrawHorizontalTrack="true"/>
+        android:scrollbarAlwaysDrawHorizontalTrack="true"
+        android:scrollbars="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/ultimoProgreso" />
+
     <LinearLayout
+        android:id="@+id/botonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        app:layout_constraintTop_toBottomOf="@id/barChart">
+
         <Button
             android:id="@+id/eliminarAvance"
             android:layout_width="wrap_content"
@@ -131,16 +158,11 @@
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
             android:background="@color/white"
-            android:textAllCaps="false"
+            android:backgroundTint="@color/verdeOscuro"
             android:text="Eliminar registro seleccionado"
+            android:textAllCaps="false"
             android:textColor="@color/black"
-            android:textStyle="bold"
-            android:backgroundTint="@color/verdeOscuro"/>
+            android:textStyle="bold" />
     </LinearLayout>
-    <View
-        android:id="@+id/divider2"
-        android:layout_width="match_parent"
-        android:layout_height="8dp"
-        android:background="#E3E3E3" />
 
-</LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

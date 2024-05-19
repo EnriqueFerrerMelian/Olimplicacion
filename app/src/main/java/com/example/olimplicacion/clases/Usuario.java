@@ -9,22 +9,30 @@ import java.util.Map;
 
 public class Usuario {
     int id;
-    String nombre, clave;
+    String nombre, clave, usuario;
     Map<String, Object> rutinas;
     Map<String, Object> peso;
     Map<String, Object> avance;
 
-    public Usuario(int id, String nombre,String clave, Map<String, Object> rutinas,  Map<String, Object>  peso) {
+    public Usuario(int id, String nombre,String usuario, String clave, Map<String, Object> rutinas,  Map<String, Object>  peso) {
         this.id = id;
         this.nombre = nombre;
         this.clave = clave;
         this.rutinas = rutinas;
         this.peso = peso;
-
+        this.usuario = usuario;
     }
     public Usuario(){
         this.rutinas = new HashMap<>();
         this.peso = new HashMap<>();
+    }
+
+    public String getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(String usuario) {
+        this.usuario = usuario;
     }
 
     public Map<String, Object> getPeso() {

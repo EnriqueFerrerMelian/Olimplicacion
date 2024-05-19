@@ -1,17 +1,122 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#A54FA4"
-    tools:context=".calendario.CalendarioFragment">
+    android:background="@drawable/fondo_transparente"
+    tools:context=".calendario.CalendarioFragment"
+    android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/header"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="PERFIL MADAFAKA"
-        android:textColor="@color/white"
-        android:textSize="32sp"/>
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="20dp"
+        android:gravity="center">
 
-</FrameLayout>
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/img"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginRight="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/logo"
+            app:shapeAppearanceOverlay="@style/roundedImageViewRounded" />
+
+        <TextView
+            android:id="@+id/nombre"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:text="Nombre de usuario"
+            android:textColor="@color/black"
+            android:textSize="28sp" />
+    </LinearLayout>
+
+
+    <View
+        android:id="@+id/divider1"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@+id/header"
+        android:layout_marginTop="2dp"
+        android:background="#303030"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="337dp"
+        android:layout_below="@+id/divider1"
+        android:layout_centerHorizontal="true"
+        android:layout_marginLeft="40dp"
+        android:layout_marginTop="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/modificar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:drawableLeft="@drawable/contrasena"
+            android:text=" Modificar datos"
+            android:textColor="@color/black"
+            android:textSize="26dp"
+            android:textStyle="bold" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/header"
+            android:layout_marginTop="2dp"
+            android:background="#303030"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/pesas"
+            android:text=" Mayor peso levantado"
+            android:textColor="@color/black"
+            android:textSize="26dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/mayorpesolevantado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="mayorpesolevantado"
+            android:textColor="@color/black"
+            android:textSize="26dp"
+            android:textStyle="bold" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/header"
+            android:layout_marginTop="2dp"
+            android:background="#303030"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:drawableLeft="@drawable/peso"
+            android:text=" Último peso registrado"
+            android:textColor="@color/black"
+            android:textSize="26dp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/kilosyfechadePesolevantado"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="kilosyfechadePesolevantado"
+            android:textColor="@color/black"
+            android:textSize="26dp"
+            android:textStyle="bold" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_below="@+id/header"
+            android:layout_marginTop="2dp"
+            android:background="#303030"/>
+    </LinearLayout>
+</RelativeLayout>

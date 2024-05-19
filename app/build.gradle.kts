@@ -44,10 +44,11 @@ dependencies {
     implementation ("com.google.firebase:firebase-messaging:20.2.3")
 
     //Splash API implementation("androidx.core:core-splashscreen:8.0.2") //por implementar
-    //Picasso
+    //Tratamiento de imagenes
     implementation("com.squareup.picasso:picasso:2.71828")
-    //Glide
     implementation ("com.github.bumptech.glide:glide:4.16.0")
+    implementation ("id.zelory:compressor:2.1.1")
+
     //Gráficos
     implementation("com.github.PhilJay:MPAndroidChart:v3.1.0")
     implementation("co.yml:ycharts:2.1.0")

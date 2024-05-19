@@ -14,6 +14,7 @@ import com.example.olimplicacion.actividades.ActividadesFragment;
 import com.example.olimplicacion.databinding.ActivityMenuPrincipalBinding;
 import com.example.olimplicacion.calendario.CalendarioFragment;
 import com.example.olimplicacion.fragmentos.EstadisticasFragment;
+import com.example.olimplicacion.fragmentos.PerfilFragment;
 import com.example.olimplicacion.rutinas.RutinaFragment;
 
 public class MenuPrincipal extends AppCompatActivity {
@@ -55,8 +56,16 @@ public class MenuPrincipal extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-        if(id==16908332){
+        if(item.getItemId()==R.id.perfil){
+            reemplazarFragmento(new PerfilFragment());
+        }
+        if(item.getItemId()==R.id.tablon){
+            //reemplazarFragmento(new PerfilFragment());
+        }
+        if(item.getItemId()==R.id.configuracion){
+           // reemplazarFragmento(new PerfilFragment());
+        }
+        if(item.getItemId()==16908332){
             getSupportFragmentManager().popBackStack();
         }
         //return true;
