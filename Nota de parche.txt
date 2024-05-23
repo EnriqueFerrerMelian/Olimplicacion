@@ -1,3 +1,5 @@
 1- Mejorar estilo de fuente.
 2- Splash?
-3- En el fragmento decalendario, que se muestre en la lista lo que toque en el día de la fecha de ese día
+3- Al modificar perfil:
+El nombre de usuario no permanece en el header. 
+Al actualizar 

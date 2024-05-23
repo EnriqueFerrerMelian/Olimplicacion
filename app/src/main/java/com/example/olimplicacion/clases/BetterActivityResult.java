@@ -9,6 +9,7 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+//*EN DESHUSO
 public class BetterActivityResult<Input, Result> {
     /**
      * Register activity result using a {@link ActivityResultContract} and an in-place activity result callback like

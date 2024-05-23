@@ -13,19 +13,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
-import com.example.olimplicacion.MainActivity;
+import com.example.olimplicacion.MenuPrincipal;
 import com.example.olimplicacion.R;
+import com.example.olimplicacion.clases.Actividad;
 import com.example.olimplicacion.clases.AppHelper;
 import com.example.olimplicacion.databinding.FragmentActividadesBinding;
-import com.example.olimplicacion.rutinas.Rutina;
-import com.example.olimplicacion.rutinas.RutinaFbAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
 
 public class ActividadesFragment extends Fragment  implements ActividadFbAdapter.ItemClickListener{
     //recyclerView **********
@@ -40,6 +34,8 @@ public class ActividadesFragment extends Fragment  implements ActividadFbAdapter
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentActividadesBinding.inflate(inflater, container, false);
+        AppHelper.cambiarToolbarText("Actividades");
+        ((MenuPrincipal) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         return binding.getRoot();
     }
 

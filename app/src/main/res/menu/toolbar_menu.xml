@@ -12,9 +12,4 @@
         android:id="@+id/tablon"
         android:icon="@drawable/baseline_settings_24"/>
 
-    <item
-        android:title="Configuración"
-        android:id="@+id/configuracion"
-        android:icon="@drawable/baseline_settings_24"/>
-
 </menu>

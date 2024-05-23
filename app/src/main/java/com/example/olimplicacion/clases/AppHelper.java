@@ -1,26 +1,29 @@
 package com.example.olimplicacion.clases;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Base64;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.example.olimplicacion.MainActivity;
+import com.example.olimplicacion.MenuPrincipal;
 import com.example.olimplicacion.R;
-import com.example.olimplicacion.actividades.Actividad;
 import com.example.olimplicacion.calendario.CalendarioFragment;
 import com.example.olimplicacion.databinding.FragmentDetallesActividadBinding;
 import com.example.olimplicacion.databinding.FragmentEstadisticasBinding;
 import com.example.olimplicacion.databinding.FragmentPerfilBinding;
 import com.example.olimplicacion.fragmentos.EstadisticasFragment;
-import com.example.olimplicacion.rutinas.Rutina;
+import com.example.olimplicacion.fragmentos.PerfilFragment;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.components.LegendEntry;
@@ -36,7 +39,6 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -53,6 +55,9 @@ import org.naishadhparmar.zcustomcalendar.OnNavigationButtonClickedListener;
 import org.naishadhparmar.zcustomcalendar.Property;
 
 import java.io.ByteArrayOutputStream;
+import java.io.UnsupportedEncodingException;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -62,8 +67,53 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+import javax.crypto.Cipher;
+import javax.crypto.spec.SecretKeySpec;
+
 public class AppHelper {
     private static Uri imgUriFb = Uri.parse(" ");
+    //SEGURIDAD****************************************************************
+
+    private static final String algoritmoSks = "AES";
+    private static final String algoritmoSha = "SHA-256";//algoritmo de hal seguro
+    private static final String charSet = "UTF-8";//codificacion de texto
+
+    /**
+     * Cifra la clave usando una llave de codificación
+     * @param clave
+     * @param password
+     * @return String
+     */
+    public static String encriptar(String clave, String password){
+        try{
+            SecretKeySpec secretKeySpec = generateKey(clave);//crea una llave de encriptacion
+            Cipher cipher = Cipher.getInstance(algoritmoSks);
+            cipher.init(Cipher.ENCRYPT_MODE, secretKeySpec);//genera un modo de encriptacion con la key como raiz
+            byte[] datosEncriptadosBytes = cipher.doFinal(password.getBytes());//encriptamos el password y lo pasamos a bytes
+            String datosEncriptadosString = Base64.encodeToString(datosEncriptadosBytes, Base64.DEFAULT);//lo pasamos a String
+            return datosEncriptadosString;
+
+        }catch(Exception e){
+            throw new RuntimeException(e);
+        }
+    }
+    /**
+     * Crea una llave de codificación
+     * @param clave
+     * @return SecretKeySpec
+     */
+    private static SecretKeySpec generateKey(String clave) {
+        try {
+            MessageDigest sha = MessageDigest.getInstance(algoritmoSha);
+            byte[] key = clave.getBytes(charSet);
+            key = sha.digest(key);
+            SecretKeySpec secretKeySpec = new SecretKeySpec(key, algoritmoSks);
+            return secretKeySpec;
+        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    //SEGURIDAD*************************************************************FIN
 
     // ESTADÍSTICAS**********************************ESTADÍSTICAS**********************************
     //TODOS LOS MÉTODOS DEL FRAGMENTO ESTADISTICAS AQUÍ
@@ -82,13 +132,13 @@ public class AppHelper {
 
         //creo un mapa que guarde los ejes
         Map<String, String> datosPeso = new HashMap<>();
-        datosPeso.put("x", String.valueOf(MainActivity.getPeso().getDatosPeso().size()+1));
+        datosPeso.put("x", String.valueOf(MainActivity.getPesoOB().getDatosPeso().size()+1));
         datosPeso.put("y", peso);
 
-        MainActivity.getPeso().getFecha().add(fecha);
-        MainActivity.getPeso().getDatosPeso().add(datosPeso);
-        MainActivity.getPeso().setObjetivo(objetivo);
-        return MainActivity.getPeso();
+        MainActivity.getPesoOB().getFecha().add(fecha);
+        MainActivity.getPesoOB().getDatosPeso().add(datosPeso);
+        MainActivity.getPesoOB().setObjetivo(objetivo);
+        return MainActivity.getPesoOB();
     }
 
     /**
@@ -131,19 +181,19 @@ public class AppHelper {
         //insertando fechas en eje X
         XAxis xAxis = binding.lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        final List<String> fechas = MainActivity.getPeso().getFecha();
+        final List<String> fechas = MainActivity.getPesoOB().getFecha();
         xAxis.setGranularity(1f);
         xAxis.setValueFormatter(new IndexAxisValueFormatter(fechas));
 
         //inserción de entradas
         List<Entry> entries = new ArrayList<>();
-        for (int i = 0; i < MainActivity.getPeso().getDatosPeso().size(); i++) {
-            entries.add(new Entry((float) i,Float.parseFloat(Objects.requireNonNull(MainActivity.getPeso().getDatosPeso().get(i).get("y")))));
-            if(Float.parseFloat(Objects.requireNonNull(MainActivity.getPeso().getDatosPeso().get(i).get("y")))>maxView){
-                maxView = Float.parseFloat(Objects.requireNonNull(MainActivity.getPeso().getDatosPeso().get(i).get("y")));
+        for (int i = 0; i < MainActivity.getPesoOB().getDatosPeso().size(); i++) {
+            entries.add(new Entry((float) i,Float.parseFloat(Objects.requireNonNull(MainActivity.getPesoOB().getDatosPeso().get(i).get("y")))));
+            if(Float.parseFloat(Objects.requireNonNull(MainActivity.getPesoOB().getDatosPeso().get(i).get("y")))>maxView){
+                maxView = Float.parseFloat(Objects.requireNonNull(MainActivity.getPesoOB().getDatosPeso().get(i).get("y")));
             }
-            if(Float.parseFloat(Objects.requireNonNull(MainActivity.getPeso().getDatosPeso().get(i).get("y")))<minView){
-                minView = Float.parseFloat(Objects.requireNonNull(MainActivity.getPeso().getDatosPeso().get(i).get("y")));
+            if(Float.parseFloat(Objects.requireNonNull(MainActivity.getPesoOB().getDatosPeso().get(i).get("y")))<minView){
+                minView = Float.parseFloat(Objects.requireNonNull(MainActivity.getPesoOB().getDatosPeso().get(i).get("y")));
             }
         }
         LineDataSet lineDataSet = new LineDataSet(entries, "Peso");
@@ -151,16 +201,16 @@ public class AppHelper {
         lineDataSet.setValueTextSize(15);
         lineDataSet.setLineWidth(3);
         LineData lineData = new LineData(lineDataSet);
-        if(MainActivity.getPeso().getDatosPeso().size()>0){
-            binding.ultimoPeso.setText(MainActivity.getPeso().getDatosPeso().get(MainActivity.getPeso().getDatosPeso().size()-1).get("y") + " Kgs");
+        if(MainActivity.getPesoOB().getDatosPeso().size()>0){
+            binding.ultimoPeso.setText(MainActivity.getPesoOB().getDatosPeso().get(MainActivity.getPesoOB().getDatosPeso().size()-1).get("y") + " Kgs");
         }
         //>>>****INSERCIÓN DE DATOS*****FIN
 
         //si se ha seleccionado una marca de objetivo
-        if(MainActivity.getPeso().getObjetivo()!=null){
-            float leyendVal =Float.parseFloat(MainActivity.getPeso().getObjetivo());
+        if(MainActivity.getPesoOB().getObjetivo()!=null){
+            float leyendVal =Float.parseFloat(MainActivity.getPesoOB().getObjetivo());
             YAxis yAxis = binding.lineChart.getAxisLeft();
-            LimitLine ll = new LimitLine(leyendVal, "Objetivo");
+            LimitLine ll = new LimitLine(leyendVal, "");
             ll.setLineColor(Color.rgb(255,135,0));
             ll.setLineWidth(3f);
             ll.setTextColor(Color.BLACK);
@@ -209,21 +259,22 @@ public class AppHelper {
         XAxis xAxis = binding.barChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setGranularity(1f);
-        xAxis.setValueFormatter(new IndexAxisValueFormatter(recortarNombres(MainActivity.getAvance().getEjerciciosNombres())));
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(recortarNombres(MainActivity.getAvanceOB().getEjerciciosNombres())));
 
         //inserción de entradas
         List<BarEntry> entries = new ArrayList<>();
-        for (int i = 0; i < MainActivity.getAvance().getPesos().size(); i++) {//pesos de los ejercicios, array de Strings
-            entries.add(new BarEntry(Float.valueOf(i),Float.valueOf(MainActivity.getAvance().getPesos().get(i))));
+
+        for (int i = 0; i < MainActivity.getAvanceOB().getPesos().size(); i++) {//pesos de los ejercicios, array de Strings
+            entries.add(new BarEntry(Float.valueOf(i),Float.valueOf(MainActivity.getAvanceOB().getPesos().get(i))));
         }
 
         BarDataSet barDataSet = new BarDataSet(entries, "Avance");
         barDataSet.setColor(Color.RED);
         barDataSet.setValueTextSize(15);
         BarData barData = new BarData(barDataSet);
-        String ultimoValorIntroducido = MainActivity.getAvance().getEjerciciosNombres()
-                .isEmpty() ? " " : MainActivity.getAvance()
-                .getEjerciciosNombres().get(MainActivity.getAvance().getEjerciciosNombres().size()-1);
+        String ultimoValorIntroducido = MainActivity.getAvanceOB().getEjerciciosNombres()
+                .isEmpty() ? " " : MainActivity.getAvanceOB()
+                .getEjerciciosNombres().get(MainActivity.getAvanceOB().getEjerciciosNombres().size()-1);
         binding.ultimoProgreso.setText(ultimoValorIntroducido);
         //>>>****INSERCIÓN DE DATOS*****fin
 
@@ -240,7 +291,7 @@ public class AppHelper {
     public static void actualizarAvance(Avance avance){
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/avance");
+                .getReference("usuarios/"+ MainActivity.getUsuarioOB().getId()+"/avance");
         ref.setValue(avance).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -256,7 +307,7 @@ public class AppHelper {
     public static void actualizarPeso(Peso peso){
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/peso");
+                .getReference("usuarios/"+ MainActivity.getUsuarioOB().getId()+"/peso");
         ref.setValue(peso).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -333,7 +384,7 @@ public class AppHelper {
         actividad.setFecha(fecha);
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/actividades/"+actividad.getNombre());
+                .getReference("usuarios/"+ MainActivity.getUsuarioOB().getId()+"/actividades/"+actividad.getNombre());
         ref.setValue(actividad).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -346,7 +397,7 @@ public class AppHelper {
         actividad.setVacantes(String.valueOf(vacantes));
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/actividades/"+actividad.getNombre());
+                .getReference("usuarios/"+ MainActivity.getUsuarioOB().getId()+"/actividades/"+actividad.getNombre());
         ref.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -470,17 +521,16 @@ public class AppHelper {
     }
     public static void configurarArr(Calendar calendar){
         List<String> listaDiasSemanas = listaDeDiasPorSemanas(calendar);
-        for (int i = 0; i < MainActivity.getRutinas().size(); i++) {
+        for (int i = 0; i < MainActivity.getRutinasOBs().size(); i++) {
             for (int j = 0; j < listaDiasSemanas.size(); j++) {
-                if(MainActivity.getRutinas().get(i).getDias().contains(listaDiasSemanas.get(j))){
+                if(MainActivity.getRutinasOBs().get(i).getDias().contains(listaDiasSemanas.get(j))){
                     arr[0].put(j+1, "rutina");
                 }
             }
         }
-        for (int i = 0; i < MainActivity.getActividades().size(); i++) {
+        for (int i = 0; i < MainActivity.getActividadesOBs().size(); i++) {
             for (int j = 0; j < listaDiasSemanas.size(); j++) {
-
-                if(MainActivity.getActividades().get(i).getDias().contains(listaDiasSemanas.get(j))){
+                if(MainActivity.getActividadesOBs().get(i).getDias().contains(listaDiasSemanas.get(j))){
                     if(arr[0].containsKey(j+1)){
                         arr[0].put(j+1, "mix");
                     }else{
@@ -493,17 +543,17 @@ public class AppHelper {
     public static void updateArr(Calendar calendar){
         arr[0].clear();
         List<String> listaDiasSemanas = listaDeDiasPorSemanas(calendar);
-        for (int i = 0; i < MainActivity.getRutinas().size(); i++) {
+        for (int i = 0; i < MainActivity.getRutinasOBs().size(); i++) {
             for (int j = 0; j < listaDiasSemanas.size(); j++) {
-                if(MainActivity.getRutinas().get(i).getDias().contains(listaDiasSemanas.get(j))){
+                if(MainActivity.getRutinasOBs().get(i).getDias().contains(listaDiasSemanas.get(j))){
                     arr[0].put(j+1, "rutina");
                 }
             }
         }
-        for (int i = 0; i < MainActivity.getActividades().size(); i++) {
+        for (int i = 0; i < MainActivity.getActividadesOBs().size(); i++) {
             for (int j = 0; j < listaDiasSemanas.size(); j++) {
 
-                if(MainActivity.getActividades().get(i).getDias().contains(listaDiasSemanas.get(j))){
+                if(MainActivity.getActividadesOBs().get(i).getDias().contains(listaDiasSemanas.get(j))){
                     if(arr[0].containsKey(j+1)){
                         arr[0].put(j+1, "mix");
                     }else{
@@ -560,19 +610,19 @@ public class AppHelper {
      */
     public static List<Evento> getObjectos(){
         List<Evento> eventos = new ArrayList<>();
-        for (int i = 0; i < MainActivity.getActividades().size(); i++) {
+        for (int i = 0; i < MainActivity.getActividadesOBs().size(); i++) {
             Evento evento = new Evento();
-            evento.setDias(MainActivity.getActividades().get(i).getDias());
-            evento.setHorario(MainActivity.getActividades().get(i).getHorario());
-            evento.setNombre(MainActivity.getActividades().get(i).getNombre());
-            evento.setImg2(MainActivity.getActividades().get(i).getImg2());
+            evento.setDias(MainActivity.getActividadesOBs().get(i).getDias());
+            evento.setHorario(MainActivity.getActividadesOBs().get(i).getHorario());
+            evento.setNombre(MainActivity.getActividadesOBs().get(i).getNombre());
+            evento.setImg2(MainActivity.getActividadesOBs().get(i).getImg2());
             eventos.add(evento);
         }
-        for (int i = 0; i < MainActivity.getRutinas().size(); i++) {
+        for (int i = 0; i < MainActivity.getRutinasOBs().size(); i++) {
             Evento evento = new Evento();
-            evento.setDias(MainActivity.getRutinas().get(i).getDias());
-            evento.setNombre(MainActivity.getRutinas().get(i).getNombre());
-            evento.setImg2(MainActivity.getRutinas().get(i).getImg());
+            evento.setDias(MainActivity.getRutinasOBs().get(i).getDias());
+            evento.setNombre(MainActivity.getRutinasOBs().get(i).getNombre());
+            evento.setImg2(MainActivity.getRutinasOBs().get(i).getImg());
             eventos.add(evento);
         }
         return eventos;
@@ -596,50 +646,147 @@ public class AppHelper {
     // CALENDARIO**********************************CALENDARIO*********************************FIN
 
     // PERFIL****************************************PERFIL**************************************
+    @SuppressLint("SetTextI18n")
     public static void cargaPerfil(FragmentPerfilBinding binding){
-        binding.nombre.setText(MainActivity.getUsuario().getUsuario());
-        binding.mayorpesolevantado.setText(calcularMxPesoLevantado(MainActivity.getAvance().getPesos()));
-        binding.kilosyfechadePesolevantado.setText(MainActivity.getPeso().getDatosPeso().get(MainActivity.getPeso().getDatosPeso().size()-1).get("y")+ "Kg - " +
-                MainActivity.getPeso().getFecha().get(MainActivity.getPeso().getFecha().size()-1));
+        binding.nombre.setText(MainActivity.getUsuarioOB().getNombre());
+        binding.mayorpesolevantado.setText(calcularMxPesoLevantado(MainActivity.getAvanceOB().getPesos()));
+        binding.kilosyfechadePesolevantado.setText(MainActivity.getPesoOB().getDatosPeso().get(MainActivity.getPesoOB().getDatosPeso().size()-1).get("y")+ "Kg - " +
+                MainActivity.getPesoOB().getFecha().get(MainActivity.getPesoOB().getFecha().size()-1));
+
+    }
+    public static void cambiarDatos(EditText nombre, EditText passAntiguo, EditText passNuevo, Context context){
+        if(!nombre.getText().toString().equals("")){
+            System.out.println("Modificando nombre de usuario");
+            Usuario usuario = MainActivity.getUsuarioOB();
+            usuario.setNombre(nombre.getText().toString());
+            DatabaseReference ref = FirebaseDatabase
+                    .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                    .getReference("usuarios/"+MainActivity.getUsuarioOB().getId());
+            ref.setValue(usuario).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void unused) {
+                    actualizarApp();
+                    cargaPerfil(PerfilFragment.getPerfilBinding());
+                }
+            });
+        }
+        if(!passNuevo.getText().toString().equals("")){
+            if(!passAntiguo.getText().toString().equals("")){
+                System.out.println("Comprobando clave");
+                Usuario usuario = MainActivity.getUsuarioOB();
+                //abtener clave, codificarla y compararla
+                String passAntiguoEncriptado = encriptar(passAntiguo.getText().toString(), passAntiguo.getText().toString());
+                System.out.println("passAntiguoEncriptado: " + passAntiguoEncriptado.trim());
+                System.out.println("usuario.getClave(): " + usuario.getClave());
+                if(passAntiguoEncriptado.trim().equals(usuario.getClave())){
+                    System.out.println("Cambiando clave");
+                    String passNuevoEncriptado = encriptar(passNuevo.getText().toString(),passNuevo.getText().toString());
+                    usuario.setClave(passNuevoEncriptado.trim());
+                    DatabaseReference ref = FirebaseDatabase
+                            .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                            .getReference("usuarios/"+MainActivity.getUsuarioOB().getId());
+                    ref.setValue(usuario).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            actualizarApp();
+                            cargaPerfil(PerfilFragment.getPerfilBinding());
+                        }
+                    });
+                }else{
+                    escribirToast("La clave antigua no coincide.", context);
+                }
+            }else{
+                escribirToast("La clave antigua no puede estar vacía.", context);
+            }
+        }
+    }
+    public static String calcularMxPesoLevantado(List<String> lista){
+        float max = 0;
+        if(!lista.isEmpty()){
+            max = Float.valueOf(lista.get(0));
+            int index = 0;
+            for (int i = 0; i < lista.size(); i++) {
+                if(Float.valueOf(lista.get(i))>max){
+                    max = Float.valueOf(lista.get(i));
+                    index = i;
+                }
+            }
+            return max + " Kg - " + MainActivity.getAvanceOB().getEjerciciosNombres().get(index);
+        }
+        return "0";
     }
     // PERFIL****************************************PERFIL***********************************FIN
+
+    // TABLON****************************************TABLON**************************************
+
+    // TABLON****************************************TABLON***********************************FIN
+
+
+
+
+    public static Uri getImageUri(Context inContext, Bitmap inImage) {
+        Date fecha = new Date();
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title" + fecha.toString(), null);
+        return Uri.parse(path);
+    }
     /**
-     * get uri to drawable or any other resource type if u wish
-     * @param context - context
-     * @return - uri
+     * Inserta un toast con el texto deseado.
+     * @param texto Texto introducido por el usuario
+     * @param context Contexto del fragmento o actividad donde debe visualizarse
      */
-    public static void hotFixImagen(Context context, int drawable){//int corresponde a un drawable
-        Bitmap bm = BitmapFactory.decodeResource(context.getResources(), drawable);
-        Uri imgUri = getImageUri(context, bm);
-        StorageReference storageReference = FirebaseStorage.getInstance().getReference(String.valueOf(drawable));
-        storageReference.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+    public static void escribirToast(String texto, Context context){
+        Toast.makeText(context, texto, Toast.LENGTH_LONG).show();
+    }
+    /**
+     * Actualiza los objetos usuario y peso de la aplicación con los de FireBase.
+     * Cuando se actualizan se vuelve a cargar el gráfico
+     */
+    public static void actualizarApp(){
+        DatabaseReference ref = FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/"+MainActivity.getUsuarioOB().getId());
+        ref.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                //si no hay problemas durante el proceso obtenemos el link de la imagen en el Store
-                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
-                while (!uriTask.isComplete()) ;
-                Uri urlimagen = uriTask.getResult();
-                imgUriFb = urlimagen;
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                //actualizo el usuario
+                MainActivity.setUsuarioOB(dataSnapshot.getValue(Usuario.class));
+                //actualizo el peso
+                Peso peso = dataSnapshot.child("peso")
+                        .getValue(Peso.class)==null ? new Peso() : dataSnapshot.child("peso").getValue(Peso.class);
+                MainActivity.setPesoOB(peso);
+                //actualizo el progreso
+                Avance avance = dataSnapshot.child("avance")
+                        .getValue(Avance.class)==null ? new Avance() : dataSnapshot.child("avance").getValue(Avance.class);
+                MainActivity.setAvanceOB(avance);
+                //actualizo las actividades
+                List<Actividad> actividades = new ArrayList<>();
+                if(dataSnapshot.child("actividades").getValue()!=null){
+                    for (DataSnapshot data: dataSnapshot.child("actividades").getChildren()) {
+                        Actividad actividad = data.getValue(Actividad.class);
+                        actividades.add(actividad);
+                    }
+                }
+                MainActivity.setActividadesOBs(actividades);
+                //actualizo las rutinas
+                List<Rutina> rutinas = new ArrayList<>();
+                if(dataSnapshot.child("rutinas").getValue()!=null){
+                    for (DataSnapshot data2: dataSnapshot.child("rutinas").getChildren()) {
+                        Rutina rutina = data2.getValue(Rutina.class);
+                        rutinas.add(rutina);
+                    }
+                }
+                MainActivity.setRutinasOBs(rutinas);
             }
-        }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onFailure(@NonNull Exception e) {
-                System.out.println(e);
+            public void onCancelled(DatabaseError error) {
             }
         });
     }
-public static String calcularMxPesoLevantado(List<String> lista){
-    float max = Float.valueOf(lista.get(0));
-    int index = 0;
-    for (int i = 0; i < lista.size(); i++) {
-        if(Float.valueOf(lista.get(i))>max){
-            max = Float.valueOf(lista.get(i));
-            index = i;
-        }
+    public static void cambiarToolbarText(String titulo){
+        MenuPrincipal.getBinding().toolbar.setTitle(titulo);
     }
-
-    return max + " Kg - " + MainActivity.getAvance().getEjerciciosNombres().get(index);
-}
     public static void hotFixAvtividad(){
         Actividad actividad = new Actividad("Esgrima", "20.00€",
                 " es un deporte de combate en el que se enfrentan dos contrincantes debidamente protegidos que deben intentar tocarse con un arma blanca, en función de la cual se diferencian tres modalidades: sable, espada y florete.",
@@ -683,6 +830,22 @@ public static String calcularMxPesoLevantado(List<String> lista){
             }
         });
     }
+
+    public static void hotFixNoticia(){
+        //Obtengo la fecha de hoy
+        Calendar cal = new GregorianCalendar();
+        Date date = cal.getTime();
+        String fecha = date.getDate() +"/"+ date.getMonth();
+        Noticia noticia = new Noticia("https://firebasestorage.googleapis.com/v0/b/olimplicacion-3ba86.appspot.com/o/activate.png?alt=media&token=52dba554-d860-43e2-87b8-ad7e0d2d0207"
+                ,"Activate", "-Consejos para empezar el día", "Actívate por las mañanas  con una pequeña carrera al rededor de tu bloque o manzana. Despues unos "+
+                "ejercicios básicos de piernas y brazo. Una vez calentito, acurrar!");
+        Map<String, Object> actividadMapa = new HashMap<>();
+        actividadMapa.put(noticia.getTituloTrans()+date.getDate(), noticia);
+        DatabaseReference ref = FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("noticias/mes:" + date.getMonth() + "/" + noticia.getTituloTrans());
+        ref.setValue(noticia);
+    }
     public static void hotFixPesos(){
         Map<String, String> datos = new HashMap<>(); datos.put("x", "0.0");datos.put("y", "0.0");
         List<Map<String, String>> datosPeso = new ArrayList<>();
@@ -691,68 +854,27 @@ public static String calcularMxPesoLevantado(List<String> lista){
         Peso peso = new Peso(datosPeso, fechas, "0.0");
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/peso");
+                .getReference("usuarios/"+ MainActivity.getUsuarioOB().getId()+"/peso");
         ref.setValue(peso);
     }
-    public static Uri getImageUri(Context inContext, Bitmap inImage) {
-        Date fecha = new Date();
-        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
-        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title" + fecha.toString(), null);
-        return Uri.parse(path);
-    }
-    /**
-     * Inserta un toast con el texto deseado.
-     * @param texto Texto introducido por el usuario
-     * @param context Contexto del fragmento o actividad donde debe visualizarse
-     */
-    public static void escribirToast(String texto, Context context){
-        Toast.makeText(context, texto, Toast.LENGTH_LONG).show();
-    }
-    /**
-     * Actualiza los objetos usuario y peso de la aplicación con los de FireBase.
-     * Cuando se actualizan se vuelve a cargar el gráfico
-     */
-    public static void actualizarApp(){
-        DatabaseReference ref = FirebaseDatabase
-                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("usuarios/"+MainActivity.getUsuario().getId());
-        ref.addListenerForSingleValueEvent(new ValueEventListener() {
+    public static void hotFixImagen(Context context, int drawable){//int corresponde a un drawable
+        Bitmap bm = BitmapFactory.decodeResource(context.getResources(), drawable);
+        Uri imgUri = getImageUri(context, bm);
+        StorageReference storageReference = FirebaseStorage.getInstance().getReference(String.valueOf(drawable));
+        storageReference.putFile(imgUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                //actualizo el usuario
-                MainActivity.setUsuario(dataSnapshot.getValue(Usuario.class));
-                //actualizo el peso
-                Peso peso = dataSnapshot.child("peso")
-                        .getValue(Peso.class)==null ? new Peso() : dataSnapshot.child("peso").getValue(Peso.class);
-                MainActivity.setPeso(peso);
-                //actualizo el progreso
-                Avance avance = dataSnapshot.child("avance")
-                        .getValue(Avance.class)==null ? new Avance() : dataSnapshot.child("avance").getValue(Avance.class);
-                MainActivity.setAvance(avance);
-                //actualizo las actividades
-                List<Actividad> actividades = new ArrayList<>();
-                if(dataSnapshot.child("actividades").getValue()!=null){
-                    for (DataSnapshot data: dataSnapshot.child("actividades").getChildren()) {
-                        Actividad actividad = data.getValue(Actividad.class);
-                        actividades.add(actividad);
-                    }
-                }
-                MainActivity.setActividades(actividades);
-                //actualizo las rutinas
-                List<Rutina> rutinas = new ArrayList<>();
-                if(dataSnapshot.child("rutinas").getValue()!=null){
-                    for (DataSnapshot data2: dataSnapshot.child("rutinas").getChildren()) {
-                        Rutina rutina = data2.getValue(Rutina.class);
-                        rutinas.add(rutina);
-                    }
-                }
-                MainActivity.setRutinas(rutinas);
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                //si no hay problemas durante el proceso obtenemos el link de la imagen en el Store
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!uriTask.isComplete()) ;
+                Uri urlimagen = uriTask.getResult();
+                imgUriFb = urlimagen;
             }
+        }).addOnFailureListener(new OnFailureListener() {
             @Override
-            public void onCancelled(DatabaseError error) {
+            public void onFailure(@NonNull Exception e) {
+                System.out.println(e);
             }
         });
     }
-
 }

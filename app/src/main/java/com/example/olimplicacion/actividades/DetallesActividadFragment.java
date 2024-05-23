@@ -1,7 +1,6 @@
 package com.example.olimplicacion.actividades;
 
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -10,13 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.bumptech.glide.Glide;
 import com.example.olimplicacion.MainActivity;
 import com.example.olimplicacion.MenuPrincipal;
-import com.example.olimplicacion.R;
+import com.example.olimplicacion.clases.Actividad;
 import com.example.olimplicacion.clases.AppHelper;
 import com.example.olimplicacion.databinding.FragmentDetallesActividadBinding;
-import com.example.olimplicacion.ejercicios.EjercicioFbAdapter;
 
 /**
  * Este fragmento mostrará los detalles de la actividad seleccionada en el fragmento ActividadesFragment.
@@ -31,6 +28,7 @@ public class DetallesActividadFragment extends Fragment{
     public static DetallesActividadFragment newInstance(Actividad actividadF) {
         DetallesActividadFragment fragment = new DetallesActividadFragment();
         actividad = actividadF;
+        AppHelper.cambiarToolbarText(actividad.getNombre());
         return fragment;
     }
 
@@ -43,11 +41,12 @@ public class DetallesActividadFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentDetallesActividadBinding.inflate(inflater, container, false);
         ((MenuPrincipal) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         AppHelper.cargarActividad(binding, getContext(), actividad);
         //si la actividad no está reservada
         boolean esta = false;
-        for (int i = 0; i < MainActivity.getActividades().size(); i++) {
-            if(MainActivity.getActividades().get(i).getNombre().equals(actividad.getNombre())){
+        for (int i = 0; i < MainActivity.getActividadesOBs().size(); i++) {
+            if(MainActivity.getActividadesOBs().get(i).getNombre().equals(actividad.getNombre())){
                 esta = true;
             }
         }

@@ -13,8 +13,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.olimplicacion.R;
-import com.example.olimplicacion.ejercicios.Ejercicio;
-import com.example.olimplicacion.rutinas.Rutina;
+import com.example.olimplicacion.clases.Ejercicio;
+import com.example.olimplicacion.clases.Rutina;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.olimplicacion.ejercicios;
+package com.example.olimplicacion.clases;
 
 
 public class Ejercicio {

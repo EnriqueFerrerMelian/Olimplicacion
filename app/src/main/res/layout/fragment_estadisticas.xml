@@ -63,6 +63,7 @@
         android:id="@+id/botonesLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:background="#CACACA"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/lineChart">
@@ -148,6 +149,7 @@
         android:id="@+id/botonLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_margin="8dp"
         android:orientation="horizontal"
         app:layout_constraintTop_toBottomOf="@id/barChart">
 

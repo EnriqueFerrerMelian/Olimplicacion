@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.olimplicacion.MenuPrincipal;
 import com.example.olimplicacion.clases.AppHelper;
 import com.example.olimplicacion.clases.Evento;
 import com.example.olimplicacion.databinding.FragmentCalendarioBinding;
@@ -39,6 +40,8 @@ public class CalendarioFragment extends Fragment implements OnNavigationButtonCl
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         binding = FragmentCalendarioBinding.inflate(inflater, container, false);
+        AppHelper.cambiarToolbarText("Calendario");
+        ((MenuPrincipal) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         return binding.getRoot();
     }
 

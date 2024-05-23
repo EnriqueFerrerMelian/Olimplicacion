@@ -11,18 +11,21 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.olimplicacion.actividades.ActividadesFragment;
+import com.example.olimplicacion.clases.AppHelper;
 import com.example.olimplicacion.databinding.ActivityMenuPrincipalBinding;
 import com.example.olimplicacion.calendario.CalendarioFragment;
 import com.example.olimplicacion.fragmentos.EstadisticasFragment;
 import com.example.olimplicacion.fragmentos.PerfilFragment;
 import com.example.olimplicacion.rutinas.RutinaFragment;
+import com.example.olimplicacion.tablon.TablonFragment;
 
 public class MenuPrincipal extends AppCompatActivity {
     private static Fragment fragmentoDesechable = null;//se usa para controlar la transacción entre fragmentos
-    private ActivityMenuPrincipalBinding binding;
+    private static ActivityMenuPrincipalBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+       // AppHelper.hotFixNoticia();
         binding = ActivityMenuPrincipalBinding.inflate(getLayoutInflater());//carga la vista xml al cargar la aplicación
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
@@ -60,10 +63,7 @@ public class MenuPrincipal extends AppCompatActivity {
             reemplazarFragmento(new PerfilFragment());
         }
         if(item.getItemId()==R.id.tablon){
-            //reemplazarFragmento(new PerfilFragment());
-        }
-        if(item.getItemId()==R.id.configuracion){
-           // reemplazarFragmento(new PerfilFragment());
+            reemplazarFragmento(new TablonFragment());
         }
         if(item.getItemId()==16908332){
             getSupportFragmentManager().popBackStack();
@@ -88,4 +88,7 @@ public class MenuPrincipal extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    public static ActivityMenuPrincipalBinding getBinding(){
+        return binding;
+    }
 }

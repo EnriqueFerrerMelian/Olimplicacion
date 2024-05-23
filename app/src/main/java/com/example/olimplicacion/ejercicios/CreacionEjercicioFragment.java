@@ -1,25 +1,17 @@
 package com.example.olimplicacion.ejercicios;
 
-import android.app.Dialog;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.NumberPicker;
 
 import com.bumptech.glide.Glide;
 import com.example.olimplicacion.MenuPrincipal;
 import com.example.olimplicacion.R;
+import com.example.olimplicacion.clases.Ejercicio;
 import com.example.olimplicacion.databinding.FragmentCreacionEjercicioBinding;
 import com.example.olimplicacion.rutinas.CreacionRutinaFragment;
 

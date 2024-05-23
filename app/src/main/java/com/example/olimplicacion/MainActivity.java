@@ -6,13 +6,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.example.olimplicacion.actividades.Actividad;
+import com.example.olimplicacion.clases.Actividad;
 import com.example.olimplicacion.clases.AppHelper;
 import com.example.olimplicacion.clases.Avance;
 import com.example.olimplicacion.clases.Peso;
 import com.example.olimplicacion.clases.Usuario;
 import com.example.olimplicacion.databinding.ActivityMainBinding;
-import com.example.olimplicacion.rutinas.Rutina;
+import com.example.olimplicacion.clases.Rutina;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,12 +32,13 @@ import java.util.List;
  */
 
 public class MainActivity extends AppCompatActivity {
-    private static Usuario usuario = new Usuario();
-    private static Peso peso = new Peso();
-    private static Avance avance = new Avance();
-    private static List<Actividad> actividades = new ArrayList<>();
-    private static List<Rutina> rutinas = new ArrayList<>();
 
+    private static Usuario usuarioOB = new Usuario();
+    private static Peso pesoOB = new Peso();
+    private static Avance avanceOB = new Avance();
+    private static List<Actividad> actividadesOBs = new ArrayList<>();
+    private static List<Rutina> rutinasOBs = new ArrayList<>();
+    private static Boolean confirmado = false;
 
     ActivityMainBinding binding;
 
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-
+        validarFechaActividad();
         //listeners
         binding.boton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,7 +65,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
     /**
      * Obtiene un usuario de la base de datos a partir de nombre y clave pasados por parámetro.
      * Crea una referencia a FirebaseDatabase que conectará con la RealTime Databade de Firebase.
@@ -74,10 +74,12 @@ public class MainActivity extends AppCompatActivity {
      * el nombre y clave pasados por parámetros. Si concuerda, se pasarán los datos a un objeto Usuario que se usará más adelante.
      * Se obtienen sus rutinas en la lista creada anteriormente.
      * Se ejecuta la siguiente actividad (MenúPrincipal) y se ponen las áreas de texto a null.
-     * @param nombre
-     * @param clave
+     * @param usuarioInput valor de 'usuario' del usuario.
+     * @param claveInput valor de 'clave' del usuario.
      */
-    public void verificarUsuario(String nombre, String clave){
+    public void verificarUsuario(String usuarioInput, String claveInput){
+        String claveEncriptada = AppHelper.encriptar(claveInput, claveInput);
+        String usuarioEncriptado = AppHelper.encriptar(usuarioInput, usuarioInput);
         DatabaseReference ref = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("usuarios");
         ref.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -85,28 +87,8 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {//dataSnapshot son todos los usuarios
                 boolean confirmado = false;
                 for (DataSnapshot data: dataSnapshot.getChildren()) {//
-                    if(data.child("usuario").getValue().equals(nombre) && data.child("clave").getValue().equals(clave)){
-                        //recojo los datos del usuario en un objeto Usuario
-                        usuario = data.getValue(Usuario.class);
-                        if(data.child("peso").getValue(Peso.class)!=null){
-                            peso = data.child("peso").getValue(Peso.class);
-                        }
-
-                        if(data.child("avance").getValue(Avance.class)!=null){
-                            avance = data.child("avance").getValue(Avance.class);
-                        }
-                        if(data.child("actividades").getValue()!=null){
-                            for (DataSnapshot data2: data.child("actividades").getChildren()) {
-                                Actividad actividad = data2.getValue(Actividad.class);
-                                actividades.add(actividad);
-                            }
-                        }
-                        if(data.child("rutinas").getValue()!=null){
-                            for (DataSnapshot data2: data.child("rutinas").getChildren()) {
-                                Rutina rutina = data2.getValue(Rutina.class);
-                                rutinas.add(rutina);
-                            }
-                        }
+                    if(data.child("usuario").getValue().equals(usuarioEncriptado.trim()) && data.child("clave").getValue().equals(claveEncriptada.trim())){
+                        AppHelper.actualizarApp();
                         confirmado=true;
                         //ejecuto el fragmento 'MenuPrincipal'
                         irAMenuPrincipal();
@@ -116,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
                         binding.clave.setText("");
                     }
                 }
+
                 if(!confirmado){
                     AppHelper.escribirToast("No estás registrado", MainActivity.this);
                 }
@@ -134,56 +117,116 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * Este método se usará para obtener datos del usuario actual a lo largo de la aplicación
-     * @return
+     * Administra las reservas del usuario. Se obtiene la fecha de hoy. Se obtiene año, mes y día y se comparan
+     * con la fecha registrada del día en que se reservo la actividad.
+     * if(a1>a2 || (a1==a2 && b1>b2) || (a1==a2 && b1==b2 && (c1-c2>4))).
+     * donde: a1 - año actual; b1 - mes actual; c1 - día de hoy.
+     * Un resultado true significaría que han pasado más de 5 días desde la reserva, y se eliminará del registro
+     * del usuario.
      */
-    public static Usuario getUsuario(){
-        return usuario;
-    }
-    public static Peso getPeso(){
-        return peso;
-    }
-    public static Avance getAvance() {return avance;}
-
-    public static void setUsuario(Usuario usuarioOB){
-        usuario = usuarioOB;
-    }
-    public static void setPeso(Peso pesoOB){
-        peso = pesoOB;
-    }
-    public static void setAvance(Avance avanceOB){
-        avance = avanceOB;
-    }
-
-    public static List<Actividad> getActividades() {
-        return actividades;
-    }
-
-    public static void setActividades(List<Actividad> actividades) {
-        MainActivity.actividades = actividades;
-    }
-
-    public static List<Rutina> getRutinas() {
-        return rutinas;
-    }
-
-    public static void setRutinas(List<Rutina> rutinas) {
-        MainActivity.rutinas = rutinas;
-    }
-
     private static void validarFechaActividad(){
         //Obtengo la fecha de hoy
         Calendar cal = new GregorianCalendar();
         Date date = cal.getTime();
-        String fecha = date.getYear() +"/"+ date.getMonth()+"/"+ date.getDate()+"";
-        String[] fechas1 = fecha.split("/");
-        int a1 = Integer.valueOf(fechas1[0]),b1 = Integer.valueOf(fechas1[1]),c1 = Integer.valueOf(fechas1[2]);
-        for (int i = 0; i < actividades.size(); i++) {
-            String[] fechas2 = actividades.get(i).getFecha().split("/");
+        int a1 = Integer.valueOf(date.getYear()),b1 = Integer.valueOf(date.getMonth()),c1 = Integer.valueOf(date.getDate());
+        for (int i = 0; i < actividadesOBs.size(); i++) {
+            String[] fechas2 = actividadesOBs.get(i).getFecha().split("/");
             int a2 = Integer.valueOf(fechas2[0]),b2 = Integer.valueOf(fechas2[1]),c2 = Integer.valueOf(fechas2[2]);
             if(a1>a2 || (a1==a2 && b1>b2) || (a1==a2 && b1==b2 && (c1-c2>4))){
-                AppHelper.eliminarReserva(actividades.remove(i));
+                AppHelper.eliminarReserva(actividadesOBs.remove(i));
             }
         }
+    }
+    //SETTERS Y GETTERS
+
+/*    public static Boolean getConfirmado() {
+        return confirmado;
+    }
+    public static void setConfirmado(Boolean confirmado) {
+        MainActivity.confirmado = confirmado;
+    }
+    public static Usuario getUsuario(){
+        return usuarioOB;
+    }
+    public static Peso getPeso(){
+        return pesoOB;
+    }
+    public static Avance getAvance() {return avanceOB;}
+    public static void setUsuario(Usuario usuario){
+        usuarioOB = usuarioOB;
+    }
+    public static void setPeso(Peso peso){
+        pesoOB = pesoOB;
+    }
+    public static void setAvance(Avance avance){
+        avanceOB = avance;
+    }
+    public static List<Actividad> getActividades() {
+        return actividadesOBs;
+    }
+    public static void setActividades(List<Actividad> actividades) {
+        MainActivity.actividadesOBs = actividades;
+    }
+    public static List<Rutina> getRutinas() {
+        return rutinasOBs;
+    }
+    public static void setRutinas(List<Rutina> rutinas) {
+        MainActivity.rutinasOBs = rutinas;
+    }*/
+
+    public static Usuario getUsuarioOB() {
+        return usuarioOB;
+    }
+
+    public static void setUsuarioOB(Usuario usuarioOB) {
+        MainActivity.usuarioOB = usuarioOB;
+    }
+
+    public static Peso getPesoOB() {
+        return pesoOB;
+    }
+
+    public static void setPesoOB(Peso pesoOB) {
+        MainActivity.pesoOB = pesoOB;
+    }
+
+    public static Avance getAvanceOB() {
+        return avanceOB;
+    }
+
+    public static void setAvanceOB(Avance avanceOB) {
+        MainActivity.avanceOB = avanceOB;
+    }
+
+    public static List<Actividad> getActividadesOBs() {
+        return actividadesOBs;
+    }
+
+    public static void setActividadesOBs(List<Actividad> actividadesOBs) {
+        MainActivity.actividadesOBs = actividadesOBs;
+    }
+
+    public static List<Rutina> getRutinasOBs() {
+        return rutinasOBs;
+    }
+
+    public static void setRutinasOBs(List<Rutina> rutinasOBs) {
+        MainActivity.rutinasOBs = rutinasOBs;
+    }
+
+    public static Boolean getConfirmado() {
+        return confirmado;
+    }
+
+    public static void setConfirmado(Boolean confirmado) {
+        MainActivity.confirmado = confirmado;
+    }
+
+    public ActivityMainBinding getBinding() {
+        return binding;
+    }
+
+    public void setBinding(ActivityMainBinding binding) {
+        this.binding = binding;
     }
 }

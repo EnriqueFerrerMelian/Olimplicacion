@@ -1,10 +1,6 @@
 package com.example.olimplicacion.clases;
 
-import com.example.olimplicacion.rutinas.Rutina;
-
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Usuario {
@@ -29,6 +25,14 @@ public class Usuario {
 
     public String getUsuario() {
         return usuario;
+    }
+
+    public Map<String, Object> getAvance() {
+        return avance;
+    }
+
+    public void setAvance(Map<String, Object> avance) {
+        this.avance = avance;
     }
 
     public void setUsuario(String usuario) {

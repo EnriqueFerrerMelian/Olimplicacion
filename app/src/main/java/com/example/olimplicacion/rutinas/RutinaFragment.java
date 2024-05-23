@@ -13,21 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.example.olimplicacion.MainActivity;
 import com.example.olimplicacion.MenuPrincipal;
 import com.example.olimplicacion.R;
+import com.example.olimplicacion.clases.AppHelper;
+import com.example.olimplicacion.clases.Rutina;
 import com.example.olimplicacion.databinding.FragmentRutinaBinding;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * CONTENDRÁ UN RECYCLERVIEW DE RECYCLERVIEWS DE EJERCICIOS
@@ -37,27 +31,27 @@ import java.util.List;
  */
 
 public class RutinaFragment extends Fragment implements RutinaFbAdapter.ItemClickListener {
+    private static FragmentRutinaBinding binding;
     //recyclerView **********
     private RutinaFbAdapter rutinaFbAdapter;
     private RecyclerView recyclerView;
     //recyclerView *******fin
 
-    //variables globales
-    static FragmentRutinaBinding binding;
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,Bundle savedInstanceState) {
         binding = FragmentRutinaBinding.inflate(inflater, container, false);
-        ((MenuPrincipal) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         return binding.getRoot();
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((MenuPrincipal) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        AppHelper.cambiarToolbarText("Rutinas");
         FirebaseRecyclerOptions<Rutina> options =
                 new FirebaseRecyclerOptions.Builder<Rutina>()
                         .setQuery(FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                                .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/rutinas"), Rutina.class)
+                                .getReference("usuarios/"+ MainActivity.getUsuarioOB().getId()+"/rutinas"), Rutina.class)
                         .build();
         rutinaFbAdapter = new RutinaFbAdapter(options, this::onItemClick);
         recyclerView = binding.recyclerView;

@@ -19,6 +19,7 @@ import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import com.example.olimplicacion.MainActivity;
+import com.example.olimplicacion.MenuPrincipal;
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.clases.AppHelper;
 import com.example.olimplicacion.clases.Avance;
@@ -40,17 +41,19 @@ public class EstadisticasFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentEstadisticasBinding.inflate(inflater, container, false);
+        AppHelper.cambiarToolbarText("Estadísticas");
+        ((MenuPrincipal) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
         return binding.getRoot();
     }
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        if(MainActivity.getPeso()==null){
-            MainActivity.setPeso(new Peso());
+        if(MainActivity.getPesoOB()==null){
+            MainActivity.setPesoOB(new Peso());
         }else{
             binding.textoInfo.setVisibility(View.GONE);
         }
-        if(MainActivity.getAvance()==null){
-            MainActivity.setAvance(new Avance());
+        if(MainActivity.getAvanceOB()==null){
+            MainActivity.setAvanceOB(new Avance());
         }
         AppHelper.configurarChartPeso(binding);
         AppHelper.configurarChartAvance(binding);
@@ -109,8 +112,8 @@ public class EstadisticasFragment extends Fragment {
         numberPesoOb.setMinValue(0);numberPesoOb.setMaxValue(150);
         NumberPicker numberPesoDecimalOb = dialog.findViewById(R.id.numberPesoDecimalOb);
         numberPesoDecimalOb.setMinValue(0);numberPesoDecimalOb.setMaxValue(9);
-        if(MainActivity.getPeso().getObjetivo()!=null){
-            String[] objetivo = MainActivity.getPeso().getObjetivo().split("\\.");
+        if(MainActivity.getPesoOB().getObjetivo()!=null){
+            String[] objetivo = MainActivity.getPesoOB().getObjetivo().split("\\.");
             numberPesoOb.setValue(Integer.valueOf(objetivo[0]));
             numberPesoDecimalOb.setValue(Integer.valueOf(objetivo[1]));
         }
@@ -118,8 +121,8 @@ public class EstadisticasFragment extends Fragment {
         numberPeso.setMinValue(1);numberPeso.setMaxValue(150);
         NumberPicker numberPesoDecimal = dialog.findViewById(R.id.numberPesoDecimal);
         numberPesoDecimal.setMinValue(0);numberPesoDecimal.setMaxValue(9);
-        if(MainActivity.getPeso().getDatosPeso().size()>0){
-            String[] objetivo = MainActivity.getPeso().getDatosPeso().get(MainActivity.getPeso().getDatosPeso().size()-1).get("y").split("\\.");
+        if(MainActivity.getPesoOB().getDatosPeso().size()>0){
+            String[] objetivo = MainActivity.getPesoOB().getDatosPeso().get(MainActivity.getPesoOB().getDatosPeso().size()-1).get("y").split("\\.");
             numberPeso.setValue(Integer.valueOf(objetivo[0]));
             numberPesoDecimal.setValue(Integer.valueOf(objetivo[1]));
         }
@@ -169,18 +172,18 @@ public class EstadisticasFragment extends Fragment {
                     if(binding.lineChart.getLineData().getDataSets().get(0).getEntryCount()>1){
                         System.out.println("Borrando");
                         int index = binding.lineChart.getLineData().getDataSetByIndex(0).getEntryIndex(pesoSeleccionado);
-                        MainActivity.getPeso().getDatosPeso().remove(index);
-                        MainActivity.getPeso().getFecha().remove(index);
-                        AppHelper.actualizarPeso(MainActivity.getPeso());
+                        MainActivity.getPesoOB().getDatosPeso().remove(index);
+                        MainActivity.getPesoOB().getFecha().remove(index);
+                        AppHelper.actualizarPeso(MainActivity.getPesoOB());
                     }else{
                         AppHelper.escribirToast("Debe haber al menos un registro", getContext());
                     }
                 }else{
                     if(binding.barChart.getBarData().getDataSets().get(0).getEntryCount()>0){
                         int index = binding.barChart.getBarData().getDataSetByIndex(0).getEntryIndex(progresoSeleccionado);
-                        MainActivity.getAvance().getEjerciciosNombres().remove(index);
-                        MainActivity.getAvance().getPesos().remove(index);
-                        AppHelper.actualizarAvance(MainActivity.getAvance());
+                        MainActivity.getAvanceOB().getEjerciciosNombres().remove(index);
+                        MainActivity.getAvanceOB().getPesos().remove(index);
+                        AppHelper.actualizarAvance(MainActivity.getAvanceOB());
                     }
                 }
                 dialog.dismiss();

@@ -40,28 +40,20 @@ import com.example.olimplicacion.MainActivity;
 import com.example.olimplicacion.MenuPrincipal;
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.clases.AppHelper;
-import com.example.olimplicacion.clases.Avance;
-import com.example.olimplicacion.clases.Usuario;
-import com.example.olimplicacion.ejercicios.Ejercicio;
+import com.example.olimplicacion.clases.Ejercicio;
+import com.example.olimplicacion.clases.Rutina;
 import com.example.olimplicacion.ejercicios.EjercicioAdapterModificar;
 import com.example.olimplicacion.databinding.FragmentCreacionRutinaBinding;
 import com.example.olimplicacion.ejercicios.ListaEjerciciosFragment;
 import com.example.olimplicacion.ejercicios.DetalleEjercicioFragment;
-import com.example.olimplicacion.fragmentos.EstadisticasFragment;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.textfield.TextInputLayout;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
-import org.checkerframework.framework.qual.DefaultQualifier;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -69,7 +61,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -141,6 +132,7 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         if (rutina != null) {
             cargarRutina(rutina);
         }
+        AppHelper.cambiarToolbarText(rutina.getNombre());
 
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -413,7 +405,7 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         //guardando la rutina en la base de datos **********************************
         Rutina rutin = new Rutina();
         rutin.setNombre(binding.nombreDeRutina.getText().toString());
-        rutin.setId(MainActivity.getUsuario().getId() + "_" + fecha);
+        rutin.setId(MainActivity.getUsuarioOB().getId() + "_" + fecha);
         //si se ha capturado una imagen
         if(confirmacionImg){
             //se guarda
@@ -457,7 +449,7 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
             //si se está modificando una rutina
             if (rutina != null) {
                 //si el nombre se ha cambiado, se comprueba si ya hay otra rutina con el nombre nuevo ya guardada
-                if(MainActivity.getUsuario().getRutinas().get(rutin.getNombre())!=null){
+                if(MainActivity.getUsuarioOB().getRutinas().get(rutin.getNombre())!=null){
                     showSobrescribirSheet(mapRutin, ejerciciosLista);
                 }else{
                     eliminarRutinaM(DetallesRutinaFragment.getRutina());
@@ -499,7 +491,7 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
     public void eliminarRutinaM(Rutina rutin) {
         //creo una referencia a la rutina que quiero borrar
         DatabaseReference ref2 = FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("usuarios/" + MainActivity.getUsuario().getId() + "/rutinas/"+rutin.getNombre());
+                .getReference("usuarios/" + MainActivity.getUsuarioOB().getId() + "/rutinas/"+rutin.getNombre());
         //elimino la rutina
         ref2.removeValue();
 
@@ -600,7 +592,7 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
 
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("usuarios/"+MainActivity.getUsuario().getId()+"/rutinas/");
+                .getReference("usuarios/"+MainActivity.getUsuarioOB().getId()+"/rutinas/");
         ref.updateChildren(mapa).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
@@ -611,15 +603,15 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
     }
     public static void actualizarAvance(List<Ejercicio> ejercicios){
         for (int i = 0; i < ejercicios.size(); i++) {
-            if(!MainActivity.getAvance().getEjerciciosNombres().contains(ejercicios.get(i).getNombre())){
-                MainActivity.getAvance().getEjerciciosNombres().add(ejercicios.get(i).getNombre());
-                MainActivity.getAvance().getPesos().add(ejercicios.get(i).getPeso());
+            if(!MainActivity.getAvanceOB().getEjerciciosNombres().contains(ejercicios.get(i).getNombre())){
+                MainActivity.getAvanceOB().getEjerciciosNombres().add(ejercicios.get(i).getNombre());
+                MainActivity.getAvanceOB().getPesos().add(ejercicios.get(i).getPeso());
             }
         }
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("usuarios/"+ MainActivity.getUsuario().getId()+"/avance");
-        ref.setValue(MainActivity.getAvance());
+                .getReference("usuarios/"+ MainActivity.getUsuarioOB().getId()+"/avance");
+        ref.setValue(MainActivity.getAvanceOB());
     }
 
 }

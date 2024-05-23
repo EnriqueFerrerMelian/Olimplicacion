@@ -1,4 +1,4 @@
-package com.example.olimplicacion.actividades;
+package com.example.olimplicacion.clases;
 
 import java.util.ArrayList;
 import java.util.List;
