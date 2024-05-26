@@ -6,7 +6,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".rutinas.DetallesRutinaFragment">
+    tools:context=".rutinas.DetallesRutinaFragment"
+    style="@style/SCREEN">
     <LinearLayout
         android:id="@+id/linearLayout"
         android:layout_height="wrap_content"
@@ -54,8 +55,7 @@
             android:layout_height="48dp"
             android:paddingLeft="10dp"
             android:text="L"
-            android:textSize="24dp"
-            android:textStyle="bold" />
+            style="@style/SEMANA"/>
 
         <TextView
             android:id="@+id/martes"
@@ -63,8 +63,7 @@
             android:layout_height="48dp"
             android:paddingLeft="10dp"
             android:text="M"
-            android:textSize="24dp"
-            android:textStyle="bold" />
+            style="@style/SEMANA"/>
 
         <TextView
             android:id="@+id/miercoles"
@@ -147,17 +146,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerView">
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/modificar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/white"
-            android:backgroundTint="@color/verdeOscuro"
             android:text="Modificar"
             android:textAllCaps="false"
-            android:textColor="@color/black"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            style="@style/BUTTON"/>
     </LinearLayout>
 </RelativeLayout>

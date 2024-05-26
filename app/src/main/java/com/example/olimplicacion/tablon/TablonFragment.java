@@ -57,7 +57,10 @@ public class TablonFragment extends Fragment  implements NoticiaFbAdapter.ItemCl
     }
     @Override
     public void onItemClick(Noticia noticia) {
-
+        Fragment fragment = DetalleNoticiaFragment.newInstance(noticia);
+        FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+        fragmentTransaction.replace(R.id.fragmentContainerView, fragment, "nota").addToBackStack(null);
+        fragmentTransaction.commit();
     }
 
     /**

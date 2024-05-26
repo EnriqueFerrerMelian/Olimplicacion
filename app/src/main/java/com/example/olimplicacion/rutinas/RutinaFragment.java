@@ -59,7 +59,7 @@ public class RutinaFragment extends Fragment implements RutinaFbAdapter.ItemClic
         recyclerView.setAdapter(rutinaFbAdapter);
 
         //Abre el fragmento donde se creará una rutina nueva.
-        binding.anadir.setOnClickListener(new View.OnClickListener() {
+        binding.floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 reemplazarFragmento(new CreacionRutinaFragment());
@@ -91,8 +91,8 @@ public class RutinaFragment extends Fragment implements RutinaFbAdapter.ItemClic
     }
 
     /**
-     * Este método se pasará a rutinaFbAdapter. De manera que cuando se haga click en una rutina se ejecute el
-     * fragmento DetallesRutinaFragmento
+     * Este método se pasará a cada item del RecyclerView a través de rutinaFbAdapter. De manera
+     * que cuando se haga click en una rutina se ejecute el fragmento DetallesRutinaFragmento
      * @param rutina
      */
     @Override

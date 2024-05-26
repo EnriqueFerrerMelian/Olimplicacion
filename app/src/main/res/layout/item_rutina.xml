@@ -5,14 +5,16 @@
     android:layout_marginStart="12dp"
     android:layout_marginEnd="12dp"
     app:cardMaxElevation="8dp"
+    app:cardCornerRadius="8dp"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp">
+    android:layout_margin="8dp"
+    style="@style/SCREEN">
 
     <RelativeLayout
         android:id="@+id/item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/rutinaImg"
             android:layout_width="60dp"
@@ -32,9 +34,9 @@
             android:layout_marginTop="15dp"
             android:layout_marginStart="30dp"
             android:text="name"
-            android:textColor="@color/darkgrey"
             android:textSize="20sp"
-            android:textStyle="bold" />
+            style="@style/TEXT"
+            android:textStyle="bold"/>
 
         <TextView
             android:id="@+id/lunes"
@@ -45,9 +47,7 @@
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@+id/rutinaImg"
             android:text="L"
-            android:textColor="@color/grey"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            style="@style/SEMANA"/>
         <TextView
             android:id="@+id/martes"
             android:layout_width="wrap_content"
@@ -57,9 +57,7 @@
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@+id/lunes"
             android:text="M"
-            android:textColor="@color/grey"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            style="@style/SEMANA"/>
         <TextView
             android:id="@+id/miercoles"
             android:layout_width="wrap_content"
@@ -69,9 +67,7 @@
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@+id/martes"
             android:text="X"
-            android:textColor="@color/grey"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            style="@style/SEMANA"/>
         <TextView
             android:id="@+id/jueves"
             android:layout_width="wrap_content"
@@ -81,9 +77,7 @@
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@+id/miercoles"
             android:text="J"
-            android:textColor="@color/grey"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            style="@style/SEMANA"/>
         <TextView
             android:id="@+id/viernes"
             android:layout_width="wrap_content"
@@ -93,9 +87,7 @@
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@+id/jueves"
             android:text="V"
-            android:textColor="@color/grey"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            style="@style/SEMANA"/>
         <TextView
             android:id="@+id/sabado"
             android:layout_width="wrap_content"
@@ -105,9 +97,7 @@
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@+id/viernes"
             android:text="S"
-            android:textColor="@color/grey"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            style="@style/SEMANA"/>
         <TextView
             android:id="@+id/domingo"
             android:layout_width="wrap_content"
@@ -117,19 +107,18 @@
             android:layout_marginTop="3dp"
             android:layout_toEndOf="@+id/sabado"
             android:text="D"
-            android:textColor="#FFFFFF"
-            android:textSize="20sp"
-            android:textStyle="bold" />
+            style="@style/SEMANA"/>
 
         <ImageButton
             android:id="@+id/mas"
+            style="@style/MAS"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_marginStart="34dp"
+            android:layout_marginEnd="0dp"
             android:layout_marginTop="0dp"
             android:layout_toEndOf="@+id/domingo"
-            android:backgroundTint="#FFFFFF"
             android:src="@drawable/mas" />
 
 

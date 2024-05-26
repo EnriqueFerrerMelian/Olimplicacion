@@ -9,7 +9,9 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        style="@style/SCREEN"
+        >
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/imgActividad"
@@ -53,7 +55,6 @@
             android:textAlignment="textEnd"
             android:textColor="@color/white"
             android:textStyle="bold" />
-
         <LinearLayout
             android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
@@ -62,79 +63,75 @@
             android:layout_marginTop="2dp"
             android:layout_marginBottom="8dp"
             android:gravity="center"
-            android:background="@color/white"
+            style="@style/SCREEN"
             android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/lunes"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:paddingLeft="10dp"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
                 android:text="L"
-                android:textSize="24dp"
-                android:textStyle="bold" />
+                android:textAlignment="center"
+                style="@style/SEMANA"/>
 
             <TextView
                 android:id="@+id/martes"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:paddingLeft="10dp"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
                 android:text="M"
-                android:textSize="24dp"
-                android:textStyle="bold" />
+                android:textAlignment="center"
+                style="@style/SEMANA"/>
 
             <TextView
                 android:id="@+id/miercoles"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:paddingLeft="10dp"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
                 android:text="X"
-                android:textSize="24dp"
-                android:textStyle="bold" />
+                android:textAlignment="center"
+                style="@style/SEMANA"/>
 
             <TextView
-                android:id="@id/jueves"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:paddingLeft="10dp"
+                android:id="@+id/jueves"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
                 android:text="J"
-                android:textSize="24dp"
-                android:textStyle="bold" />
+                android:textAlignment="center"
+                style="@style/SEMANA"/>
 
             <TextView
                 android:id="@+id/viernes"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:paddingLeft="10dp"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
                 android:text="V"
-                android:textSize="24dp"
-                android:textStyle="bold" />
+                android:textAlignment="center"
+                style="@style/SEMANA"/>
 
             <TextView
                 android:id="@+id/sabado"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:paddingLeft="10dp"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
                 android:text="S"
-                android:textSize="24dp"
-                android:textStyle="bold" />
+                android:textAlignment="center"
+                style="@style/SEMANA"/>
 
             <TextView
                 android:id="@+id/domingo"
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:paddingLeft="10dp"
+                android:layout_width="48dp"
+                android:layout_height="wrap_content"
                 android:text="D"
-                android:textSize="24dp"
-                android:textStyle="bold" />
-
+                android:textAlignment="center"
+                style="@style/SEMANA"/>
         </LinearLayout>
+
         <View
             android:id="@+id/divider1"
+            style="@style/VIEW"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_margin="8dp"
-            android:background="#303030"/>
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp" />
 
     </RelativeLayout>
 

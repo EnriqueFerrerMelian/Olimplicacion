@@ -2,6 +2,7 @@ package com.example.olimplicacion;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        validarFechaActividad();
+        validarFechaActividad(this);
         //listeners
         binding.boton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
      * Un resultado true significaría que han pasado más de 5 días desde la reserva, y se eliminará del registro
      * del usuario.
      */
-    private static void validarFechaActividad(){
+    private static void validarFechaActividad(Context context){
         //Obtengo la fecha de hoy
         Calendar cal = new GregorianCalendar();
         Date date = cal.getTime();
@@ -133,47 +134,11 @@ public class MainActivity extends AppCompatActivity {
             String[] fechas2 = actividadesOBs.get(i).getFecha().split("/");
             int a2 = Integer.valueOf(fechas2[0]),b2 = Integer.valueOf(fechas2[1]),c2 = Integer.valueOf(fechas2[2]);
             if(a1>a2 || (a1==a2 && b1>b2) || (a1==a2 && b1==b2 && (c1-c2>4))){
-                AppHelper.eliminarReserva(actividadesOBs.remove(i));
+                AppHelper.eliminarReserva(actividadesOBs.remove(i), context);
             }
         }
     }
     //SETTERS Y GETTERS
-
-/*    public static Boolean getConfirmado() {
-        return confirmado;
-    }
-    public static void setConfirmado(Boolean confirmado) {
-        MainActivity.confirmado = confirmado;
-    }
-    public static Usuario getUsuario(){
-        return usuarioOB;
-    }
-    public static Peso getPeso(){
-        return pesoOB;
-    }
-    public static Avance getAvance() {return avanceOB;}
-    public static void setUsuario(Usuario usuario){
-        usuarioOB = usuarioOB;
-    }
-    public static void setPeso(Peso peso){
-        pesoOB = pesoOB;
-    }
-    public static void setAvance(Avance avance){
-        avanceOB = avance;
-    }
-    public static List<Actividad> getActividades() {
-        return actividadesOBs;
-    }
-    public static void setActividades(List<Actividad> actividades) {
-        MainActivity.actividadesOBs = actividades;
-    }
-    public static List<Rutina> getRutinas() {
-        return rutinasOBs;
-    }
-    public static void setRutinas(List<Rutina> rutinas) {
-        MainActivity.rutinasOBs = rutinas;
-    }*/
-
     public static Usuario getUsuarioOB() {
         return usuarioOB;
     }

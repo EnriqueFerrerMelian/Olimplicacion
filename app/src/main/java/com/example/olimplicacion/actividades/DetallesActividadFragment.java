@@ -43,20 +43,21 @@ public class DetallesActividadFragment extends Fragment{
         ((MenuPrincipal) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         AppHelper.cargarActividad(binding, getContext(), actividad);
-        //si la actividad no está reservada
         boolean esta = false;
+        //se busca las actividades reservadas por el usuario
         for (int i = 0; i < MainActivity.getActividadesOBs().size(); i++) {
             if(MainActivity.getActividadesOBs().get(i).getNombre().equals(actividad.getNombre())){
                 esta = true;
             }
         }
+        //si la actividad no está reservada
         if (!esta) {
             //se activa el onclick listener
             binding.reservar.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     if(Integer.valueOf(actividad.getVacantes())>1) {
-                        AppHelper.reservarActividad(actividad);
+                        AppHelper.reservarActividad(actividad, getContext());
                         getParentFragmentManager().popBackStack();
                     }else{
                         System.out.println("No quedan vacantes para esa actividad");
@@ -71,7 +72,7 @@ public class DetallesActividadFragment extends Fragment{
             binding.eliminarReserva.setOnClickListener(new View.OnClickListener() {
             @Override
                 public void onClick(View view) {
-                    AppHelper.eliminarReserva(actividad);
+                    AppHelper.eliminarReserva(actividad, getContext());
                     getParentFragmentManager().popBackStack();
                 }
             });

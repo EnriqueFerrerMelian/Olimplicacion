@@ -129,11 +129,11 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
                 .into(binding.editarImagen);
 
         //si se ha ejecutado este fragmento pasándole una rutina, se cargan sus datos
+        AppHelper.cambiarToolbarText("Rutina nueva");
         if (rutina != null) {
             cargarRutina(rutina);
+            AppHelper.cambiarToolbarText(rutina.getNombre());
         }
-        AppHelper.cambiarToolbarText(rutina.getNombre());
-
         recyclerView = binding.recyclerView;
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         ejercicioAdapterModificar = new EjercicioAdapterModificar(dataArrayList, this::onItemClick, rutina);
@@ -152,13 +152,12 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         });
 
         //abre el fragmento EjercicioListaFragment para seleccionar un ejercicio a añadir
-        binding.anadir.setOnClickListener(new View.OnClickListener() {
+        binding.floatingActionButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 reemplazarFragmento(new ListaEjerciciosFragment());
             }
         });
-
 
         binding.aceptar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -285,7 +284,9 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
                                         .circleCrop()
                                         .error(R.drawable.iconogris)//si ocurre algún error se verá por defecto
                                         .into(binding.editarImagen);
-                                imgUri = getImageUri(getContext(), bitmap);
+                                if(bitmap!=null) {
+                                    imgUri = getImageUri(getContext(), bitmap);
+                                }
                                 confirmacionImg = true;
                             } else {
                                 // Si no hay datos extras, utilizar la Uri para cargar la imagen
@@ -362,7 +363,6 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         }else{
             //si se ha pasado una rutina por parámetro y se ha hecho una foto
             if(confirmacionImg){
-
                 if(rutina.getImg()!=null){
                     eliminarImagen();
                 }

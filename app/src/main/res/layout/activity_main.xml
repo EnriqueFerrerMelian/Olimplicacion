@@ -1,66 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
+    style="@style/SCREEN"
     tools:context=".MainActivity">
 
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="1.0"
-        app:srcCompat="@drawable/fondo" />
-
+        android:src="@drawable/fondo"/>
+    <EditText
+        android:id="@+id/nombre"
+        android:layout_width="237dp"
+        android:layout_height="48dp"
+        android:height="100dp"
+        style="@style/EDITTEXT"
+        android:ems="10"
+        android:hint="Nombre"
+        android:inputType="text"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/clave"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.934" />
     <EditText
         android:id="@+id/clave"
         android:layout_width="237dp"
         android:layout_height="48dp"
         android:height="100dp"
-        android:background="#D8D8D8"
+        style="@style/EDITTEXT"
         android:ems="10"
         android:hint="Clave"
         android:inputType="textPassword"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.559" />
 
-    <EditText
-        android:id="@+id/nombre"
-        android:layout_width="237dp"
-        android:layout_height="48dp"
-        android:height="100dp"
-        android:background="#070707"
-        android:backgroundTint="#D8D8D8"
-        android:ems="10"
-        android:hint="Nombre"
-        android:inputType="text"
-        app:layout_constraintBottom_toTopOf="@+id/clave"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.934" />
-
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/boton"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
+        style="@style/BUTTON"
+        android:layout_width="237dp"
         android:layout_height="wrap_content"
-        android:backgroundTint="#3816CF"
-        android:drawableRight="@drawable/ic_action_unlock"
+        android:drawableLeft="@drawable/ic_action_unlock"
         android:paddingHorizontal="10dp"
         android:text="Entrar"
-        android:textColor="@color/cardview_light_background"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.499"

@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".rutinas.CreacionRutinaFragment">
+    tools:context=".rutinas.CreacionRutinaFragment"
+    style="@style/SCREEN">
 
     <LinearLayout
         android:id="@+id/cabecera"
@@ -88,85 +89,91 @@
         android:id="@+id/nombreDias"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:gravity="center"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/anadir"
+        style="@style/SCREEN"
+        app:layout_constraintBottom_toTopOf="@+id/floatingActionButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/dias">
 
         <TextView
             android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:paddingLeft="10dp"
+            android:layout_height="wrap_content"
             android:text="L"
-            android:textSize="24dp"
-            android:textStyle="bold" />
+            android:textAlignment="center"
+            style="@style/SEMANA"/>
 
         <TextView
             android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:paddingLeft="10dp"
+            android:layout_height="wrap_content"
             android:text="M"
-            android:textSize="24dp"
-            android:textStyle="bold" />
+            android:textAlignment="center"
+            style="@style/SEMANA"/>
 
         <TextView
             android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:paddingLeft="10dp"
+            android:layout_height="wrap_content"
             android:text="X"
-            android:textSize="24dp"
-            android:textStyle="bold" />
+            android:textAlignment="center"
+            style="@style/SEMANA"/>
 
         <TextView
             android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:paddingLeft="10dp"
+            android:layout_height="wrap_content"
             android:text="J"
-            android:textSize="24dp"
-            android:textStyle="bold" />
+            android:textAlignment="center"
+            style="@style/SEMANA"/>
 
         <TextView
             android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:paddingLeft="10dp"
+            android:layout_height="wrap_content"
             android:text="V"
-            android:textSize="24dp"
-            android:textStyle="bold" />
+            android:textAlignment="center"
+            style="@style/SEMANA"/>
 
         <TextView
             android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:paddingLeft="10dp"
+            android:layout_height="wrap_content"
             android:text="S"
-            android:textSize="24dp"
-            android:textStyle="bold" />
+            android:textAlignment="center"
+            style="@style/SEMANA"/>
 
         <TextView
             android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:paddingLeft="10dp"
+            android:layout_height="wrap_content"
             android:text="D"
-            android:textSize="24dp"
-            android:textStyle="bold" />
-
+            android:textAlignment="center"
+            style="@style/SEMANA"/>
     </LinearLayout>
 
-    <TextView
+    <!-- <TextView
         android:id="@+id/anadir"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="5dp"
         android:layout_marginBottom="16dp"
         android:text="@string/a_adir_ejercicio"
-        android:textColor="@color/darkgrey"
+        android:drawableLeft="@drawable/pesas"
         android:textSize="18dp"
-        android:textStyle="bold"
+        style="@style/TEXT"
         app:layout_constraintBottom_toTopOf="@+id/recyclerView"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nombreDias" />
+        app:layout_constraintTop_toBottomOf="@+id/nombreDias" />-->
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/floatingActionButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="380dp"
+        android:backgroundTint="@color/azulLogo"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/pesas"
+        android:tint="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerView"
@@ -178,8 +185,9 @@
         android:scrollbars="vertical"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/anadir"
+        app:layout_constraintTop_toBottomOf="@+id/floatingActionButton"
         tools:listitem="@layout/item_ejercicio" />
 
     <LinearLayout
@@ -194,62 +202,27 @@
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/recyclerView">
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/aceptar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/white"
             android:textAllCaps="false"
             android:text="Aceptar"
-            android:textColor="@color/black"
             android:textStyle="bold"
-            android:backgroundTint="@color/verdeOscuro"/>
-        <Button
+            android:backgroundTint="@color/verdeOscuro"
+            style="@style/BUTTON"/>
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/cancelar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="1dp"
             android:layout_weight="1"
-            android:background="@color/white"
             android:textAllCaps="false"
             android:text="Cancelar"
-            android:textColor="@color/black"
             android:textStyle="bold"
-            android:backgroundTint="@color/verdeOscuro"/>
+            style="@style/BUTTON"/>
 
     </LinearLayout>
-    <!--<LinearLayout
-        android:id="@+id/linearLayout4"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerView">
-
-        <Button
-            android:id="@+id/aceptar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="90dp"
-            android:backgroundTint="@color/verdeOscuro"
-            android:text="Aceptar"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
-
-        <Button
-            android:id="@+id/cancelar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:backgroundTint="@color/verdeOscuro"
-            android:text="Cancelar"
-            android:textColor="@color/white"
-            android:textStyle="bold" />
-    </LinearLayout>-->
-
 </androidx.constraintlayout.widget.ConstraintLayout>

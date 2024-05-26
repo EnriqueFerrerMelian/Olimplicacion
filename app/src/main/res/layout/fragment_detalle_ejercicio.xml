@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ejercicios.DetalleEjercicioFragment">
+    tools:context=".ejercicios.DetalleEjercicioFragment"
+    style="@style/SCREEN">
 
     <ScrollView
         android:id="@+id/scrollView2"

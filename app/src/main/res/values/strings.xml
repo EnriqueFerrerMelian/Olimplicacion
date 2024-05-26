@@ -11,7 +11,7 @@
     <string name="espacio">" "</string>
     <string name="cancelar">Cancelar</string>
     <string name="acepBtn">Aceptar</string>
-    <string name="a_adir_ejercicio">+ añadir ejercicio</string>
+    <string name="a_adir_ejercicio"> añadir ejercicio</string>
     <string name="anadir">Añadir</string>
     <string name="eliminar">Eliminar</string>
     <string name="sobrescribir">Ya existe una rutina con ese nombre.\n Deseas sobrescribir?</string>

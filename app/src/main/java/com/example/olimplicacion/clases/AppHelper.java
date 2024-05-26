@@ -1,24 +1,32 @@
 package com.example.olimplicacion.clases;
 
+
 import android.annotation.SuppressLint;
+import android.app.UiModeManager;
 import android.content.Context;
+import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.health.connect.datatypes.AppInfo;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.text.style.StyleSpan;
 import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatDelegate;
 
 import com.bumptech.glide.Glide;
 import com.example.olimplicacion.MainActivity;
 import com.example.olimplicacion.MenuPrincipal;
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.calendario.CalendarioFragment;
+import com.example.olimplicacion.databinding.FragmentDetalleNoticiaBinding;
 import com.example.olimplicacion.databinding.FragmentDetallesActividadBinding;
 import com.example.olimplicacion.databinding.FragmentEstadisticasBinding;
 import com.example.olimplicacion.databinding.FragmentPerfilBinding;
@@ -227,12 +235,6 @@ public class AppHelper {
     }
 
     public static void configurarChartAvance(FragmentEstadisticasBinding binding){
-        //configurar descripción
-        Description description = new Description();
-        description.setText("Progreso");
-        description.setTextSize(14f);
-        description.setPosition(175f, 25f);
-
         //borrando bordes
         binding.barChart.setDrawBorders(false);
         binding.barChart.getAxisRight().setDrawLabels(false);
@@ -277,8 +279,6 @@ public class AppHelper {
                 .getEjerciciosNombres().get(MainActivity.getAvanceOB().getEjerciciosNombres().size()-1);
         binding.ultimoProgreso.setText(ultimoValorIntroducido);
         //>>>****INSERCIÓN DE DATOS*****fin
-
-        binding.barChart.setDescription(description);
         binding.barChart.canScrollHorizontally(1);
 
         binding.barChart.setNoDataText("No se ha guardado ningún dato.");
@@ -372,8 +372,19 @@ public class AppHelper {
         binding.vacantesActividad.append(actividad.getVacantes());
         binding.precioActividad.append(actividad.getPrecio());
     }
+    public static void cargarNoticia(FragmentDetalleNoticiaBinding binding, Context context, Noticia noticia){
+        Glide.with(context)
+                .load(noticia.getImagen())
+                .placeholder(R.drawable.baseline_add_242)//si no hay imagen carga una por defecto
+                .error(R.drawable.logo)//si ocurre algún error se verá por defecto
+                .fitCenter()
+                .override(1000)
+                .into(binding.imageView);
+        binding.titulo.setText(noticia.getTitulo());
+        binding.contenido.setText(noticia.getContenido());
+    }
 
-    public static void reservarActividad(Actividad actividad){
+    public static void reservarActividad(Actividad actividad, Context context){
         //si hay vacantes
         //Obtengo la fecha de hoy
         Calendar cal = new GregorianCalendar();
@@ -388,11 +399,12 @@ public class AppHelper {
         ref.setValue(actividad).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
+                escribirToast("Actividad reservada", context);
                 actualizarVacante(actividad);
             }
         });
     }
-    public static void eliminarReserva(Actividad actividad){
+    public static void eliminarReserva(Actividad actividad, Context context){
         int vacantes = Integer.parseInt(actividad.getVacantes())+1;
         actividad.setVacantes(String.valueOf(vacantes));
         DatabaseReference ref = FirebaseDatabase
@@ -401,6 +413,7 @@ public class AppHelper {
         ref.removeValue().addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void unused) {
+                escribirToast("Reserva eliminada", context);
                 actualizarVacante(actividad);
             }
         });
@@ -835,12 +848,10 @@ public class AppHelper {
         //Obtengo la fecha de hoy
         Calendar cal = new GregorianCalendar();
         Date date = cal.getTime();
-        String fecha = date.getDate() +"/"+ date.getMonth();
-        Noticia noticia = new Noticia("https://firebasestorage.googleapis.com/v0/b/olimplicacion-3ba86.appspot.com/o/activate.png?alt=media&token=52dba554-d860-43e2-87b8-ad7e0d2d0207"
-                ,"Activate", "-Consejos para empezar el día", "Actívate por las mañanas  con una pequeña carrera al rededor de tu bloque o manzana. Despues unos "+
-                "ejercicios básicos de piernas y brazo. Una vez calentito, acurrar!");
-        Map<String, Object> actividadMapa = new HashMap<>();
-        actividadMapa.put(noticia.getTituloTrans()+date.getDate(), noticia);
+        String base = "https://firebasestorage.googleapis.com/v0/b/olimplicacion-3ba86.appspot.com/o/";
+        Noticia noticia = new Noticia(base + "organizate.png?alt=media&token=ea950b78-5d8a-4aba-83e2-5c4968a694b4"
+                ,"Organizate", "-Organiza tu semana.", "Organiza tu semana siguiendo los siguientes consejos:"
+                +"1: no dejes que te venza la apatía. 2: descansa tus 8h al día. 3: evita las grasas innecesarias. 4: ten dinero.");
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("noticias/mes:" + date.getMonth() + "/" + noticia.getTituloTrans());
