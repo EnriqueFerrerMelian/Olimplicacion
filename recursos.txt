@@ -31,6 +31,7 @@ Android services.
 *How to Implement Spinner in Android:https://www.youtube.com/watch?v=4ogzfAipGS8&t=433s
 *How to create a line chart: https://medium.com/@sajitheranda227/how-to-create-a-line-chart-in-an-android-app-part-1-bcb83fd1da3
 *CalendarView: https://github.com/naishadhparmar/zcustomcalendar
+*Expandable Floating Action Button: https://www.youtube.com/watch?v=umCX1-Tq25k
 
 -SQLite:
 *Using SQLite: https://www.youtube.com/watch?v=uBw9QSWSIww

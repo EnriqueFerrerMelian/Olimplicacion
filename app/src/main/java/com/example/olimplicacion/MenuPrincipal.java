@@ -25,7 +25,6 @@ public class MenuPrincipal extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //AppHelper.hotFixNoticia();
         binding = ActivityMenuPrincipalBinding.inflate(getLayoutInflater());//carga la vista xml al cargar la aplicación
         setContentView(binding.getRoot());
         setSupportActionBar(binding.toolbar);
@@ -48,7 +47,6 @@ public class MenuPrincipal extends AppCompatActivity {
             }
             return true;
         });
-
     }
 
     @Override

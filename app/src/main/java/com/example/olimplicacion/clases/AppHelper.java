@@ -80,6 +80,9 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class AppHelper {
     private static Uri imgUriFb = Uri.parse(" ");
+    private static Uri imgUri = Uri.parse(" ");
+
+    private static StorageReference storageReference;
     //SEGURIDAD****************************************************************
 
     private static final String algoritmoSks = "AES";
@@ -163,6 +166,9 @@ public class AppHelper {
         binding.lineChart.getAxisLeft().setDrawGridLines(false);
         binding.lineChart.getXAxis().setDrawGridLines(false);
         binding.lineChart.setDrawGridBackground(false);
+        Description desc = new Description();
+        desc.setText(" ");
+        binding.lineChart.setDescription(desc);
 
         //leyends
         Legend l = binding.lineChart.getLegend();
@@ -216,18 +222,20 @@ public class AppHelper {
 
         //si se ha seleccionado una marca de objetivo
         if(MainActivity.getPesoOB().getObjetivo()!=null){
-            float leyendVal =Float.parseFloat(MainActivity.getPesoOB().getObjetivo());
-            YAxis yAxis = binding.lineChart.getAxisLeft();
-            LimitLine ll = new LimitLine(leyendVal, "");
-            ll.setLineColor(Color.rgb(255,135,0));
-            ll.setLineWidth(3f);
-            ll.setTextColor(Color.BLACK);
-            ll.setTextSize(10f);
-            yAxis.addLimitLine(ll);
-            float valorMaximoVisible = (maxView<leyendVal)? leyendVal : maxView;
-            float valorMinimoVisible = (minView>leyendVal)? leyendVal : minView;
-            yAxis.setAxisMaximum(valorMaximoVisible);
-            yAxis.setAxisMinimum(valorMinimoVisible);
+            if(Float.parseFloat(MainActivity.getPesoOB().getObjetivo())>0){
+                float leyendVal =Float.parseFloat(MainActivity.getPesoOB().getObjetivo());
+                YAxis yAxis = binding.lineChart.getAxisLeft();
+                LimitLine ll = new LimitLine(leyendVal, "");
+                ll.setLineColor(Color.rgb(255,135,0));
+                ll.setLineWidth(3f);
+                ll.setTextColor(Color.BLACK);
+                ll.setTextSize(10f);
+                yAxis.addLimitLine(ll);
+                float valorMaximoVisible = (maxView<leyendVal)? leyendVal : maxView;
+                float valorMinimoVisible = (minView>leyendVal)? leyendVal : minView;
+                yAxis.setAxisMaximum(valorMaximoVisible);
+                yAxis.setAxisMinimum(valorMinimoVisible);
+            }
         }
         binding.lineChart.moveViewToX(entries.size()-1);
         binding.lineChart.setData(lineData);
@@ -419,6 +427,7 @@ public class AppHelper {
         });
     }
     public static void actualizarVacante(Actividad actividad){
+        System.out.println("actualizarVacante()");
         DatabaseReference ref1 = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("actividades/"+actividad.getNombre());
@@ -432,6 +441,7 @@ public class AppHelper {
                     @Override
                     public void onSuccess(Void unused) {
                         actualizarApp();
+                        System.out.println(MainActivity.getUsuarioOB().getActividad());
                     }
                 });
             }
@@ -614,7 +624,7 @@ public class AppHelper {
         });
     }
     public static Map<Integer, Object>[] getArr(){
-            return arr;
+        return arr;
     }
 
     /**
@@ -660,12 +670,18 @@ public class AppHelper {
 
     // PERFIL****************************************PERFIL**************************************
     @SuppressLint("SetTextI18n")
-    public static void cargaPerfil(FragmentPerfilBinding binding){
+    public static void cargaPerfil(FragmentPerfilBinding binding, Context context){
         binding.nombre.setText(MainActivity.getUsuarioOB().getNombre());
         binding.mayorpesolevantado.setText(calcularMxPesoLevantado(MainActivity.getAvanceOB().getPesos()));
         binding.kilosyfechadePesolevantado.setText(MainActivity.getPesoOB().getDatosPeso().get(MainActivity.getPesoOB().getDatosPeso().size()-1).get("y")+ "Kg - " +
                 MainActivity.getPesoOB().getFecha().get(MainActivity.getPesoOB().getFecha().size()-1));
-
+        Glide.with(context)
+                .load(MainActivity.getUsuarioOB().getImagen())
+                .placeholder(R.drawable.baseline_add_242)//si no hay imagen carga una por defecto
+                .error(R.drawable.logo)//si ocurre algún error se verá por defecto
+                .fitCenter()
+                .override(1000)
+                .into(binding.img);
     }
     public static void cambiarDatos(EditText nombre, EditText passAntiguo, EditText passNuevo, Context context){
         if(!nombre.getText().toString().equals("")){
@@ -678,8 +694,17 @@ public class AppHelper {
             ref.setValue(usuario).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
-                    actualizarApp();
-                    cargaPerfil(PerfilFragment.getPerfilBinding());
+                    List<Actividad> actividades = MainActivity.getActividadesOBs();
+                    DatabaseReference ref = FirebaseDatabase
+                            .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                            .getReference("usuarios/"+MainActivity.getUsuarioOB().getId()+"/actividades");
+                    ref.setValue(actividades).addOnSuccessListener(new OnSuccessListener<Void>() {
+                        @Override
+                        public void onSuccess(Void unused) {
+                            actualizarApp();
+                        }
+                    });
+                    cargaPerfil(PerfilFragment.getPerfilBinding(), context);
                 }
             });
         }
@@ -701,8 +726,17 @@ public class AppHelper {
                     ref.setValue(usuario).addOnSuccessListener(new OnSuccessListener<Void>() {
                         @Override
                         public void onSuccess(Void unused) {
-                            actualizarApp();
-                            cargaPerfil(PerfilFragment.getPerfilBinding());
+                            List<Actividad> actividades = MainActivity.getActividadesOBs();
+                            DatabaseReference ref = FirebaseDatabase
+                                    .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                                    .getReference("usuarios/"+MainActivity.getUsuarioOB().getId()+"/actividades");
+                            ref.setValue(actividades).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                @Override
+                                public void onSuccess(Void unused) {
+                                    actualizarApp();
+                                }
+                            });
+                            cargaPerfil(PerfilFragment.getPerfilBinding(), context);
                         }
                     });
                 }else{
@@ -757,6 +791,7 @@ public class AppHelper {
      * Cuando se actualizan se vuelve a cargar el gráfico
      */
     public static void actualizarApp(){
+        System.out.println("actualizarApp");
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("usuarios/"+MainActivity.getUsuarioOB().getId());
@@ -765,6 +800,8 @@ public class AppHelper {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //actualizo el usuario
                 MainActivity.setUsuarioOB(dataSnapshot.getValue(Usuario.class));
+                System.out.println(MainActivity.getUsuarioOB());
+
                 //actualizo el peso
                 Peso peso = dataSnapshot.child("peso")
                         .getValue(Peso.class)==null ? new Peso() : dataSnapshot.child("peso").getValue(Peso.class);
@@ -799,6 +836,54 @@ public class AppHelper {
     }
     public static void cambiarToolbarText(String titulo){
         MenuPrincipal.getBinding().toolbar.setTitle(titulo);
+    }
+
+    /**
+     * Recoge una uri, que puede provenir de capturar una imagen de la camara o de la galeria
+     * del dispositivo y la Uri donde está alojada en el Storage de Firabase.
+     * @param uri uri de la imagen capturada
+     * @return imgUri Ruta donde se aloja la imagen en el Storage de Firebase
+     */
+    public static Uri guardarImagenUserAvatar(Uri uri){
+        final Uri[] imgUri = {Uri.parse(" ")};
+        //creamos una referencia en el Store que será el nombre de la imagen
+        String[] titulo = String.valueOf(uri).split("/");
+        storageReference = FirebaseStorage.getInstance().getReference(titulo[titulo.length-1]);
+        storageReference.putFile(uri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                //si no hay problemas durante el proceso obtenemos el link de la imagen en el Store
+                Task<Uri> uriTask = taskSnapshot.getStorage().getDownloadUrl();
+                while (!uriTask.isComplete()) ;
+                Uri urlimagen = uriTask.getResult();
+                imgUri[0] = urlimagen;
+                Usuario usuario = MainActivity.getUsuarioOB();
+                if(usuario.getImagen()!=null){
+                    eliminarImagen(usuario.getImagen());
+                }else{
+                }
+                usuario.setImagen(imgUri[0].toString());
+                DatabaseReference ref = FirebaseDatabase
+                        .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                        .getReference("usuarios/"+MainActivity.getUsuarioOB().getId());
+                ref.setValue(usuario).addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+                        actualizarApp();
+                    }
+                });
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println(e);
+            }
+        });
+        return imgUri[0];
+    }
+    public static void eliminarImagen(String imagen){
+        StorageReference ref = FirebaseStorage.getInstance().getReferenceFromUrl(imagen);
+        ref.delete();
     }
     public static void hotFixAvtividad(){
         Actividad actividad = new Actividad("Esgrima", "20.00€",

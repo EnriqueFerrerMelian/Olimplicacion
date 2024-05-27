@@ -19,7 +19,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:logo="@drawable/iconogris"
+        app:logo="@drawable/logotoolbar"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
         app:title="Olimpia Squash"
         app:titleMarginStart="30dp" />

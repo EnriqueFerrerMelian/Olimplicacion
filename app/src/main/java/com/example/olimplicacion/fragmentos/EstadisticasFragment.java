@@ -165,16 +165,21 @@ public class EstadisticasFragment extends Fragment {
         texto.setText(textoInput);
         Button si = dialog.findViewById(R.id.si);
         Button no = dialog.findViewById(R.id.no);
+        System.out.println(pesoSeleccionado);
         si.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if(esPeso){
                     if(binding.lineChart.getLineData().getDataSets().get(0).getEntryCount()>1){
-                        System.out.println("Borrando");
-                        int index = binding.lineChart.getLineData().getDataSetByIndex(0).getEntryIndex(pesoSeleccionado);
-                        MainActivity.getPesoOB().getDatosPeso().remove(index);
-                        MainActivity.getPesoOB().getFecha().remove(index);
-                        AppHelper.actualizarPeso(MainActivity.getPesoOB());
+                        //! no puede ser aplicaco a tipo float
+                        if(pesoSeleccionado.getY()==0.0){
+                            AppHelper.escribirToast("Debes seleccionar un registro", getContext());
+                        }else{
+                            int index = binding.lineChart.getLineData().getDataSetByIndex(0).getEntryIndex(pesoSeleccionado);
+                            MainActivity.getPesoOB().getDatosPeso().remove(index);
+                            MainActivity.getPesoOB().getFecha().remove(index);
+                            AppHelper.actualizarPeso(MainActivity.getPesoOB());
+                        }
                     }else{
                         AppHelper.escribirToast("Debe haber al menos un registro", getContext());
                     }

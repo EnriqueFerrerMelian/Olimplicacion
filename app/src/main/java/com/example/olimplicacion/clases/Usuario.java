@@ -5,22 +5,44 @@ import java.util.Map;
 
 public class Usuario {
     int id;
-    String nombre, clave, usuario;
+    String nombre, clave, usuario, imagen;
     Map<String, Object> rutinas;
     Map<String, Object> peso;
     Map<String, Object> avance;
+    Map<String, Object> actividad;
 
-    public Usuario(int id, String nombre,String usuario, String clave, Map<String, Object> rutinas,  Map<String, Object>  peso) {
+    public Usuario(int id, String nombre,String usuario, String clave,String imagen, Map<String, Object> rutinas,  Map<String, Object>  peso, Map<String, Object>  actividad) {
         this.id = id;
         this.nombre = nombre;
         this.clave = clave;
+        this.imagen = imagen;
         this.rutinas = rutinas;
         this.peso = peso;
         this.usuario = usuario;
+        this.actividad = actividad;
     }
     public Usuario(){
         this.rutinas = new HashMap<>();
         this.peso = new HashMap<>();
+        this.avance = new HashMap<>();
+        this.actividad = new HashMap<>();
+
+    }
+
+    public Map<String, Object> getActividad() {
+        return actividad;
+    }
+
+    public void setActividad(Map<String, Object> actividad) {
+        this.actividad = actividad;
+    }
+
+    public String getImagen() {
+        return imagen;
+    }
+
+    public void setImagen(String imagen) {
+        this.imagen = imagen;
     }
 
     public String getUsuario() {
@@ -79,15 +101,18 @@ public class Usuario {
         this.nombre = nombre;
     }
 
-
     @Override
     public String toString() {
         return "Usuario{" +
                 "id=" + id +
                 ", nombre='" + nombre + '\'' +
                 ", clave='" + clave + '\'' +
+                ", usuario='" + usuario + '\'' +
+                ", imagen='" + imagen + '\'' +
                 ", rutinas=" + rutinas +
                 ", peso=" + peso +
+                ", avance=" + avance +
+                ", actividad=" + actividad +
                 '}';
     }
 }
