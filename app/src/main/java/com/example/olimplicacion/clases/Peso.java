@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Con esta clase se administrará el seguimiento del peso corporal
+ */
 public class Peso {
 //ATRIBUTOS
 List<Map<String, String>> datosPeso;

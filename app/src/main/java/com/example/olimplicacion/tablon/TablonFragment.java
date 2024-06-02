@@ -48,7 +48,7 @@ public class TablonFragment extends Fragment  implements NoticiaFbAdapter.ItemCl
         FirebaseRecyclerOptions<Noticia> options =
                 new FirebaseRecyclerOptions.Builder<Noticia>()
                         .setQuery(FirebaseDatabase.getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                                .getReference("noticias/mes:" + date.getMonth()), Noticia.class)
+                                .getReference("noticias"), Noticia.class)
                         .build();
         noticiaFbAdapter = new NoticiaFbAdapter(options, this::onItemClick);
         recyclerView = binding.recyclerView;

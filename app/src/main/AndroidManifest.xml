@@ -39,6 +39,7 @@
             android:label="@string/app_name" />
         <activity
             android:name=".MenuPrincipal"
+            android:windowSoftInputMode="adjustPan"
             android:exported="false" />
         <activity
             android:name=".MainActivity"

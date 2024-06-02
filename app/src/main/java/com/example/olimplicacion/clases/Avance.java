@@ -3,6 +3,9 @@ package com.example.olimplicacion.clases;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Esta clase administrará los pesos de cada ejercicio que haya sido añadido.
+ */
 public class Avance {
 //ATRIBUTOS
 List<String> ejerciciosNombres;

@@ -3,15 +3,18 @@ package com.example.olimplicacion.clases;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Esta clase contendrá casi todos los datos del usuario.
+ */
 public class Usuario {
-    int id;
+    String id;
     String nombre, clave, usuario, imagen;
     Map<String, Object> rutinas;
     Map<String, Object> peso;
     Map<String, Object> avance;
     Map<String, Object> actividad;
 
-    public Usuario(int id, String nombre,String usuario, String clave,String imagen, Map<String, Object> rutinas,  Map<String, Object>  peso, Map<String, Object>  actividad) {
+    public Usuario(String id, String nombre,String usuario, String clave,String imagen, Map<String, Object> rutinas,  Map<String, Object>  peso, Map<String, Object>  actividad) {
         this.id = id;
         this.nombre = nombre;
         this.clave = clave;
@@ -27,6 +30,14 @@ public class Usuario {
         this.avance = new HashMap<>();
         this.actividad = new HashMap<>();
 
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public Map<String, Object> getActividad() {
@@ -85,13 +96,6 @@ public class Usuario {
         this.rutinas = rutinas;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
-    }
 
     public String getNombre() {
         return nombre;

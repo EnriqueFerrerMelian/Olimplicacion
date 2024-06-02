@@ -427,7 +427,7 @@ public class AppHelper {
         });
     }
     public static void actualizarVacante(Actividad actividad){
-        System.out.println("actualizarVacante()");
+        //.out.println("actualizarVacante()");
         DatabaseReference ref1 = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("actividades/"+actividad.getNombre());
@@ -441,13 +441,10 @@ public class AppHelper {
                     @Override
                     public void onSuccess(Void unused) {
                         actualizarApp();
-                        System.out.println(MainActivity.getUsuarioOB().getActividad());
                     }
                 });
             }
         });
-
-
     }
 
     // ACTIVIDADES**********************************ACTIVIDADES**********************************
@@ -685,7 +682,6 @@ public class AppHelper {
     }
     public static void cambiarDatos(EditText nombre, EditText passAntiguo, EditText passNuevo, Context context){
         if(!nombre.getText().toString().equals("")){
-            System.out.println("Modificando nombre de usuario");
             Usuario usuario = MainActivity.getUsuarioOB();
             usuario.setNombre(nombre.getText().toString());
             DatabaseReference ref = FirebaseDatabase
@@ -710,14 +706,10 @@ public class AppHelper {
         }
         if(!passNuevo.getText().toString().equals("")){
             if(!passAntiguo.getText().toString().equals("")){
-                System.out.println("Comprobando clave");
                 Usuario usuario = MainActivity.getUsuarioOB();
                 //abtener clave, codificarla y compararla
                 String passAntiguoEncriptado = encriptar(passAntiguo.getText().toString(), passAntiguo.getText().toString());
-                System.out.println("passAntiguoEncriptado: " + passAntiguoEncriptado.trim());
-                System.out.println("usuario.getClave(): " + usuario.getClave());
                 if(passAntiguoEncriptado.trim().equals(usuario.getClave())){
-                    System.out.println("Cambiando clave");
                     String passNuevoEncriptado = encriptar(passNuevo.getText().toString(),passNuevo.getText().toString());
                     usuario.setClave(passNuevoEncriptado.trim());
                     DatabaseReference ref = FirebaseDatabase
@@ -791,7 +783,6 @@ public class AppHelper {
      * Cuando se actualizan se vuelve a cargar el gráfico
      */
     public static void actualizarApp(){
-        System.out.println("actualizarApp");
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("usuarios/"+MainActivity.getUsuarioOB().getId());
@@ -800,7 +791,6 @@ public class AppHelper {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 //actualizo el usuario
                 MainActivity.setUsuarioOB(dataSnapshot.getValue(Usuario.class));
-                System.out.println(MainActivity.getUsuarioOB());
 
                 //actualizo el peso
                 Peso peso = dataSnapshot.child("peso")
@@ -885,6 +875,46 @@ public class AppHelper {
         StorageReference ref = FirebaseStorage.getInstance().getReferenceFromUrl(imagen);
         ref.delete();
     }
+
+    //HOTFIXES********************************************************
+    public static String nextID = "";
+    public static void hotFixCrearUsuario(String nombre, String clave){
+       //encripto clave y nombre
+        String nombreEncriptado = encriptar(nombre, nombre);
+        String claveEncriptada = encriptar(clave, clave);
+        //Obtengo la fecha de hoy
+        Calendar cal = new GregorianCalendar();
+        Date date = cal.getTime();
+        String fecha = date.getDate() +"/"+ date.getMonth();
+        //creo un id
+        nextID = encriptar(nombre+clave, String.valueOf(date));
+        nextID = nextID.substring(0, 12);
+        //creo un mapa que guarde los ejes
+        Map<String, String> datosPeso = new HashMap<>();
+        datosPeso.put("x", String.valueOf(0));
+        datosPeso.put("y", String.valueOf(0.0));
+        Peso peso = new Peso();peso.getDatosPeso().add(datosPeso);
+        peso.getFecha().add(fecha);
+        //creo el usuario
+        Usuario usuario = new Usuario();usuario.setUsuario(nombreEncriptado);
+        usuario.setClave(claveEncriptada);usuario.setId(nextID);
+
+        DatabaseReference ref = FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/"+nextID);
+        ref.setValue(usuario).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                ref.child("peso").setValue(peso);
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                System.out.println(e);
+            }
+        });
+
+    }
     public static void hotFixAvtividad(){
         Actividad actividad = new Actividad("Esgrima", "20.00€",
                 " es un deporte de combate en el que se enfrentan dos contrincantes debidamente protegidos que deben intentar tocarse con un arma blanca, en función de la cual se diferencian tres modalidades: sable, espada y florete.",
@@ -930,16 +960,13 @@ public class AppHelper {
     }
 
     public static void hotFixNoticia(){
-        //Obtengo la fecha de hoy
-        Calendar cal = new GregorianCalendar();
-        Date date = cal.getTime();
         String base = "https://firebasestorage.googleapis.com/v0/b/olimplicacion-3ba86.appspot.com/o/";
         Noticia noticia = new Noticia(base + "organizate.png?alt=media&token=ea950b78-5d8a-4aba-83e2-5c4968a694b4"
                 ,"Organizate", "-Organiza tu semana.", "Organiza tu semana siguiendo los siguientes consejos:"
                 +"1: no dejes que te venza la apatía. 2: descansa tus 8h al día. 3: evita las grasas innecesarias. 4: ten dinero.");
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                .getReference("noticias/mes:" + date.getMonth() + "/" + noticia.getTituloTrans());
+                .getReference("noticias/" + noticia.getTituloTrans());
         ref.setValue(noticia);
     }
     public static void hotFixPesos(){

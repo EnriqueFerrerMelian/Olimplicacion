@@ -45,3 +45,7 @@ Android services.
 *Retrieve Firebase data to RecyclerView: https://www.youtube.com/watch?v=ePKC5ZEqeNY
 *Delete data in Realtime Database #2: https://www.youtube.com/watch?v=JpZXPONYvY0
 *Querying Firebase Realtime Database: https://www.youtube.com/watch?v=WeoryL3XyA4&t=1s
+
+-Diagramas
+*Diagramas UML: https://www.youtube.com/watch?v=Z0yLerU0g-Q
+*Diagramas caso de uso: https://www.youtube.com/watch?v=DrOZIKvBEvM

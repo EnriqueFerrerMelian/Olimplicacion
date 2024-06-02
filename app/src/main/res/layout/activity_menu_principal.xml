@@ -7,8 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".MenuPrincipal">
 
-    <!--aqui se cargarán los fragmentos-->
-
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="0dp"
@@ -46,8 +44,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/fragmentContainerView"
         app:menu="@menu/bottom_menu">
-
-
     </com.google.android.material.bottomnavigation.BottomNavigationView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

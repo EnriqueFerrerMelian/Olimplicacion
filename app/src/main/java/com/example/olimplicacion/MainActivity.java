@@ -1,10 +1,13 @@
 package com.example.olimplicacion;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.datastore.preferences.core.Preferences;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.view.View;
 
 import com.example.olimplicacion.clases.Actividad;
@@ -19,6 +22,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -33,7 +37,6 @@ import java.util.List;
  */
 
 public class MainActivity extends AppCompatActivity {
-
     private static Usuario usuarioOB = new Usuario();
     private static Peso pesoOB = new Peso();
     private static Avance avanceOB = new Avance();
@@ -49,6 +52,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         validarFechaActividad(this);
+        AppHelper.hotFixCrearUsuario("admin1", "admin1");
         //listeners
         binding.boton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,7 +92,8 @@ public class MainActivity extends AppCompatActivity {
             public void onDataChange(DataSnapshot dataSnapshot) {//dataSnapshot son todos los usuarios
                 boolean confirmado = false;
                 for (DataSnapshot data: dataSnapshot.getChildren()) {//
-                    if(data.child("usuario").getValue().equals(usuarioEncriptado.trim()) && data.child("clave").getValue().equals(claveEncriptada.trim())){
+                    if(data.child("usuario").getValue().equals(usuarioEncriptado) && data.child("clave").getValue().equals(claveEncriptada)){
+                        usuarioOB.setId(data.getKey());
                         AppHelper.actualizarApp();
                         confirmado=true;
                         //ejecuto el fragmento 'MenuPrincipal'
@@ -194,4 +199,7 @@ public class MainActivity extends AppCompatActivity {
     public void setBinding(ActivityMainBinding binding) {
         this.binding = binding;
     }
+
+
+
 }
