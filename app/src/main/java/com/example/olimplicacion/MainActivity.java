@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         validarFechaActividad(this);
-        AppHelper.hotFixCrearUsuario("admin1", "admin1");
+        //AppHelper.hotFixCrearUsuario("admin1", "admin1");
         //listeners
         binding.boton.setOnClickListener(new View.OnClickListener() {
             @Override

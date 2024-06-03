@@ -13,14 +13,60 @@
         android:id="@+id/imageView6"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:src="@drawable/fondo"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        android:src="@drawable/fondo"/>
-    <EditText
+        app:layout_constraintVertical_bias="0.0" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editext"
+        android:layout_width="237dp"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toTopOf="@+id/editext2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.934"
+        android:textColorHint="@color/ic_launcher_background"
+        app:hintTextColor="@android:color/holo_blue_dark"
+        app:boxBackgroundMode="none"
+        android:backgroundTint="#CCCCCC"
+        android:background="@drawable/editext"
+        android:hint="Nombre">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/nombre"
+            android:layout_width="match_parent"
+            android:paddingTop="8dp"
+            android:layout_height="wrap_content"
+            android:textSize="18dp"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/editext2"
+        android:layout_width="237dp"
+        android:layout_height="48dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.559"
+        android:textColorHint="@color/ic_launcher_background"
+        app:hintTextColor="@android:color/holo_blue_dark"
+        app:boxBackgroundMode="none"
+        android:backgroundTint="#CCCCCC"
+        android:background="@drawable/editext"
+        android:hint="Clave">
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/clave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="8dp"
+            android:inputType="textPassword"
+            android:textSize="18dp"/>
+    </com.google.android.material.textfield.TextInputLayout>
+    <!--<EditText
         android:id="@+id/nombre"
         android:layout_width="237dp"
         android:layout_height="48dp"
@@ -51,7 +97,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.559" />
+        app:layout_constraintVertical_bias="0.559" />-->
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/boton"

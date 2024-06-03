@@ -508,7 +508,7 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
     public static void eliminarEjercicio(int idEjercicio) {
         for (int i = 0; i < dataArrayList.size(); i++) {
             if(dataArrayList.get(i).getId()==idEjercicio){
-                dataArrayList.remove(index);
+                dataArrayList.remove(i);
                 recyclerView.setAdapter(ejercicioAdapterModificar);
             }
         }
@@ -546,7 +546,6 @@ public class CreacionRutinaFragment extends Fragment implements EjercicioAdapter
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
         inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
         String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title" + fecha.toString(), null);
-        System.out.println("getImageUri(): " + Uri.parse(path));
         return Uri.parse(path);
     }
 

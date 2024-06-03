@@ -51,11 +51,19 @@ public class ListaEjerciciosFragment extends Fragment implements EjercicioFbAdap
                     cargarRecycler();
                 }
                 if(i==1){
-                    valorSpinner = "mancuernas";
+                    valorSpinner = "Mancuernas";
                     cargarDesdeSpiner(valorSpinner);
                 }
                 if(i==2){
-                    valorSpinner = "kettlebells";
+                    valorSpinner = "Kettlebells";
+                    cargarDesdeSpiner(valorSpinner);
+                }
+                if(i==3){
+                    valorSpinner = "Banco de pesas";
+                    cargarDesdeSpiner(valorSpinner);
+                }
+                if(i==4){
+                    valorSpinner = "Barra";
                     cargarDesdeSpiner(valorSpinner);
                 }
             }
@@ -72,9 +80,11 @@ public class ListaEjerciciosFragment extends Fragment implements EjercicioFbAdap
      */
     public void instanciarSpinner(){
         List<String> listaCategorias = new ArrayList<>();
-        listaCategorias.add("todos");
-        listaCategorias.add("mancuernas");
-        listaCategorias.add("kettlebells");
+        listaCategorias.add("Todos");
+        listaCategorias.add("Mancuernas");
+        listaCategorias.add("Kettlebells");
+        listaCategorias.add("Banco de pesas");
+        listaCategorias.add("Barra");
         ArrayAdapter<String> spinnerAdapter= new ArrayAdapter<>(getContext(), android.R.layout.simple_spinner_item, listaCategorias);
         spinnerAdapter.setDropDownViewResource(android.R.layout.select_dialog_singlechoice);
         binding.categoria.setAdapter(spinnerAdapter);
