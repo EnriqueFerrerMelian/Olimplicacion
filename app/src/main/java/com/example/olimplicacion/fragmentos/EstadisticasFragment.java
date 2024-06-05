@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.TextView;
 
@@ -61,7 +62,13 @@ public class EstadisticasFragment extends Fragment {
         binding.aniadirPeso.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showBottonSheetPeso();
+                showBottonSheetPeso(true);
+            }
+        });
+        binding.aniadirObjetivo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showBottonSheetPeso(false);
             }
         });
 
@@ -101,39 +108,56 @@ public class EstadisticasFragment extends Fragment {
     /**
      * Abre un cuadro de diálogo con el que se podrá introducir un peso en el registro
      */
-    public void showBottonSheetPeso(){
+    public void showBottonSheetPeso(boolean status){
         final Dialog dialog = new Dialog(getContext());
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.my_bottom_sheet_add_peso);
+        LinearLayout peso = dialog.findViewById(R.id.peso);
+        LinearLayout objetivo = dialog.findViewById(R.id.objetivo);
+        NumberPicker numberPeso = dialog.findViewById(R.id.numberPeso);
+        NumberPicker numberPesoDecimal = dialog.findViewById(R.id.numberPesoDecimal);
+        NumberPicker numberPesoOb = dialog.findViewById(R.id.numberPesoOb);
+        NumberPicker numberPesoDecimalOb = dialog.findViewById(R.id.numberPesoDecimalOb);
         Button add = dialog.findViewById(R.id.add);
         Button cancel = dialog.findViewById(R.id.cancel);
         //inicialización de numberPicker**************************
-        NumberPicker numberPesoOb = dialog.findViewById(R.id.numberPesoOb);
-        numberPesoOb.setMinValue(0);numberPesoOb.setMaxValue(150);
-        NumberPicker numberPesoDecimalOb = dialog.findViewById(R.id.numberPesoDecimalOb);
-        numberPesoDecimalOb.setMinValue(0);numberPesoDecimalOb.setMaxValue(9);
-        if(MainActivity.getPesoOB().getObjetivo()!=null){
-            String[] objetivo = MainActivity.getPesoOB().getObjetivo().split("\\.");
-            numberPesoOb.setValue(Integer.valueOf(objetivo[0]));
-            numberPesoDecimalOb.setValue(Integer.valueOf(objetivo[1]));
+        if(status){
+            peso.setVisibility(View.VISIBLE);
+            objetivo.setVisibility(View.INVISIBLE);
+            numberPeso.setMinValue(1);numberPeso.setMaxValue(150);
+            numberPesoDecimal.setMinValue(0);numberPesoDecimal.setMaxValue(9);
+            if(MainActivity.getPesoOB().getDatosPeso().size()>0){
+                String[] objetivoArray = MainActivity.getPesoOB().getDatosPeso().get(MainActivity.getPesoOB().getDatosPeso().size()-1).get("y").split("\\.");
+                numberPeso.setValue(Integer.valueOf(objetivoArray[0]));
+                numberPesoDecimal.setValue(Integer.valueOf(objetivoArray[1]));
+            }
+        }else{
+            peso.setVisibility(View.INVISIBLE);
+            objetivo.setVisibility(View.VISIBLE);
+            numberPesoOb.setMinValue(0);numberPesoOb.setMaxValue(150);
+            numberPesoDecimalOb.setMinValue(0);numberPesoDecimalOb.setMaxValue(9);
+            if(MainActivity.getPesoOB().getObjetivo()!=null){
+                String[] objetivoArray = MainActivity.getPesoOB().getObjetivo().split("\\.");
+                numberPesoOb.setValue(Integer.valueOf(objetivoArray[0]));
+                numberPesoDecimalOb.setValue(Integer.valueOf(objetivoArray[1]));
+            }
         }
-        NumberPicker numberPeso = dialog.findViewById(R.id.numberPeso);
-        numberPeso.setMinValue(1);numberPeso.setMaxValue(150);
-        NumberPicker numberPesoDecimal = dialog.findViewById(R.id.numberPesoDecimal);
-        numberPesoDecimal.setMinValue(0);numberPesoDecimal.setMaxValue(9);
-        if(MainActivity.getPesoOB().getDatosPeso().size()>0){
-            String[] objetivo = MainActivity.getPesoOB().getDatosPeso().get(MainActivity.getPesoOB().getDatosPeso().size()-1).get("y").split("\\.");
-            numberPeso.setValue(Integer.valueOf(objetivo[0]));
-            numberPesoDecimal.setValue(Integer.valueOf(objetivo[1]));
-        }
+
+
+
         //inicialización de numberPicker**********************fin*
         add.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(status){
+                    String pesoOut = numberPeso.getValue() +"." + numberPesoDecimal.getValue();
+                    AppHelper.actualizarPeso(AppHelper.addDatosPeso(pesoOut));
+                }else{
+                    String objetivoOut = numberPesoOb.getValue() +"." + numberPesoDecimalOb.getValue();
+                    AppHelper.actualizarPeso(AppHelper.addDatosObjetivo(objetivoOut));
+                }
                 //logica del realtime database
-                String pesoOut = numberPeso.getValue() +"." + numberPesoDecimal.getValue();
-                String objetivoOut = numberPesoOb.getValue() +"." + numberPesoDecimalOb.getValue();
-                AppHelper.actualizarPeso(AppHelper.addDatos(pesoOut, objetivoOut));
+
                 dialog.dismiss();
             }
         });

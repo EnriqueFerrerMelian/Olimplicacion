@@ -85,6 +85,16 @@
                 android:textStyle="bold"
                 style="@style/BUTTON"/>
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/aniadirObjetivo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="1dp"
+                android:layout_weight="1"
+                android:text="Añadir objetivo"
+                android:textAllCaps="false"
+                android:textStyle="bold"
+                style="@style/BUTTON"/>
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/eliminarPeso"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

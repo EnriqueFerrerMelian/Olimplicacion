@@ -192,7 +192,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/recyclerView">
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/modBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -205,18 +205,6 @@
                     android:textColor="@color/black"
                     android:textStyle="bold" />
             </LinearLayout>
-            <!--<Button
-                android:id="@+id/modBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginBottom="16dp"
-                android:backgroundTint="@color/verdeOscuro"
-                android:labelFor="@+id/modBtn"
-                android:text="@string/modificar"
-                android:textColor="@color/white"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toBottomOf="parent" />-->
         </LinearLayout>
     </ScrollView>
 

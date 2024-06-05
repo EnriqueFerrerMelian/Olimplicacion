@@ -14,7 +14,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:cardCornerRadius="8dp"
-        android:elevation="8dp"
+        app:cardElevation="10dp"
         android:layout_margin="8dp">
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -48,11 +48,12 @@
 
             <TextView
                 android:id="@+id/title"
-                style="@style/TextAppearance.MaterialComponents.Headline4"
+                style="@style/TextAppearance.MaterialComponents.Headline5"
                 android:layout_width="174dp"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="44dp"
                 android:text="I'm a title"
+                android:textColor="@color/azulLogo"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.82"
                 app:layout_constraintStart_toStartOf="parent"
@@ -63,7 +64,7 @@
                 style="@style/TextAppearance.MaterialComponents.Subtitle2"
                 android:layout_width="150dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="4dp"
                 android:text="I'm a subhead"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.732"

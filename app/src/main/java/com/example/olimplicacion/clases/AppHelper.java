@@ -132,10 +132,9 @@ public class AppHelper {
      * Actualiza los datos del peso, que luego se pasarán
      * a la base de datos.
      * @param peso Peso seleccionado, transformado en string.
-     * @param objetivo Objetivo seleccionado, transformado en string.
      * @return Objeto Peso con los datos actualizados
      */
-    public static Peso addDatos(String peso, String objetivo){
+    public static Peso addDatosPeso(String peso){
         //Obtengo la fecha de hoy
         Calendar cal = new GregorianCalendar();
         Date date = cal.getTime();
@@ -145,9 +144,12 @@ public class AppHelper {
         Map<String, String> datosPeso = new HashMap<>();
         datosPeso.put("x", String.valueOf(MainActivity.getPesoOB().getDatosPeso().size()+1));
         datosPeso.put("y", peso);
-
         MainActivity.getPesoOB().getFecha().add(fecha);
         MainActivity.getPesoOB().getDatosPeso().add(datosPeso);
+
+        return MainActivity.getPesoOB();
+    }
+    public static Peso addDatosObjetivo(String objetivo){
         MainActivity.getPesoOB().setObjetivo(objetivo);
         return MainActivity.getPesoOB();
     }
@@ -191,7 +193,6 @@ public class AppHelper {
         binding.lineChart.setNoDataText("No se ha guardado ningún dato.");
 
         //>>>****INSERCIÓN DE DATOS********
-
         //insertando fechas en eje X
         XAxis xAxis = binding.lineChart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -211,6 +212,10 @@ public class AppHelper {
             }
         }
         LineDataSet lineDataSet = new LineDataSet(entries, "Peso");
+        lineDataSet.setHighlightEnabled(true);
+        lineDataSet.setDrawHighlightIndicators(true);
+        lineDataSet.setCircleColor(Color.GREEN); // color for highlight indicator
+        lineDataSet.setCircleRadius(6); // color for highlight indicator
         lineDataSet.setColor(Color.GREEN);
         lineDataSet.setValueTextSize(15);
         lineDataSet.setLineWidth(3);
@@ -233,7 +238,7 @@ public class AppHelper {
                 yAxis.addLimitLine(ll);
                 float valorMaximoVisible = (maxView<leyendVal)? leyendVal : maxView;
                 float valorMinimoVisible = (minView>leyendVal)? leyendVal : minView;
-                yAxis.setAxisMaximum(valorMaximoVisible);
+                yAxis.setAxisMaximum(valorMaximoVisible+10);
                 yAxis.setAxisMinimum(valorMinimoVisible);
             }
         }
@@ -251,6 +256,9 @@ public class AppHelper {
         binding.barChart.getAxisLeft().setDrawGridLines(false);
         binding.barChart.getXAxis().setDrawGridLines(false);
         binding.barChart.setDrawGridBackground(false);
+        Description desc = new Description();
+        desc.setText(" ");
+        binding.barChart.setDescription(desc);
 
         //leyends
         Legend l = binding.barChart.getLegend();
@@ -279,7 +287,7 @@ public class AppHelper {
         }
 
         BarDataSet barDataSet = new BarDataSet(entries, "Avance");
-        barDataSet.setColor(Color.RED);
+        barDataSet.setColor(Color.rgb(255,127,39));
         barDataSet.setValueTextSize(15);
         BarData barData = new BarData(barDataSet);
         String ultimoValorIntroducido = MainActivity.getAvanceOB().getEjerciciosNombres()
@@ -313,6 +321,18 @@ public class AppHelper {
      * @param peso
      */
     public static void actualizarPeso(Peso peso){
+        DatabaseReference ref = FirebaseDatabase
+                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                .getReference("usuarios/"+ MainActivity.getUsuarioOB().getId()+"/peso");
+        ref.setValue(peso).addOnSuccessListener(new OnSuccessListener<Void>() {
+            @Override
+            public void onSuccess(Void unused) {
+                actualizarApp();
+                configurarChartPeso(EstadisticasFragment.getBinding());
+            }
+        });
+    }
+    public static void actualizarObjetivo(Peso peso){
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("usuarios/"+ MainActivity.getUsuarioOB().getId()+"/peso");
@@ -681,9 +701,11 @@ public class AppHelper {
                 .into(binding.img);
     }
     public static void cambiarDatos(EditText nombre, EditText passAntiguo, EditText passNuevo, Context context){
+        int contador =0;
         if(!nombre.getText().toString().equals("")){
             Usuario usuario = MainActivity.getUsuarioOB();
             usuario.setNombre(nombre.getText().toString());
+            usuario.setUsuario(encriptar(usuario.getNombre(), usuario.getNombre()));
             DatabaseReference ref = FirebaseDatabase
                     .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                     .getReference("usuarios/"+MainActivity.getUsuarioOB().getId());
@@ -709,7 +731,7 @@ public class AppHelper {
                 Usuario usuario = MainActivity.getUsuarioOB();
                 //abtener clave, codificarla y compararla
                 String passAntiguoEncriptado = encriptar(passAntiguo.getText().toString(), passAntiguo.getText().toString());
-                if(passAntiguoEncriptado.trim().equals(usuario.getClave())){
+                if(passAntiguoEncriptado.equals(usuario.getClave())){
                     String passNuevoEncriptado = encriptar(passNuevo.getText().toString(),passNuevo.getText().toString());
                     usuario.setClave(passNuevoEncriptado.trim());
                     DatabaseReference ref = FirebaseDatabase
@@ -755,6 +777,7 @@ public class AppHelper {
         return "0";
     }
     // PERFIL****************************************PERFIL***********************************FIN
+
 
     // TABLON****************************************TABLON**************************************
 
@@ -898,7 +921,7 @@ public class AppHelper {
         //creo el usuario
         Usuario usuario = new Usuario();usuario.setUsuario(nombreEncriptado);
         usuario.setClave(claveEncriptada);usuario.setId(nextID);
-
+        usuario.setNombre(nombre);
         DatabaseReference ref = FirebaseDatabase
                 .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                 .getReference("usuarios/"+nextID);

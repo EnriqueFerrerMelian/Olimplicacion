@@ -37,7 +37,7 @@
             android:layout_marginStart="-29dp"
             android:layout_marginTop="63dp"
             android:layout_toEndOf="@+id/img"
-            android:src="@drawable/icono_camara" />
+            android:src="@drawable/baseline_photo_camera_24" />
 
         <TextView
             android:id="@+id/nombre"
@@ -68,27 +68,26 @@
     <RelativeLayout
         android:id="@+id/item"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="76dp"
         android:layout_below="@+id/divider2"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp">
+        android:layout_marginTop="8dp">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/modificarCard"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:backgroundTint="#CADEFB"
-            app:cardElevation="20dp"
-            app:cardCornerRadius="10dp">
-           <TextView
+            android:layout_margin="8dp"
+            app:cardCornerRadius="10dp"
+            app:cardElevation="20dp">
+
+            <TextView
                 android:id="@+id/rutinaNombre"
                 style="@style/TEXT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="101dp"
-               android:layout_marginTop="10dp"
+                android:layout_marginTop="10dp"
                 android:drawableLeft="@drawable/contrasena"
                 android:text="Modificar datos"
                 android:textSize="20dp"
