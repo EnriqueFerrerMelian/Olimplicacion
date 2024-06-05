@@ -99,7 +99,6 @@ public class RutinaAdapter  extends RecyclerView.Adapter<RutinaAdapter.ViewHolde
                     domingo.setTextColor(Color.rgb(255, 127, 39));
                 }
             }
-
         }
     }
 }

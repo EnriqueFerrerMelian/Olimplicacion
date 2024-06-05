@@ -33,8 +33,6 @@ import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
 public class EstadisticasFragment extends Fragment {
     private static FragmentEstadisticasBinding binding;
-   // private static Peso pesoOB = MainActivity.getPeso();
-    //private static Avance avanceOB = MainActivity.getAvance();
     private static Entry pesoSeleccionado = new Entry();
     private static BarEntry progresoSeleccionado = new BarEntry(0,0);
 
@@ -142,9 +140,6 @@ public class EstadisticasFragment extends Fragment {
                 numberPesoDecimalOb.setValue(Integer.valueOf(objetivoArray[1]));
             }
         }
-
-
-
         //inicialización de numberPicker**********************fin*
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -156,8 +151,6 @@ public class EstadisticasFragment extends Fragment {
                     String objetivoOut = numberPesoOb.getValue() +"." + numberPesoDecimalOb.getValue();
                     AppHelper.actualizarPeso(AppHelper.addDatosObjetivo(objetivoOut));
                 }
-                //logica del realtime database
-
                 dialog.dismiss();
             }
         });

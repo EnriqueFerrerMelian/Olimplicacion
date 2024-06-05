@@ -13,14 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.olimplicacion.MainActivity;
+
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.clases.AppHelper;
 import com.example.olimplicacion.clases.Noticia;
-import com.example.olimplicacion.clases.Rutina;
 import com.example.olimplicacion.databinding.FragmentTablonBinding;
-import com.example.olimplicacion.rutinas.DetallesRutinaFragment;
-import com.example.olimplicacion.rutinas.RutinaFbAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.firebase.database.FirebaseDatabase;
 

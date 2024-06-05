@@ -2,24 +2,18 @@ package com.example.olimplicacion.clases;
 
 
 import android.annotation.SuppressLint;
-import android.app.UiModeManager;
 import android.content.Context;
-import android.content.res.Configuration;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.health.connect.datatypes.AppInfo;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.text.style.StyleSpan;
 import android.util.Base64;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatDelegate;
 
 import com.bumptech.glide.Glide;
 import com.example.olimplicacion.MainActivity;
@@ -80,8 +74,6 @@ import javax.crypto.spec.SecretKeySpec;
 
 public class AppHelper {
     private static Uri imgUriFb = Uri.parse(" ");
-    private static Uri imgUri = Uri.parse(" ");
-
     private static StorageReference storageReference;
     //SEGURIDAD****************************************************************
 
@@ -400,18 +392,6 @@ public class AppHelper {
         binding.vacantesActividad.append(actividad.getVacantes());
         binding.precioActividad.append(actividad.getPrecio());
     }
-    public static void cargarNoticia(FragmentDetalleNoticiaBinding binding, Context context, Noticia noticia){
-        Glide.with(context)
-                .load(noticia.getImagen())
-                .placeholder(R.drawable.baseline_add_242)//si no hay imagen carga una por defecto
-                .error(R.drawable.logo)//si ocurre algún error se verá por defecto
-                .fitCenter()
-                .override(1000)
-                .into(binding.imageView);
-        binding.titulo.setText(noticia.getTitulo());
-        binding.contenido.setText(noticia.getContenido());
-    }
-
     public static void reservarActividad(Actividad actividad, Context context){
         //si hay vacantes
         //Obtengo la fecha de hoy
@@ -733,7 +713,7 @@ public class AppHelper {
                 String passAntiguoEncriptado = encriptar(passAntiguo.getText().toString(), passAntiguo.getText().toString());
                 if(passAntiguoEncriptado.equals(usuario.getClave())){
                     String passNuevoEncriptado = encriptar(passNuevo.getText().toString(),passNuevo.getText().toString());
-                    usuario.setClave(passNuevoEncriptado.trim());
+                    usuario.setClave(passNuevoEncriptado);
                     DatabaseReference ref = FirebaseDatabase
                             .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
                             .getReference("usuarios/"+MainActivity.getUsuarioOB().getId());
@@ -780,6 +760,17 @@ public class AppHelper {
 
 
     // TABLON****************************************TABLON**************************************
+    public static void cargarNoticia(FragmentDetalleNoticiaBinding binding, Context context, Noticia noticia){
+        Glide.with(context)
+                .load(noticia.getImagen())
+                .placeholder(R.drawable.baseline_add_242)//si no hay imagen carga una por defecto
+                .error(R.drawable.logo)//si ocurre algún error se verá por defecto
+                .fitCenter()
+                .override(1000)
+                .into(binding.imageView);
+        binding.titulo.setText(noticia.getTitulo());
+        binding.contenido.setText(noticia.getContenido());
+    }
 
     // TABLON****************************************TABLON***********************************FIN
 
@@ -936,7 +927,6 @@ public class AppHelper {
                 System.out.println(e);
             }
         });
-
     }
     public static void hotFixAvtividad(){
         Actividad actividad = new Actividad("Esgrima", "20.00€",

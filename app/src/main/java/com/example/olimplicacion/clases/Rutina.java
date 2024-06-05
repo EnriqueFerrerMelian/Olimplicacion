@@ -1,6 +1,5 @@
 package com.example.olimplicacion.clases;
 
-import com.example.olimplicacion.clases.Ejercicio;
 
 import java.util.List;
 

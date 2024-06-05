@@ -32,10 +32,6 @@ public class EjercicioAdapterModificar extends RecyclerView.Adapter<EjercicioAda
         this.rutina = rutina;
     }
 
-    public void setListaFiltrada(List<Ejercicio> listaFiltrada){
-        this.dataArrayList = listaFiltrada;
-        notifyDataSetChanged();//esto es para un buscador
-    }
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

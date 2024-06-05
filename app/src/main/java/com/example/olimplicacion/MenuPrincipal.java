@@ -11,7 +11,6 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.olimplicacion.actividades.ActividadesFragment;
-import com.example.olimplicacion.clases.AppHelper;
 import com.example.olimplicacion.databinding.ActivityMenuPrincipalBinding;
 import com.example.olimplicacion.calendario.CalendarioFragment;
 import com.example.olimplicacion.fragmentos.EstadisticasFragment;

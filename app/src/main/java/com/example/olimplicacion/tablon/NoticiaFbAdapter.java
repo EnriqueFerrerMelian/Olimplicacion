@@ -1,8 +1,6 @@
 package com.example.olimplicacion.tablon;
 
 import android.annotation.SuppressLint;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -14,16 +12,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.example.olimplicacion.R;
 import com.example.olimplicacion.clases.Noticia;
-import com.example.olimplicacion.clases.Rutina;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.android.material.imageview.ShapeableImageView;
 import com.squareup.picasso.Picasso;
-
-import java.util.Random;
 
 public class NoticiaFbAdapter extends FirebaseRecyclerAdapter<Noticia, NoticiaFbAdapter.ViewHolder> {
 

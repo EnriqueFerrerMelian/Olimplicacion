@@ -52,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         binding = ActivityMainBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         validarFechaActividad(this);
-        //AppHelper.hotFixCrearUsuario("mojojojo", "admin");
+        //AppHelper.hotFixCrearUsuario("admin", "admin");
         //listeners
         binding.boton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,7 +199,4 @@ public class MainActivity extends AppCompatActivity {
     public void setBinding(ActivityMainBinding binding) {
         this.binding = binding;
     }
-
-
-
 }

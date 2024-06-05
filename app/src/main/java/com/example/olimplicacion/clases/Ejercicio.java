@@ -17,9 +17,7 @@ public class Ejercicio {
         this.img = img;
     }
 
-    public Ejercicio(){
-
-    }
+    public Ejercicio(){ }
     public String getPeso() {
         return peso;
     }
