@@ -38,46 +38,81 @@
                     android:text="NombreActividad"
                     android:textAlignment="center"
                     android:textColor="#252525"
-                    android:textSize="18dp"
+                    android:textSize="20dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/descripcionActividad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Descripción: "
                     android:textColor="#252525"
-                    android:textSize="20dp" />
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/descripcionActividad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:textColor="#252525"
+                    android:textSize="20dp"/>
 
                 <TextView
-                    android:id="@+id/profesorActividad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Profesor: "
                     android:textColor="#252525"
+                    android:textSize="18dp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/profesorActividad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:textColor="#252525"
                     android:textSize="18dp" />
 
                 <TextView
-                    android:id="@+id/vacantesActividad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Vacnates: "
                     android:textColor="#252525"
+                    android:textSize="18dp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/vacantesActividad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:textColor="#252525"
                     android:textSize="18dp" />
 
                 <TextView
-                    android:id="@+id/horariosActividad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Horarios: "
                     android:textColor="#252525"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
+                <TextView
+                    android:id="@+id/horariosActividad"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:textColor="#252525"
                     android:textSize="20dp" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Precio: "
+                    android:textColor="#252525"
+                    android:textSize="20dp"
+                    android:textStyle="bold"/>
                 <TextView
                     android:id="@+id/precioActividad"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Precio: "
+                    android:layout_margin="10dp"
                     android:textColor="#252525"
                     android:textSize="20dp" />
 

@@ -139,10 +139,6 @@ public class RutinaFbAdapter  extends FirebaseRecyclerAdapter<Rutina, RutinaFbAd
             return false;
         }
     }
-    public interface ItemClickListener{
-        public void onItemClick(Rutina rutina);
-    }
-
     /**
      * Elimina la rutina con el id pasado por parámetro tanto de la lista de rutinas como de
      * la lista de rutinas que pertenecen al usuario conectado.
@@ -167,4 +163,8 @@ public class RutinaFbAdapter  extends FirebaseRecyclerAdapter<Rutina, RutinaFbAd
             }
         });
     }
+    public interface ItemClickListener{
+        public void onItemClick(Rutina rutina);
+    }
+
 }

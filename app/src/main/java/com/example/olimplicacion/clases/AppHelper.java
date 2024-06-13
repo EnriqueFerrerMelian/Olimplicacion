@@ -681,7 +681,6 @@ public class AppHelper {
                 .into(binding.img);
     }
     public static void cambiarDatos(EditText nombre, EditText passAntiguo, EditText passNuevo, Context context){
-        int contador =0;
         if(!nombre.getText().toString().equals("")){
             Usuario usuario = MainActivity.getUsuarioOB();
             usuario.setNombre(nombre.getText().toString());
@@ -692,16 +691,20 @@ public class AppHelper {
             ref.setValue(usuario).addOnSuccessListener(new OnSuccessListener<Void>() {
                 @Override
                 public void onSuccess(Void unused) {
+                    System.out.println("Guardando actividades");
                     List<Actividad> actividades = MainActivity.getActividadesOBs();
-                    DatabaseReference ref = FirebaseDatabase
-                            .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                            .getReference("usuarios/"+MainActivity.getUsuarioOB().getId()+"/actividades");
-                    ref.setValue(actividades).addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            actualizarApp();
-                        }
-                    });
+                    for (int i = 0; i < actividades.size(); i++) {
+                        DatabaseReference ref = FirebaseDatabase
+                                .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                                .getReference("usuarios/"+MainActivity.getUsuarioOB().getId()+"/actividades/"+actividades.get(i).getNombre());
+                        ref.setValue(actividades.get(i)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void unused) {
+                                System.out.println("Actializando App");
+                                actualizarApp();
+                            }
+                        });
+                    }
                     cargaPerfil(PerfilFragment.getPerfilBinding(), context);
                 }
             });
@@ -721,15 +724,17 @@ public class AppHelper {
                         @Override
                         public void onSuccess(Void unused) {
                             List<Actividad> actividades = MainActivity.getActividadesOBs();
-                            DatabaseReference ref = FirebaseDatabase
-                                    .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
-                                    .getReference("usuarios/"+MainActivity.getUsuarioOB().getId()+"/actividades");
-                            ref.setValue(actividades).addOnSuccessListener(new OnSuccessListener<Void>() {
-                                @Override
-                                public void onSuccess(Void unused) {
-                                    actualizarApp();
-                                }
-                            });
+                            for (int i = 0; i < actividades.size(); i++) {
+                                DatabaseReference ref = FirebaseDatabase
+                                        .getInstance("https://olimplicacion-3ba86-default-rtdb.europe-west1.firebasedatabase.app")
+                                        .getReference("usuarios/"+MainActivity.getUsuarioOB().getId()+"/actividades/"+actividades.get(i).getNombre());
+                                ref.setValue(actividades.get(i)).addOnSuccessListener(new OnSuccessListener<Void>() {
+                                    @Override
+                                    public void onSuccess(Void unused) {
+                                        actualizarApp();
+                                    }
+                                });
+                            }
                             cargaPerfil(PerfilFragment.getPerfilBinding(), context);
                         }
                     });
@@ -755,6 +760,22 @@ public class AppHelper {
             return max + " Kg - " + MainActivity.getAvanceOB().getEjerciciosNombres().get(index);
         }
         return "0";
+    }
+    public static void pasarActividadAMapa(){
+        List<Actividad> actividades = MainActivity.getActividadesOBs();
+        for (int i = 0; i < MainActivity.getActividadesOBs().size(); i++) {
+            Map<String, Object> actividad = new HashMap<>();
+            //nombre, precio, descripcion, vacantes, profesor, horario, img1, img2, fecha;
+            actividad.put("nombre", actividades.get(i).getNombre());
+            actividad.put("precio", actividades.get(i).getPrecio());
+            actividad.put("descripcion", actividades.get(i).getDescripcion());
+            actividad.put("vacantes", actividades.get(i).getVacantes());
+            actividad.put("profesor", actividades.get(i).getProfesor());
+            actividad.put("horario", actividades.get(i).getHorario());
+            actividad.put("img1", actividades.get(i).getImg1());
+            actividad.put("img2", actividades.get(i).getImg2());
+            actividad.put("fecha", actividades.get(i).getFecha());
+        }
     }
     // PERFIL****************************************PERFIL***********************************FIN
 
