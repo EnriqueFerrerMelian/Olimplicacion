@@ -1,5 +1,8 @@
 # Olimplicacion
 Proyecto de final de ciclo de Diseño de Aplicacicones Multimedia
+
+![giphy](https://github.com/user-attachments/assets/382c93bb-9e88-47ae-a575-9e98764d6a02)
+
 ## 📝 Descripción
 Olimplicación es una aplicación móvil diseñada para ayudar a los usuarios a gestionar sus rutinas de ejercicio, realizar un seguimiento de su progreso y estar al tanto de las actividades en su gimnasio.
 Está pensada para cualquier persona que quiera llevar un control detallado de sus entrenamientos de forma sencilla y efectiva.
